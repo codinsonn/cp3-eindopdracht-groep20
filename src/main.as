@@ -1,38 +1,37 @@
 package {
 
-import feathers.themes.MetalWorksMobileTheme;
-
+import flash.display.Sprite;
+import flash.display.StageAlign;
+import flash.display.StageScaleMode;
 import flash.events.Event;
+import flash.geom.Rectangle;
 
-import splitr.Splitr;
+import splitr.mobile.Splitr;
 
-import starling.display.Sprite;
-import starling.events.ResizeEvent;
+import starling.core.Starling;
+import starling.events.Event;
 
 public class main extends Sprite {
 
-    //private var app:Splitr;
+    private var _starling:Starling
 
     public function main()
     {
-        new MetalWorksMobileTheme();
+        stage.align = StageAlign.TOP_LEFT;
+        stage.scaleMode = StageScaleMode.NO_SCALE;
 
-        addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+        _starling = new Starling(Splitr, stage);
+        _starling.start();
+
+        stage.addEventListener(flash.events.Event.RESIZE, resizedHandler);
     }
 
-    private function addedToStageHandler(e:Event):void {
-        removeEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
-        stage.addEventListener(Event.RESIZE, resizedHandler);
-        layout();
+    private function resizedHandler(e:flash.events.Event):void {
+        _starling.viewPort = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
+        _starling.stage.stageWidth = stage.stageWidth;
+        _starling.stage.stageHeight = stage.stageHeight;
+        _starling.stage.dispatchEvent(new starling.events.Event(starling.events.Event.RESIZE))
     }
 
-    private function resizedHandler(e:Event):void {
-        layout();
-    }
-
-    private function layout():void {
-        trace("[Resize]", stage.stageWidth, stage.stageHeight);
-
-    }
 }
 }
