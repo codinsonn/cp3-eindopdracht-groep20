@@ -2,9 +2,7 @@
     "persons": [
         {
             "id": 1,
-            "name": "b",
-            "surname": "d",
-            "contact": "f"
+            "name": "b"
         }
     ]
 }
