@@ -1,8 +1,32 @@
 {
+<<<<<<< HEAD
     "persons": [
         {
             "id": 1,
             "name": "b"
+=======
+    "1":{
+        "billname":"rekening",
+        "totaal": 56,
+        "photopath":"../../assets/images/1.png",
+        "persons":{
+            "1":{
+                "id":1,
+                "name":"Mark",
+                "share":34
+            }
+        },
+        "items":{
+            "1":{
+                "id":1,
+                "itemname":"wijn",
+                "price":12,
+                "personinitem":[
+                    1,
+                    2
+                ]
+            }
+>>>>>>> e326019593905e1d05b8ca180011640518eb9046
         }
-    ]
+    }
 }
