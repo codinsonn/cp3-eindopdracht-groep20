@@ -69,10 +69,10 @@ public class Header extends Sprite {
             removeChild(_txtTitle);
         }
 
-        // Set and add Textfield for Splitr Title
-        _txtTitle = new TextField(120, 35, "0", "Open Sans Bold", 25, 0xFFFFFF);
+        // Settings and adding of Textfield for 'Splitr' Title
+        _txtTitle = new TextField(120, 40, "0", "OpenSansBold", 30, 0xFFFFFF);
         _txtTitle.fontName = "OpenSansBold";
-        _txtTitle.text = "Splitr";
+        _txtTitle.text = "SPLITR";
         _txtTitle.x = w/2 - _txtTitle.width/2;
         _txtTitle.y = 5;
         addChild(_txtTitle);
