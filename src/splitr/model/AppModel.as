@@ -8,14 +8,12 @@ public class AppModel extends EventDispatcher {
     /* ----- Public Variables ------------------------------------------------------------------------------------------ */
 
     public static const PEOPLE_CHANGED:String = "PEOPLE_CHANGED";
-    public static const GROUPS_CHANGED:String = "GROUPS_CHANGED";
     public static const BILLS_CHANGED:String = "BILLS_CHANGED";
 
     public static const CURRENT_PERSON_CHANGED:String = "CURRENT_PERSON_CHANGED";
     public static const CURRENT_BILL_CHANGED:String = "CURRENT_BILL_CHANGED";
 
     private static var _people:Array;
-    private static var _groups:Array;
     private static var _bills:Array;
 
     private static var _currentBill:uint;
@@ -37,7 +35,6 @@ public class AppModel extends EventDispatcher {
             throw new Error("AppModel is a singleton, use getInstance() instead");
         }
         _bills = [];
-        _groups = [];
         _people = [];
     }
 
@@ -50,16 +47,6 @@ public class AppModel extends EventDispatcher {
     public static function set people(value:Array):void {
         if(value != _people){
             _people = value;
-        }
-    }
-
-    public static function get groups():Array {
-        return _groups;
-    }
-
-    public static function set groups(value:Array):void {
-        if(value != _groups){
-            _groups = value;
         }
     }
 

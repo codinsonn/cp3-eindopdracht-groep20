@@ -3,7 +3,7 @@
         "billname":"rekening",
         "totaal": 56,
         "photopath":"../../assets/images/1.png",
-        "persons":{
+        "people":{
             "1":{
                 "id":1,
                 "name":"Mark",
