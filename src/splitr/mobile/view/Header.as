@@ -1,10 +1,3 @@
-/**
- * Created with IntelliJ IDEA.
- * User: stevensthorr
- * Date: 12/8/13
- * Time: 1:09 PM
- * To change this template use File | Settings | File Templates.
- */
 package splitr.mobile.view {
 
 import flash.display.BitmapData;
@@ -18,8 +11,6 @@ import starling.display.Image;
 
 import starling.display.Sprite;
 import starling.events.Event;
-import starling.events.ResizeEvent;
-import starling.text.BitmapFont;
 import starling.text.TextField;
 import starling.textures.Texture;
 
@@ -52,7 +43,7 @@ public class Header extends Sprite {
 
         // Draw a new shape (to be converted to a texture) to set as new background
         var shape:Shape = new Shape();
-        shape.graphics.beginFill(0x888888);
+        shape.graphics.beginFill(0x638179);
         shape.graphics.drawRect(0, 0, w, h);
         shape.graphics.endFill();
         var shapeData:BitmapData = new BitmapData(w, h, true, 0);

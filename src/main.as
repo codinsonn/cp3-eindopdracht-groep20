@@ -21,6 +21,7 @@ public class main extends Sprite {
         stage.scaleMode = StageScaleMode.NO_SCALE;
 
         _starling = new Starling(Splitr, stage);
+        _starling.antiAliasing = 1;
         _starling.start();
 
         stage.addEventListener(flash.events.Event.RESIZE, resizedHandler);
