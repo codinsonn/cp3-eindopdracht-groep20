@@ -15,9 +15,11 @@
                 "id":1,
                 "itemname":"wijn",
                 "price":12,
+                "amount":1,
                 "personinitem":[
                     1,
-                    2
+                    2,
+                    "not sure we should do this, will leave it here just in case"
                 ]
             }
         }
