@@ -15,6 +15,8 @@ import starling.display.Image;
 
 import starling.display.Sprite;
 import starling.events.Event;
+import starling.text.BitmapFont;
+import starling.text.TextField;
 import starling.textures.Texture;
 
 public class Splitr extends starling.display.Sprite {
@@ -23,11 +25,21 @@ public class Splitr extends starling.display.Sprite {
 
     private var _header:Header;
 
+    [Embed(source = "/../assets/fonts/OpenSansBold.fnt", mimeType="application/octet-stream")]
+    public static const OpenSansBoldXml:Class;
+
+    [Embed(source = "/../assets/fonts/OpenSansBold.png")]
+    public static const OpenSansBoldTexture:Class;
+
     public function Splitr()
     {
         new MetalWorksMobileTheme();
 
         this._appModel = AppModel.getInstance();
+
+        var texture:Texture = Texture.fromBitmap(new OpenSansBoldTexture());
+        var xml:XML = XML(new OpenSansBoldXml());
+        TextField.registerBitmapFont(new BitmapFont(texture, xml));
 
         addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
     }
@@ -45,11 +57,12 @@ public class Splitr extends starling.display.Sprite {
     private function layout():void {
         trace("[Starling] Resize:", stage.stageWidth, stage.stageHeight);
 
+        // Header resize
         if(!_header){
             _header = new Header();
             addChild(_header);
         }
-        _header.resizedHandler(null, stage.stageWidth, 50);
+        _header.resizedHandler(stage.stageWidth, 50);
 
 
     }
