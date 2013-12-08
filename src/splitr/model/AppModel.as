@@ -13,11 +13,15 @@ public class AppModel extends EventDispatcher {
     public static const CURRENT_PERSON_CHANGED:String = "CURRENT_PERSON_CHANGED";
     public static const CURRENT_BILL_CHANGED:String = "CURRENT_BILL_CHANGED";
 
+    public static const PAGE_CHANGED:String = "PAGE_CHANGED";
+
     private static var _people:Array;
     private static var _bills:Array;
 
     private static var _currentBill:uint;
     private static var _currentPerson:uint;
+
+    private static var _currentPage:String;
 
     private static var instance:AppModel;
 
@@ -77,6 +81,16 @@ public class AppModel extends EventDispatcher {
     public static function set currentPerson(value:uint):void {
         if(value != _currentPerson){
             _currentPerson = value;
+        }
+    }
+
+    public static function get currentPage():String {
+        return _currentPage;
+    }
+
+    public static function set currentPage(value:String):void {
+        if(value != _currentPage){
+            _currentPage = value;
         }
     }
 }
