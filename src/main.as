@@ -11,9 +11,10 @@ import splitr.mobile.Splitr;
 import starling.core.Starling;
 import starling.events.Event;
 
+[SWF(frameRate=60)]
 public class main extends Sprite {
 
-    private var _starling:Starling
+    private var _starling:Starling;
 
     public function main()
     {

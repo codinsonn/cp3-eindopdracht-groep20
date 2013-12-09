@@ -2,16 +2,9 @@ package splitr.mobile {
 
 import feathers.themes.MetalWorksMobileTheme;
 
-import flash.display.BitmapData;
-
-import flash.display.Shape;
-
 import splitr.mobile.view.Header;
 
 import splitr.model.AppModel;
-
-import starling.display.DisplayObject;
-import starling.display.Image;
 
 import starling.display.Sprite;
 import starling.events.Event;

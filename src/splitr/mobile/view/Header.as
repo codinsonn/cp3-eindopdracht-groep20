@@ -6,6 +6,7 @@ import flash.display.Shape;
 import splitr.model.AppModel;
 
 import starling.display.DisplayObject;
+import starling.display.Image;
 
 import starling.display.Image;
 
@@ -13,6 +14,8 @@ import starling.display.Sprite;
 import starling.events.Event;
 import starling.text.TextField;
 import starling.textures.Texture;
+import starling.textures.Texture;
+import starling.textures.TextureAtlas;
 
 public class Header extends Sprite {
 
@@ -21,6 +24,13 @@ public class Header extends Sprite {
     private var _txtTitle:TextField;
 
     private var _headerBg:DisplayObject;
+    private var _headerPrevPageButton:DisplayObject;
+
+    [Embed(source="/../assets/custom/SplitrSpreadsheet.xml", mimeType="application/octet-stream")]
+    public static const SplitrSpreadSheetXML:Class;
+
+    [Embed(source="/../assets/custom/SplitrSpreadsheet.png", mimeType="application/octet-stream")]
+    public static const SplitrSpreadSheetTexture:Class;
 
     public function Header()
     {
@@ -61,13 +71,31 @@ public class Header extends Sprite {
         }
 
         // Settings and adding of Textfield for 'Splitr' Title
-        _txtTitle = new TextField(120, 40, "0", "OpenSansBold", 30, 0xFFFFFF);
+        _txtTitle = new TextField(120, 36, "0", "OpenSansBold", 27, 0x33423e);
         _txtTitle.fontName = "OpenSansBold";
         _txtTitle.text = "SPLITR";
         _txtTitle.x = w/2 - _txtTitle.width/2;
-        _txtTitle.y = 5;
+        _txtTitle.y = 6;
         addChild(_txtTitle);
+        /*
+        // Add previous page icon if not on overview page
+        if(AppModel.currentPage != "Overview"){
+            if(!_headerPrevPageButton){
+                // ---- shorthand ----
+                //var splitrAtlasBitmapData:BitmapData = (new SplitrSpreadSheetTexture()).bitmap;
+                //var splitrAtlas:TextureAtlas = new TextureAtlas(Texture.fromBitmapData(splitrAtlasBitmapData, false), XML(new SplitrSpreadSheetXML));
 
+                var splitrTexture:Texture = Texture(new SplitrSpreadSheetTexture());
+                var splitrXml:XML = XML(new SplitrSpreadSheetXML());
+                var splitrAtlas:TextureAtlas = new TextureAtlas(splitrTexture, splitrXml);
+
+                _headerPrevPageButton = new Image(splitrAtlas.getTexture("SplitrHeaderPrevButton"));
+                addChild(_headerPrevPageButton);
+            }
+            _headerPrevPageButton.x = 30;
+            _headerPrevPageButton.y = 25;
+        }
+        */
     }
 
 }
