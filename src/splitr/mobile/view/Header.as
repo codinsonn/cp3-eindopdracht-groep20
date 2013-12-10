@@ -1,13 +1,11 @@
 package splitr.mobile.view {
 
-import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.Shape;
 
 import splitr.model.AppModel;
 
 import starling.display.DisplayObject;
-import starling.display.Image;
 
 import starling.display.Image;
 
@@ -15,8 +13,6 @@ import starling.display.Sprite;
 import starling.events.Event;
 import starling.text.TextField;
 import starling.textures.Texture;
-import starling.textures.Texture;
-import starling.textures.TextureAtlas;
 
 public class Header extends Sprite {
 
@@ -28,13 +24,7 @@ public class Header extends Sprite {
 
     private var _txtTitle:TextField;
     private var _headerBg:DisplayObject;
-    private var _headerPrevPageButton:DisplayObject;
-
-    [Embed(source="/../assets/custom/SplitrSpreadsheet.xml", mimeType="application/octet-stream")]
-    public static const SplitrSpreadSheetXML:Class;
-
-    [Embed(source="/../assets/custom/SplitrSpreadsheet.png", mimeType="application/octet-stream")]
-    public static const SplitrSpreadSheetTexture:Class;
+    private var _headerPrevPageButton:Image;
 
     public function Header(title:String = "Splitr", bgColor:uint = 0x638179, titleColor:uint = 0x33423e)
     {
@@ -88,11 +78,13 @@ public class Header extends Sprite {
 
         // Add previous page icon if not on overview page
         if(AppModel.currentPage != "Overview"){
-            if(!_headerPrevPageButton){
-                //var bitmap:Bitmap = Texture.fromBitmap()
+            if(_headerPrevPageButton){
+                removeChild(_headerPrevPageButton);
             }
-            _headerPrevPageButton.x = 30;
-            _headerPrevPageButton.y = 25;
+            _headerPrevPageButton = new Image(Assets.getTexture("SplitrHeaderBackButton"));
+            _headerPrevPageButton.x = 10;
+            _headerPrevPageButton.y = 0;
+            addChild(_headerPrevPageButton);
         }
 
     }
