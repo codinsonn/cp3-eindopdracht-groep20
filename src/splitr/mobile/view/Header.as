@@ -1,5 +1,6 @@
 package splitr.mobile.view {
 
+import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.Shape;
 
@@ -21,8 +22,11 @@ public class Header extends Sprite {
 
     private var _appModel:AppModel;
 
-    private var _txtTitle:TextField;
+    private var _titleString:String;
+    private var _bgColor:uint;
+    private var _titleColor:uint;
 
+    private var _txtTitle:TextField;
     private var _headerBg:DisplayObject;
     private var _headerPrevPageButton:DisplayObject;
 
@@ -32,10 +36,14 @@ public class Header extends Sprite {
     [Embed(source="/../assets/custom/SplitrSpreadsheet.png", mimeType="application/octet-stream")]
     public static const SplitrSpreadSheetTexture:Class;
 
-    public function Header()
+    public function Header(title:String = "Splitr", bgColor:uint = 0x638179, titleColor:uint = 0x33423e)
     {
         this._appModel = AppModel.getInstance();
         _appModel.addEventListener(AppModel.PAGE_CHANGED, pageChangedHandler);
+
+        _titleString = title;
+        _bgColor = bgColor;
+        _titleColor = titleColor;
 
         resizedHandler();
     }
@@ -53,7 +61,7 @@ public class Header extends Sprite {
 
         // Draw a new shape (to be converted to a texture) to set as new background
         var shape:Shape = new Shape();
-        shape.graphics.beginFill(0x638179);
+        shape.graphics.beginFill(_bgColor);
         shape.graphics.drawRect(0, 0, w, h);
         shape.graphics.endFill();
         var shapeData:BitmapData = new BitmapData(w, h, true, 0);
@@ -71,31 +79,22 @@ public class Header extends Sprite {
         }
 
         // Settings and adding of Textfield for 'Splitr' Title
-        _txtTitle = new TextField(120, 36, "0", "OpenSansBold", 27, 0x33423e);
+        _txtTitle = new TextField(120, 36, "0", "OpenSansBold", 27, _titleColor);
         _txtTitle.fontName = "OpenSansBold";
-        _txtTitle.text = "SPLITR";
+        _txtTitle.text = _titleString;
         _txtTitle.x = w/2 - _txtTitle.width/2;
         _txtTitle.y = 6;
         addChild(_txtTitle);
-        /*
+
         // Add previous page icon if not on overview page
         if(AppModel.currentPage != "Overview"){
             if(!_headerPrevPageButton){
-                // ---- shorthand ----
-                //var splitrAtlasBitmapData:BitmapData = (new SplitrSpreadSheetTexture()).bitmap;
-                //var splitrAtlas:TextureAtlas = new TextureAtlas(Texture.fromBitmapData(splitrAtlasBitmapData, false), XML(new SplitrSpreadSheetXML));
-
-                var splitrTexture:Texture = Texture(new SplitrSpreadSheetTexture());
-                var splitrXml:XML = XML(new SplitrSpreadSheetXML());
-                var splitrAtlas:TextureAtlas = new TextureAtlas(splitrTexture, splitrXml);
-
-                _headerPrevPageButton = new Image(splitrAtlas.getTexture("SplitrHeaderPrevButton"));
-                addChild(_headerPrevPageButton);
+                //var bitmap:Bitmap = Texture.fromBitmap()
             }
             _headerPrevPageButton.x = 30;
             _headerPrevPageButton.y = 25;
         }
-        */
+
     }
 
 }
