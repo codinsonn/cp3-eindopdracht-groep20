@@ -45,7 +45,7 @@ public class NumToggler extends Sprite {
         if(touch != null) {
             switch(touch.phase){
                 case TouchPhase.ENDED:
-                    
+
 
                     dispatchEvent(new Event(Event.CHANGE));
                     break;
