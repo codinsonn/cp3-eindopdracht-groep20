@@ -25,7 +25,7 @@ public class Header extends Sprite {
     private var _headerBg:Image;
     private var _headerPrevPageButton:Button;
 
-    public function Header(title:String = "Splitr", bgColor:uint = 0x638179, titleColor:uint = 0x33423e)
+    public function Header(title:String = "SPLITR", bgColor:uint = 0x638179, titleColor:uint = 0x33423e)
     {
         this._appModel = AppModel.getInstance();
         _appModel.addEventListener(AppModel.PAGE_CHANGED, pageChangedHandler);

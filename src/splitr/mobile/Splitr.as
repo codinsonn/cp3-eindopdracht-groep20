@@ -18,21 +18,11 @@ public class Splitr extends starling.display.Sprite {
 
     private var _header:Header;
 
-    [Embed(source = "/../assets/fonts/OpenSansBold.fnt", mimeType="application/octet-stream")]
-    public static const OpenSansBoldXml:Class;
-
-    [Embed(source = "/../assets/fonts/OpenSansBold.png")]
-    public static const OpenSansBoldTexture:Class;
-
     public function Splitr()
     {
         new MetalWorksMobileTheme();
 
         this._appModel = AppModel.getInstance();
-
-        var texture:Texture = Texture.fromBitmap(new OpenSansBoldTexture());
-        var xml:XML = XML(new OpenSansBoldXml());
-        TextField.registerBitmapFont(new BitmapFont(texture, xml));
 
         addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
     }

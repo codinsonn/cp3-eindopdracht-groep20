@@ -2,9 +2,19 @@ package {
 import flash.display.Bitmap;
 import flash.utils.Dictionary;
 
+import starling.text.BitmapFont;
+import starling.text.TextField;
+
 import starling.textures.Texture;
 
 public class Assets {
+
+    /* ---- Font embedding ------------------------------------- */
+    [Embed(source = "/../assets/fonts/OpenSansBold.fnt", mimeType="application/octet-stream")]
+    public static const OpenSansBoldXml:Class;
+
+    [Embed(source = "/../assets/fonts/OpenSansBold.png")]
+    public static const OpenSansBoldTexture:Class;
 
     /* ---- Header icons/buttons ------------------------------------- */
     [Embed(source="assets/graphics/SplitrHeaderBackButton.png")]
@@ -46,6 +56,12 @@ public class Assets {
 
     // Dictionary to check/pass textures
     private static var splitrTextures:Dictionary = new Dictionary();
+
+    public function Assets(){
+        var texture:Texture = Texture.fromBitmap(new OpenSansBoldTexture());
+        var xml:XML = XML(new OpenSansBoldXml());
+        TextField.registerBitmapFont(new BitmapFont(texture, xml));
+    }
 
     public static function getTexture(name:String):Texture
     {
