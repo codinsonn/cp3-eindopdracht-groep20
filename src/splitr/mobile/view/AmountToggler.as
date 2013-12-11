@@ -9,32 +9,32 @@ import starling.events.TouchEvent;
 import starling.events.TouchPhase;
 import starling.text.TextField;
 
-public class NumToggler extends Sprite {
+public class AmountToggler extends Sprite {
 
     private var _subtractButton:Button;
-    private var _txtNumber:TextField;
+    private var _txtAmount:TextField;
     private var _addButton:Button;
 
-    private var _number:uint;
+    private var _amount:uint;
 
-    public function NumToggler(num:uint = 1){
-        _number = num;
+    public function AmountToggler(amount:uint = 1){
+        _amount = amount;
 
         _subtractButton = new Button(Assets.getTexture("SplitrNumTogglerSubtractButton"));
         _subtractButton.x = 0;
         _subtractButton.addEventListener(TouchEvent.TOUCH, subtractTouchedHandler);
         addChild(_subtractButton);
 
-        _txtNumber = new TextField(50, 50, "0", "OpenSansBold", 24, 0x33423e);
-        _txtNumber.fontName = "OpenSansBold";
-        _txtNumber.text = _number.toString();
-        _txtNumber.x = _subtractButton.width;
-        _txtNumber.addEventListener(TouchEvent.TOUCH, txtNumberTouchedHandler);
-        addChild(_txtNumber);
+        _txtAmount = new TextField(50, 50, "0", "OpenSansBold", 24, 0x33423e);
+        _txtAmount.fontName = "OpenSansBold";
+        _txtAmount.text = _amount.toString();
+        _txtAmount.x = _subtractButton.width;
+        _txtAmount.addEventListener(TouchEvent.TOUCH, txtNumberTouchedHandler);
+        addChild(_txtAmount);
 
         _addButton = new Button(Assets.getTexture("SplitrNumTogglerAddButton"));
-        _addButton.x = _txtNumber.x + _txtNumber.width;
-        _addButton.y = _subtractButton.y = _txtNumber.y = 0;
+        _addButton.x = _txtAmount.x + _txtAmount.width;
+        _addButton.y = _subtractButton.y = _txtAmount.y = 0;
         _addButton.addEventListener(TouchEvent.TOUCH, addTouchedHandler);
         addChild(_addButton);
     }
@@ -45,9 +45,11 @@ public class NumToggler extends Sprite {
         if(touch != null) {
             switch(touch.phase){
                 case TouchPhase.ENDED:
-
-
-                    dispatchEvent(new Event(Event.CHANGE));
+                    if(_amount > 1){
+                        _amount--;
+                        _txtAmount.text = _amount.toString();
+                        dispatchEvent(new Event(Event.CHANGE));
+                    }
                     break;
             }
         }
@@ -63,6 +65,8 @@ public class NumToggler extends Sprite {
         if(touch != null) {
             switch(touch.phase){
                 case TouchPhase.ENDED:
+                    _amount++;
+                    _txtAmount.text = _amount.toString();
                     dispatchEvent(new Event(Event.CHANGE));
                     break;
             }

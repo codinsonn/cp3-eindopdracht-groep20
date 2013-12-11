@@ -2,7 +2,10 @@ package splitr.mobile {
 
 import feathers.themes.MetalWorksMobileTheme;
 
+import splitr.mobile.view.AmountAdder;
+
 import splitr.mobile.view.Header;
+import splitr.mobile.view.AmountToggler;
 
 import splitr.model.AppModel;
 
@@ -47,7 +50,23 @@ public class Splitr extends starling.display.Sprite {
         }
         _header.resizedHandler(stage.stageWidth, 50);
 
+        // Amount Adder test
+        var _amountAdder:AmountAdder = new AmountAdder();
+        _amountAdder.x = stage.stageWidth / 2 - _amountAdder.width / 2;
+        _amountAdder.y = stage.stageHeight /2 - _amountAdder.height / 2;
+        _amountAdder.addEventListener(AmountAdder.ADD_AMOUNT, addAmountHandler);
+        _amountAdder.addEventListener(AmountAdder.SUBTRACT_AMOUNT, subtractAmountHandler);
+        addChild(_amountAdder);
+    }
 
+    private function subtractAmountHandler(e:Event):void {
+        var target:AmountAdder = e.currentTarget as AmountAdder;
+        trace("Amount subtracted:", target.amount);
+    }
+
+    private function addAmountHandler(e:Event):void {
+        var target:AmountAdder = e.currentTarget as AmountAdder;
+        trace("Amount added:", target.amount);
     }
 
 }
