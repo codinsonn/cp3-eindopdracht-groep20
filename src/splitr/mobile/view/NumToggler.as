@@ -1,9 +1,12 @@
 package splitr.mobile.view {
 
 import starling.display.Button;
+import starling.display.DisplayObject;
 import starling.display.Sprite;
 import starling.events.Event;
+import starling.events.Touch;
 import starling.events.TouchEvent;
+import starling.events.TouchPhase;
 import starling.text.TextField;
 
 public class NumToggler extends Sprite {
@@ -37,8 +40,17 @@ public class NumToggler extends Sprite {
     }
 
     private function subtractTouchedHandler(e:TouchEvent):void {
-        dispatchEvent(new Event(Event.CHANGE));
+        var touchedObject:DisplayObject = e.currentTarget as DisplayObject;
+        var touch:Touch = e.getTouch(touchedObject);
+        if(touch != null) {
+            switch(touch.phase){
+                case TouchPhase.ENDED:
+                    
 
+                    dispatchEvent(new Event(Event.CHANGE));
+                    break;
+            }
+        }
     }
 
     private function txtNumberTouchedHandler(e:TouchEvent):void {
@@ -46,8 +58,15 @@ public class NumToggler extends Sprite {
     }
 
     private function addTouchedHandler(e:TouchEvent):void {
-        dispatchEvent(new Event(Event.CHANGE));
-
+        var touchedObject:DisplayObject = e.currentTarget as DisplayObject;
+        var touch:Touch = e.getTouch(touchedObject);
+        if(touch != null) {
+            switch(touch.phase){
+                case TouchPhase.ENDED:
+                    dispatchEvent(new Event(Event.CHANGE));
+                    break;
+            }
+        }
     }
 
 }
