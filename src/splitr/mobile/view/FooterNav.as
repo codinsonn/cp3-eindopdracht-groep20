@@ -16,7 +16,9 @@ public class FooterNav extends Sprite {
 
     public function FooterNav()
     {
-       //comment
+       _footerButton = new Button();
+       _footerButton.label = "testje";
+       addChild(_footerButton);
     }
 }
 }
