@@ -5,8 +5,7 @@ import flash.display.Shape;
 
 import splitr.model.AppModel;
 
-import starling.display.DisplayObject;
-
+import starling.display.Button;
 import starling.display.Image;
 
 import starling.display.Sprite;
@@ -23,8 +22,8 @@ public class Header extends Sprite {
     private var _titleColor:uint;
 
     private var _txtTitle:TextField;
-    private var _headerBg:DisplayObject;
-    private var _headerPrevPageButton:Image;
+    private var _headerBg:Image;
+    private var _headerPrevPageButton:Button;
 
     public function Header(title:String = "Splitr", bgColor:uint = 0x638179, titleColor:uint = 0x33423e)
     {
@@ -81,7 +80,7 @@ public class Header extends Sprite {
             if(_headerPrevPageButton){
                 removeChild(_headerPrevPageButton);
             }
-            _headerPrevPageButton = new Image(Assets.getTexture("SplitrHeaderBackButton"));
+            _headerPrevPageButton = new Button(Assets.getTexture("SplitrHeaderBackButton"));
             _headerPrevPageButton.x = 10;
             _headerPrevPageButton.y = 0;
             addChild(_headerPrevPageButton);
