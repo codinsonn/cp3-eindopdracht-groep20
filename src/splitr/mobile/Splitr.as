@@ -2,34 +2,44 @@ package splitr.mobile {
 
 import feathers.themes.MetalWorksMobileTheme;
 
+
 import splitr.mobile.view.AmountAdder;
 import splitr.mobile.view.FooterNav;
 
 import splitr.mobile.view.Header;
-import splitr.mobile.view.AmountToggler;
-
+import splitr.mobile.view.pages.OverviewPage;
 import splitr.model.AppModel;
 
 import starling.display.Sprite;
 import starling.events.Event;
-import starling.text.BitmapFont;
-import starling.text.TextField;
-import starling.textures.Texture;
 
 public class Splitr extends starling.display.Sprite {
 
     private var _appModel:AppModel;
 
     private var _header:Header;
+
     private var _footerNav:FooterNav;
+
+    private var _pages:Array;
 
     public function Splitr()
     {
         new MetalWorksMobileTheme();
 
         this._appModel = AppModel.getInstance();
+        _appModel.addEventListener(AppModel.PAGE_CHANGED, pageChangedHandler);
+
+        var overview:OverviewPage = new OverviewPage();
+        overview.setPageSize();
+        overview.x = overview.y = 0;
+        addChild(overview);
 
         addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+    }
+
+    private function pageChangedHandler(e:Event):void {
+        trace("[Splitr]","Page changed:", AppModel.currentPage);
     }
 
     private function addedToStageHandler(e:Event):void {
@@ -52,6 +62,7 @@ public class Splitr extends starling.display.Sprite {
         }
         _header.resizedHandler(stage.stageWidth, 50);
 
+
         // FooterNav
         var buttonSize:uint = 60;
         var buttongap:uint = 10;
@@ -63,26 +74,6 @@ public class Splitr extends starling.display.Sprite {
         _footerNav.resizedHandler(buttonSize, buttongap);
         _footerNav.y = stage.stageHeight - (buttonSize + 10);
         _footerNav.x = stage.stageWidth/2 - _footerNav.width/2;
-
-
-        // Amount Adder test
-        var _amountAdder:AmountAdder = new AmountAdder();
-        _amountAdder.x = stage.stageWidth / 2 - _amountAdder.width / 2;
-        _amountAdder.y = stage.stageHeight /2 - _amountAdder.height / 2;
-        _amountAdder.addEventListener(AmountAdder.ADD_AMOUNT, addAmountHandler);
-        _amountAdder.addEventListener(AmountAdder.SUBTRACT_AMOUNT, subtractAmountHandler);
-        addChild(_amountAdder);
-    }
-
-    private function subtractAmountHandler(e:Event):void {
-        var target:AmountAdder = e.currentTarget as AmountAdder;
-        trace("Amount subtracted:", target.amount);
-    }
-
-    private function addAmountHandler(e:Event):void {
-        var target:AmountAdder = e.currentTarget as AmountAdder;
-        trace("Amount added:", target.amount);
-    }
-
+}
 }
 }
