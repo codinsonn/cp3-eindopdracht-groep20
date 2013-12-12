@@ -103,7 +103,7 @@ public class AppModel extends EventDispatcher {
     public function set currentPage(value:String) {
         if(value != _currentPage){
             _currentPage = value;
-            dispatchEvent(new Event("PAGE_CHANGED"));
+            dispatchEvent(new Event(AppModel.PAGE_CHANGED));
         }
     }
 }

@@ -28,17 +28,12 @@ public class Header extends Sprite {
     public function Header(title:String = "SPLITR", bgColor:uint = 0x638179, titleColor:uint = 0x33423e)
     {
         this._appModel = AppModel.getInstance();
-        _appModel.addEventListener(AppModel.PAGE_CHANGED, pageChangedHandler);
 
         _titleString = title;
         _bgColor = bgColor;
         _titleColor = titleColor;
 
         resizedHandler();
-    }
-
-    private function pageChangedHandler(e:Event = null):void {
-
     }
 
     public function resizedHandler(w:uint = 480, h:uint = 50):void{

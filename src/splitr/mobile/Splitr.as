@@ -2,6 +2,8 @@ package splitr.mobile {
 
 import feathers.themes.MetalWorksMobileTheme;
 
+import flash.events.Event;
+
 import splitr.mobile.view.Footer;
 import splitr.mobile.view.Header;
 import splitr.mobile.view.components.OverviewItem;
@@ -17,7 +19,7 @@ public class Splitr extends starling.display.Sprite {
 
     private var _header:Header;
 
-    private var _footerNav:Footer;
+    private var _footer:Footer;
 
     private var _overviewItem:OverviewItem;
 
@@ -36,21 +38,21 @@ public class Splitr extends starling.display.Sprite {
         addChild(_overviewPage);
         _pages.push(_overviewPage);
 
-        addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
+        addEventListener(starling.events.Event.ADDED_TO_STAGE, addedToStageHandler);
     }
 
-    private function pageChangedHandler(e:Event):void {
+    private function pageChangedHandler(e:flash.events.Event):void {
         trace("[Splitr]","Page changed:", _appModel.currentPage);
     }
 
-    private function addedToStageHandler(e:Event):void {
-        removeEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
-        stage.addEventListener(Event.RESIZE, resizedHandler);
+    private function addedToStageHandler(e:starling.events.Event):void {
+        removeEventListener(starling.events.Event.ADDED_TO_STAGE, addedToStageHandler);
+        stage.addEventListener(starling.events.Event.RESIZE, resizedHandler);
 
         layout();
     }
 
-    private function resizedHandler(e:Event):void {
+    private function resizedHandler(e:starling.events.Event):void {
         layout();
     }
 
@@ -64,7 +66,7 @@ public class Splitr extends starling.display.Sprite {
         }
         _header.resizedHandler(stage.stageWidth, 50);
 
-        // Resize all pages
+        // Resize/update all pages
         for(var i:uint = 0; i < _pages.length; i++){
             _pages[i].setPageSize(stage.stageWidth, stage.stageHeight);
         }
@@ -72,24 +74,13 @@ public class Splitr extends starling.display.Sprite {
         // Footer resize
         var buttonSize:uint = 60;
         var buttongap:uint = 10;
-
-        if(!_footerNav){
-            _footerNav = new Footer();
-            addChild(_footerNav);
+        if(!_footer){
+            _footer = new Footer();
+            addChild(_footer);
         }
-        _footerNav.resizedHandler(buttonSize, buttongap);
-        _footerNav.y = stage.stageHeight - (buttonSize + 10);
-        _footerNav.x = stage.stageWidth/2 - _footerNav.width/2;
-
-        // Overview tijdelijk
-        _overviewItem = new OverviewItem();
-        if(!_overviewItem){
-            _overviewItem = new OverviewItem();
-            addChild(_overviewItem);
-        }
-        _overviewItem.resizedHandler();
-        _overviewItem.x = stage.stageWidth/2;
-        _overviewItem.y = 100;
+        _footer.resizedHandler(buttonSize, buttongap);
+        _footer.y = stage.stageHeight - (buttonSize + 10);
+        _footer.x = stage.stageWidth/2 - _footer.width/2;
 }
 }
 }
