@@ -9,6 +9,8 @@ import starling.events.Event;
 import starling.events.ResizeEvent;
 import starling.events.TouchEvent;
 import starling.text.TextField;
+import starling.utils.HAlign;
+import starling.utils.VAlign;
 
 public class BillSplitPage extends Page {
 
@@ -33,29 +35,35 @@ public class BillSplitPage extends Page {
         _txtBillTitle = new TextField(180, 30, "0", "OpenSansBold", 24, 0x33423e);
         _txtBillTitle.fontName = "OpenSansBold";
         _txtBillTitle.text = "Add Title";
-        _txtBillTitle.y = 60;
+        _txtBillTitle.hAlign = HAlign.LEFT;
+        _txtBillTitle.vAlign = VAlign.CENTER;
+        _txtBillTitle.y = 100;
         addChild(_txtBillTitle);
 
-        _txtBillTotal = new TextField(180, 30, "0", "OpenSansBold", 19, 0x33423e);
+        _txtBillTotal = new TextField(180, 28, "0", "OpenSansBold", 19, 0x33423e);
         _txtBillTotal.fontName = "OpenSansBold";
         _txtBillTotal.text = _billTotal.toString() + " EUR";
-        _txtBillTotal.y = 80;
-        addChild(_txtBillTitle);
+        _txtBillTotal.hAlign = HAlign.LEFT;
+        _txtBillTotal.vAlign = VAlign.CENTER;
+        _txtBillTotal.y = 134;
+        addChild(_txtBillTotal);
 
         _photoRefButton = new Button(Assets.getTexture("SplitrPhotoRefButton"));
-        _photoRefButton.y = 115;
+        _photoRefButton.y = 100;
         _photoRefButton.addEventListener(TouchEvent.TOUCH, photoRefButtonTouched);
         addChild(_photoRefButton);
 
         _lblEditTotal = new TextField(180, 30, "0", "OpenSansBold", 24, 0x33423e);
         _lblEditTotal.fontName = "OpenSansBold";
         _lblEditTotal.text = "Edit total:";
+        _lblEditTotal.hAlign = HAlign.LEFT;
+        _lblEditTotal.vAlign = VAlign.CENTER;
         _lblEditTotal.x = 40;
         _lblEditTotal.y = 190;
         addChild(_lblEditTotal);
 
         _addToTotal = new AmountAdder();
-        _addToTotal.y = 190;
+        _addToTotal.y = 185;
         _addToTotal.addEventListener(AmountAdder.ADD_AMOUNT, addToTotalHandler);
         _addToTotal.addEventListener(AmountAdder.SUBTRACT_AMOUNT, subtractFromTotalHandler);
         addChild(_addToTotal);
@@ -63,12 +71,14 @@ public class BillSplitPage extends Page {
         _lblNumPeople = new TextField(180, 30, "0", "OpenSansBold", 24, 0x33423e);
         _lblNumPeople.fontName = "OpenSansBold";
         _lblNumPeople.text = "Num people:";
+        _lblNumPeople.hAlign = HAlign.LEFT;
+        _lblNumPeople.vAlign = VAlign.CENTER;
         _lblNumPeople.x = 40;
         _lblNumPeople.y = 260;
         addChild(_lblNumPeople);
 
         _setNumPeople = new AmountToggler(2);
-        _setNumPeople.y = 260;
+        _setNumPeople.y = 255;
         _setNumPeople.addEventListener(Event.CHANGE, numPeopleChangedHandler);
         addChild(_setNumPeople);
 
@@ -97,11 +107,10 @@ public class BillSplitPage extends Page {
         this.setPageSize(w, h);
 
         // Apply appropriate positioning
-        _txtBillTitle.x = _billIcon.x + _billIcon.width + 10;
-        _txtBillTotal.x = _txtBillTitle.x;
+        _txtBillTitle.x = _txtBillTotal.x = _billIcon.x + _billIcon.width + 10;
         _photoRefButton.x = w - _photoRefButton.width - 40;
         _addToTotal.x = w - _addToTotal.width - 40;
-        _setNumPeople.x = w - _addToTotal.width - 40;
+        _setNumPeople.x = w - _addToTotal.width - 30;
 
     }
 

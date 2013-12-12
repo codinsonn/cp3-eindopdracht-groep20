@@ -28,7 +28,7 @@ public class Page extends Sprite {
 
         _pageBg = new Image(texture);
         _pageBg.x = _pageBg.y = 0;
-        addChild(_pageBg);
+        addChildAt(_pageBg, 0);
     }
 
 }
