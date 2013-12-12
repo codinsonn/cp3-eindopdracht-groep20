@@ -1,5 +1,6 @@
 package splitr.model {
 
+import flash.events.Event;
 import flash.events.EventDispatcher;
 import flash.events.IEventDispatcher;
 
@@ -99,10 +100,10 @@ public class AppModel extends EventDispatcher {
         return _currentPage;
     }
 
-    public static function set currentPage(value:String):void {
+    public static function set currentPage(value:String) {
         if(value != _currentPage){
             _currentPage = value;
-
+            //dispatchEvent()
         }
     }
 }

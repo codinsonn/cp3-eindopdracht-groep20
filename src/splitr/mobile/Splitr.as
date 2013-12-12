@@ -2,10 +2,7 @@ package splitr.mobile {
 
 import feathers.themes.MetalWorksMobileTheme;
 
-
-import splitr.mobile.view.components.AmountAdder;
 import splitr.mobile.view.Footer;
-
 import splitr.mobile.view.Header;
 import splitr.mobile.view.components.OverviewItem;
 import splitr.mobile.view.pages.OverviewPage;
@@ -33,10 +30,7 @@ public class Splitr extends starling.display.Sprite {
         this._appModel = AppModel.getInstance();
         _appModel.addEventListener(AppModel.PAGE_CHANGED, pageChangedHandler);
 
-        var overview:OverviewPage = new OverviewPage();
-        overview.setPageSize();
-        overview.x = overview.y = 0;
-        addChild(overview);
+        _pages = new Array();
 
         addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
     }
@@ -48,6 +42,13 @@ public class Splitr extends starling.display.Sprite {
     private function addedToStageHandler(e:Event):void {
         removeEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
         stage.addEventListener(Event.RESIZE, resizedHandler);
+
+        var _overviewPage:OverviewPage = new OverviewPage();
+        _overviewPage.x = _overviewPage.y = 0;
+        addChild(_overviewPage);
+        _pages.push(_overviewPage);
+        trace(_pages.length);
+
         layout();
     }
 
@@ -58,13 +59,18 @@ public class Splitr extends starling.display.Sprite {
     private function layout():void {
         trace("[Starling] Resize:", stage.stageWidth, stage.stageHeight);
 
+        // Resize all pages
+        for(var i:uint = 0; i < _pages.length; i++){
+            trace("Resizing page:", i);
+            _pages[i].setPageSize(stage.stageWidth, stage.stageHeight);
+        }
+
         // Header resize
         if(!_header){
             _header = new Header();
             addChild(_header);
         }
         _header.resizedHandler(stage.stageWidth, 50);
-
 
         // FooterNav
         var buttonSize:uint = 60;
@@ -78,15 +84,14 @@ public class Splitr extends starling.display.Sprite {
         _footerNav.y = stage.stageHeight - (buttonSize + 10);
         _footerNav.x = stage.stageWidth/2 - _footerNav.width/2;
 
-        // OVerviewtijdelijk
+        // Overviewtijdelijk
         _overviewItem = new OverviewItem();
         if(!_overviewItem){
             _overviewItem = new OverviewItem();
             addChild(_overviewItem);
         }
         _overviewItem.resizedHandler();
-        _overviewItem.x = stage.stageWidth/2
-        ;
+        _overviewItem.x = stage.stageWidth/2;
         _overviewItem.y = 100;
 }
 }

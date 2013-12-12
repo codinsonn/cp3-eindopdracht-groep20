@@ -11,12 +11,9 @@ import starling.textures.Texture;
 
 public class Page extends Sprite {
 
-    private var _appModel:AppModel;
-
     private var _pageBg:Image;
 
     public function Page() {
-        this._appModel = AppModel.getInstance();
 
     }
 
