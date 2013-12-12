@@ -3,6 +3,7 @@ package splitr.mobile {
 import feathers.themes.MetalWorksMobileTheme;
 
 import splitr.mobile.view.AmountAdder;
+import splitr.mobile.view.FooterNav;
 
 import splitr.mobile.view.Header;
 import splitr.mobile.view.AmountToggler;
@@ -20,6 +21,7 @@ public class Splitr extends starling.display.Sprite {
     private var _appModel:AppModel;
 
     private var _header:Header;
+    private var _footerNav:FooterNav;
 
     public function Splitr()
     {
@@ -49,6 +51,19 @@ public class Splitr extends starling.display.Sprite {
             addChild(_header);
         }
         _header.resizedHandler(stage.stageWidth, 50);
+
+        // FooterNav
+        var buttonSize:uint = 60;
+        var buttongap:uint = 10;
+
+        if(!_footerNav){
+            _footerNav = new FooterNav();
+            addChild(_footerNav);
+        }
+        _footerNav.resizedHandler(buttonSize, buttongap);
+        _footerNav.y = stage.stageHeight - (buttonSize + 10);
+        _footerNav.x = stage.stageWidth/2 - _footerNav.width/2;
+
 
         // Amount Adder test
         var _amountAdder:AmountAdder = new AmountAdder();

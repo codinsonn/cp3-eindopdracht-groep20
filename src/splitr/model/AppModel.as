@@ -84,6 +84,17 @@ public class AppModel extends EventDispatcher {
         }
     }
 
+    public static function pageSwitch():void{
+        switch(_currentPage){
+            case "overview":
+                trace("overview");
+                break;
+            case "createNew":
+                trace("createNew");
+                break;
+        }
+    }
+
     public static function get currentPage():String {
         return _currentPage;
     }
