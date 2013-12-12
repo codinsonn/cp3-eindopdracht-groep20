@@ -16,13 +16,13 @@ public class AppModel extends EventDispatcher {
 
     public static const PAGE_CHANGED:String = "PAGE_CHANGED";
 
-    private static var _people:Array;
-    private static var _bills:Array;
+    private var _people:Array;
+    private var _bills:Array;
 
-    private static var _currentBill:uint;
-    private static var _currentPerson:uint;
+    private var _currentBill:uint;
+    private var _currentPerson:uint;
 
-    private static var _currentPage:String;
+    private var _currentPage:String;
 
     private static var instance:AppModel;
 
@@ -45,47 +45,47 @@ public class AppModel extends EventDispatcher {
 
     /* ----- Getters / Setters ----------------------------------------------------------------------------------------- */
 
-    public static function get people():Array {
+    public function get people():Array {
         return _people;
     }
 
-    public static function set people(value:Array):void {
+    public function set people(value:Array):void {
         if(value != _people){
             _people = value;
         }
     }
 
-    public static function get bills():Array {
+    public function get bills():Array {
         return _bills;
     }
 
-    public static function set bills(value:Array):void {
+    public function set bills(value:Array):void {
         if(value != _bills){
             _bills = value;
         }
     }
 
-    public static function get currentBill():uint {
+    public function get currentBill():uint {
         return _currentBill;
     }
 
-    public static function set currentBill(value:uint):void {
+    public function set currentBill(value:uint):void {
         if(value != _currentBill){
             _currentBill = value;
         }
     }
 
-    public static function get currentPerson():uint {
+    public function get currentPerson():uint {
         return _currentPerson;
     }
 
-    public static function set currentPerson(value:uint):void {
+    public function set currentPerson(value:uint):void {
         if(value != _currentPerson){
             _currentPerson = value;
         }
     }
 
-    public static function pageSwitch():void{
+    public function pageSwitch():void{
         switch(_currentPage){
             case "overview":
                 trace("overview");
@@ -96,14 +96,14 @@ public class AppModel extends EventDispatcher {
         }
     }
 
-    public static function get currentPage():String {
+    public function get currentPage():String {
         return _currentPage;
     }
 
-    public static function set currentPage(value:String) {
+    public function set currentPage(value:String) {
         if(value != _currentPage){
             _currentPage = value;
-            //dispatchEvent()
+            dispatchEvent(new Event("PAGE_CHANGED"));
         }
     }
 }

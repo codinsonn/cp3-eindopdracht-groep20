@@ -31,23 +31,21 @@ public class Splitr extends starling.display.Sprite {
         _appModel.addEventListener(AppModel.PAGE_CHANGED, pageChangedHandler);
 
         _pages = new Array();
+        var _overviewPage:OverviewPage = new OverviewPage();
+        _overviewPage.x = _overviewPage.y = 0;
+        addChild(_overviewPage);
+        _pages.push(_overviewPage);
 
         addEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
     }
 
     private function pageChangedHandler(e:Event):void {
-        trace("[Splitr]","Page changed:", AppModel.currentPage);
+        trace("[Splitr]","Page changed:", _appModel.currentPage);
     }
 
     private function addedToStageHandler(e:Event):void {
         removeEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
         stage.addEventListener(Event.RESIZE, resizedHandler);
-
-        var _overviewPage:OverviewPage = new OverviewPage();
-        _overviewPage.x = _overviewPage.y = 0;
-        addChild(_overviewPage);
-        _pages.push(_overviewPage);
-        trace(_pages.length);
 
         layout();
     }
@@ -59,12 +57,6 @@ public class Splitr extends starling.display.Sprite {
     private function layout():void {
         trace("[Starling] Resize:", stage.stageWidth, stage.stageHeight);
 
-        // Resize all pages
-        for(var i:uint = 0; i < _pages.length; i++){
-            trace("Resizing page:", i);
-            _pages[i].setPageSize(stage.stageWidth, stage.stageHeight);
-        }
-
         // Header resize
         if(!_header){
             _header = new Header();
@@ -72,7 +64,12 @@ public class Splitr extends starling.display.Sprite {
         }
         _header.resizedHandler(stage.stageWidth, 50);
 
-        // FooterNav
+        // Resize all pages
+        for(var i:uint = 0; i < _pages.length; i++){
+            _pages[i].setPageSize(stage.stageWidth, stage.stageHeight);
+        }
+
+        // Footer resize
         var buttonSize:uint = 60;
         var buttongap:uint = 10;
 
@@ -84,7 +81,7 @@ public class Splitr extends starling.display.Sprite {
         _footerNav.y = stage.stageHeight - (buttonSize + 10);
         _footerNav.x = stage.stageWidth/2 - _footerNav.width/2;
 
-        // Overviewtijdelijk
+        // Overview tijdelijk
         _overviewItem = new OverviewItem();
         if(!_overviewItem){
             _overviewItem = new OverviewItem();

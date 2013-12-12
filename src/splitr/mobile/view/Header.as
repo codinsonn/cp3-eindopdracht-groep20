@@ -76,7 +76,7 @@ public class Header extends Sprite {
         addChild(_txtTitle);
 
         // Add previous page icon if not on overview page
-        if(AppModel.currentPage != "Overview"){
+        if(_appModel.currentPage != "Overview"){
             if(_headerPrevPageButton){
                 removeChild(_headerPrevPageButton);
             }

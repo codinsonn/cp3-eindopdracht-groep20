@@ -63,22 +63,22 @@ public class Footer extends Sprite {
         }
     }
 
-    private function clickHandler(event:Event):void {
-        trace("geklikt", event.currentTarget);
+    private function clickHandler(e:Event):void {
+        trace("geklikt", e.currentTarget);
 
-        if( event.currentTarget == _overview){
-            AppModel.currentPage = "overview";
+        if( e.currentTarget == _overview){
+            _appModel.currentPage = "overview";
             _createNew.isSelected = false;
             _createNew.isEnabled = true;
             _overview.isEnabled = false;
-            trace("current page = ", AppModel.currentPage);
+            trace("current page = ", _appModel.currentPage);
         }
-        if( event.currentTarget == _createNew){
-            AppModel.currentPage = "createnew";
+        if( e.currentTarget == _createNew){
+            _appModel.currentPage = "createnew";
             _overview.isSelected = false;
             _createNew.isEnabled = false;
             _overview.isEnabled = true;
-            trace("current page = ", AppModel.currentPage);
+            trace("current page = ", _appModel.currentPage);
         }
 
 

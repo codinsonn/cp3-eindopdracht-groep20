@@ -4,10 +4,12 @@ import splitr.model.AppModel;
 
 public class OverviewPage extends Page {
 
-
+    private var _appModel:AppModel;
 
     public function OverviewPage() {
-        //AppModel.currentPage = "Overview";
+        this._appModel = AppModel.getInstance();
+        _appModel.currentPage = "overview";
+
 
     }
 }
