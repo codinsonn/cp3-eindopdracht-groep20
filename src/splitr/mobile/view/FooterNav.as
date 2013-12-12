@@ -35,10 +35,11 @@ public class FooterNav extends Sprite {
 
         _overview.label = "overzicht";
         _createNew.label= "nieuw";
+
         //_overview.defaultIcon = new Image( ICOONMAKEN );
         //_overview.iconPosition = Button.HORIZONTAL_ALIGN_CENTER;
 
-        _createNew.isSelected = true;
+        _overview.isSelected = true;
 
         _footerButtons.push(_overview);
         _footerButtons.push(_createNew);
@@ -55,12 +56,9 @@ public class FooterNav extends Sprite {
             button.height = w;
             button.isToggle = true;
             xPos += w+gap;
-            var test:String = "overview";
 
-            //if(AppModel.currentPage = "overview"){
-
-            _overview.addEventListener( Event.CHANGE, clickHandler );
-            _createNew.addEventListener( Event.CHANGE, clickHandler );
+            _overview.addEventListener( Event.TRIGGERED, clickHandler );
+            _createNew.addEventListener( Event.TRIGGERED, clickHandler );
         }
     }
 
@@ -68,16 +66,21 @@ public class FooterNav extends Sprite {
         trace("geklikt", event.currentTarget);
 
         if( event.currentTarget == _overview){
-            trace("overzicht");
+            AppModel.currentPage = "overview";
             _createNew.isSelected = false;
-            _overview.isSelected = true;
-        }else{
-            _createNew.isSelected = true;
+            _createNew.isEnabled = true;
+            _overview.isEnabled = false;
+            trace("current page = ", AppModel.currentPage);
+        }
+        if( event.currentTarget == _createNew){
+            AppModel.currentPage = "createnew";
             _overview.isSelected = false;
+            _createNew.isEnabled = false;
+            _overview.isEnabled = true;
+            trace("current page = ", AppModel.currentPage);
         }
 
-        //_overview.isSelected = !_overview.isSelected;
-        //_createNew.isSelected = !_createNew.isSelected;
+
     }
 }
 }
