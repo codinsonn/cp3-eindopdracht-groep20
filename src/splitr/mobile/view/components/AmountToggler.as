@@ -28,6 +28,7 @@ public class AmountToggler extends Sprite {
         _txtAmount = new TextField(50, 50, "0", "OpenSansBold", 24, 0x33423e);
         _txtAmount.fontName = "OpenSansBold";
         _txtAmount.text = _amount.toString();
+        _txtAmount.touchable = true;
         _txtAmount.x = _subtractButton.width;
         _txtAmount.addEventListener(TouchEvent.TOUCH, txtNumberTouchedHandler);
         addChild(_txtAmount);

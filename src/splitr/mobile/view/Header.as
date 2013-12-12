@@ -6,16 +6,22 @@ import flash.display.Shape;
 import splitr.model.AppModel;
 
 import starling.display.Button;
+import starling.display.DisplayObject;
 import starling.display.Image;
 
 import starling.display.Sprite;
 import starling.events.Event;
+import starling.events.Touch;
+import starling.events.TouchEvent;
+import starling.events.TouchPhase;
 import starling.text.TextField;
 import starling.textures.Texture;
 
 public class Header extends Sprite {
 
     private var _appModel:AppModel;
+
+    public static const RETURN_TO_OVERVIEW:String = "RETURN_TO_OVERVIEW";
 
     private var _titleString:String;
     private var _bgColor:uint;
@@ -70,7 +76,7 @@ public class Header extends Sprite {
         _txtTitle.y = 6;
         addChild(_txtTitle);
 
-        // Add previous page icon if not on overview page
+        // Add previous page icon if not on Overview page
         if(_appModel.currentPage != "Overview"){
             if(_headerPrevPageButton){
                 removeChild(_headerPrevPageButton);
@@ -78,9 +84,22 @@ public class Header extends Sprite {
             _headerPrevPageButton = new Button(Assets.getTexture("SplitrHeaderBackButton"));
             _headerPrevPageButton.x = 10;
             _headerPrevPageButton.y = 0;
+            _headerPrevPageButton.addEventListener(TouchEvent.TOUCH, prevPageButtonTouchedHandler);
             addChild(_headerPrevPageButton);
         }
 
+    }
+
+    private function prevPageButtonTouchedHandler(e:TouchEvent):void {
+        var touchedObject:DisplayObject = e.currentTarget as DisplayObject;
+        var touch:Touch = e.getTouch(touchedObject);
+        if(touch != null) {
+            switch(touch.phase){
+                case TouchPhase.ENDED:
+                    _appModel.currentPage = "Overview";
+                    break;
+            }
+        }
     }
 
 }

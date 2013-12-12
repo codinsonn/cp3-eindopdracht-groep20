@@ -8,9 +8,15 @@ public class OverviewPage extends Page {
 
     public function OverviewPage() {
         _appModel = AppModel.getInstance();
-        _appModel.currentPage = "overview";
-
+        _appModel.currentPage = "Overview";
 
     }
+
+    public function resizedHandler(w:uint = 480, h:uint = 800):void{
+
+        this.setPageSize(w, h);
+
+    }
+
 }
 }

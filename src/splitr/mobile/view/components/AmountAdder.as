@@ -38,6 +38,7 @@ public class AmountAdder extends Sprite {
         _txtAmount = new TextField(80, 50, "0", "OpenSansBold", 24, 0x33423e);
         _txtAmount.fontName = "OpenSansBold";
         _txtAmount.text = _amount.toString();
+        _txtAmount.touchable = true;
         _txtAmount.x = 60;
         _txtAmount.addEventListener(TouchEvent.TOUCH, textboxTouchedHandler);
         addChild(_txtAmount);

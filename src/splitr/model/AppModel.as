@@ -22,6 +22,7 @@ public class AppModel extends EventDispatcher {
     private var _currentBill:uint;
     private var _currentPerson:uint;
 
+    private var _previousPage:String;
     private var _currentPage:String;
 
     private static var instance:AppModel;
@@ -102,6 +103,7 @@ public class AppModel extends EventDispatcher {
 
     public function set currentPage(value:String) {
         if(value != _currentPage){
+            _previousPage = _currentPage;
             _currentPage = value;
             dispatchEvent(new Event(AppModel.PAGE_CHANGED));
         }

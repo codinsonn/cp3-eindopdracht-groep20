@@ -7,6 +7,7 @@ import flash.events.Event;
 import splitr.mobile.view.Footer;
 import splitr.mobile.view.Header;
 import splitr.mobile.view.components.OverviewItem;
+import splitr.mobile.view.pages.EqualBillsplitPage;
 import splitr.mobile.view.pages.OverviewPage;
 import splitr.model.AppModel;
 
@@ -33,10 +34,16 @@ public class Splitr extends starling.display.Sprite {
         _appModel.addEventListener(AppModel.PAGE_CHANGED, pageChangedHandler);
 
         _pages = new Array();
+
         var _overviewPage:OverviewPage = new OverviewPage();
         _overviewPage.x = _overviewPage.y = 0;
         addChild(_overviewPage);
         _pages.push(_overviewPage);
+
+        var _equalBillsplit:EqualBillsplitPage = new EqualBillsplitPage();
+        _equalBillsplit.x = _equalBillsplit.y = 0;
+        addChild(_equalBillsplit);
+        _pages.push(_equalBillsplit);
 
         addEventListener(starling.events.Event.ADDED_TO_STAGE, addedToStageHandler);
     }
@@ -68,7 +75,7 @@ public class Splitr extends starling.display.Sprite {
 
         // Resize/update all pages
         for(var i:uint = 0; i < _pages.length; i++){
-            _pages[i].setPageSize(stage.stageWidth, stage.stageHeight);
+            _pages[i].resizedHandler(stage.stageWidth, stage.stageHeight);
         }
 
         // Footer resize
@@ -81,6 +88,7 @@ public class Splitr extends starling.display.Sprite {
         _footer.resizedHandler(buttonSize, buttongap);
         _footer.y = stage.stageHeight - (buttonSize + 10);
         _footer.x = stage.stageWidth/2 - _footer.width/2;
+
 }
 }
 }
