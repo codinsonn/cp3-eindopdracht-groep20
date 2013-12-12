@@ -40,6 +40,7 @@ public class Footer extends Sprite {
         //_overview.iconPosition = Button.HORIZONTAL_ALIGN_CENTER;
 
         _overview.isSelected = true;
+        _overview.isEnabled = false;
 
         _footerButtons.push(_overview);
         _footerButtons.push(_createNew);

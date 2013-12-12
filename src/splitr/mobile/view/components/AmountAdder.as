@@ -1,7 +1,8 @@
-package splitr.mobile.view {
+package splitr.mobile.view.components {
 
 import starling.display.Button;
 import starling.display.DisplayObject;
+import starling.display.Image;
 import starling.display.Sprite;
 import starling.events.Event;
 import starling.events.Touch;
@@ -9,32 +10,41 @@ import starling.events.TouchEvent;
 import starling.events.TouchPhase;
 import starling.text.TextField;
 
-public class AmountToggler extends Sprite {
+public class AmountAdder extends Sprite {
+
+    public static const ADD_AMOUNT:String = "ADD_AMOUNT";
+    public static const SUBTRACT_AMOUNT:String = "SUBTRACT_AMOUNT";
 
     private var _subtractButton:Button;
+    private var _textBackground:Image;
     private var _txtAmount:TextField;
     private var _addButton:Button;
 
-    private var _amount:uint;
+    private var _amount:Number;
 
-    public function AmountToggler(amount:uint = 1){
+    public function AmountAdder(amount:Number = 0.00)
+    {
         _amount = amount;
 
-        _subtractButton = new Button(Assets.getTexture("SplitrNumTogglerSubtractButton"));
+        _subtractButton = new Button(Assets.getTexture("SplitrSubtractButton"));
         _subtractButton.x = 0;
         _subtractButton.addEventListener(TouchEvent.TOUCH, subtractTouchedHandler);
         addChild(_subtractButton);
 
-        _txtAmount = new TextField(50, 50, "0", "OpenSansBold", 24, 0x33423e);
+        _textBackground = new Image(Assets.getTexture("SplitrInputBoxBg"));
+        _textBackground.x = 50;
+        addChild(_textBackground);
+
+        _txtAmount = new TextField(80, 50, "0", "OpenSansBold", 24, 0x33423e);
         _txtAmount.fontName = "OpenSansBold";
         _txtAmount.text = _amount.toString();
-        _txtAmount.x = _subtractButton.width;
-        _txtAmount.addEventListener(TouchEvent.TOUCH, txtNumberTouchedHandler);
+        _txtAmount.x = 60;
+        _txtAmount.addEventListener(TouchEvent.TOUCH, textboxTouchedHandler);
         addChild(_txtAmount);
 
-        _addButton = new Button(Assets.getTexture("SplitrNumTogglerAddButton"));
-        _addButton.x = _txtAmount.x + _txtAmount.width;
-        _addButton.y = _subtractButton.y = _txtAmount.y = 0;
+        _addButton = new Button(Assets.getTexture("SplitrAddButton"));
+        _addButton.x = 150;
+        _addButton.y = _subtractButton.y = _textBackground.y = _txtAmount.y = 0;
         _addButton.addEventListener(TouchEvent.TOUCH, addTouchedHandler);
         addChild(_addButton);
     }
@@ -45,17 +55,13 @@ public class AmountToggler extends Sprite {
         if(touch != null) {
             switch(touch.phase){
                 case TouchPhase.ENDED:
-                    if(_amount > 1){
-                        _amount--;
-                        _txtAmount.text = _amount.toString();
-                        dispatchEvent(new Event(Event.CHANGE));
-                    }
+                    dispatchEvent(new Event("SUBTRACT_AMOUNT"));
                     break;
             }
         }
     }
 
-    private function txtNumberTouchedHandler(e:TouchEvent):void {
+    private function textboxTouchedHandler(e:TouchEvent):void {
 
     }
 
@@ -65,13 +71,14 @@ public class AmountToggler extends Sprite {
         if(touch != null) {
             switch(touch.phase){
                 case TouchPhase.ENDED:
-                    _amount++;
-                    _txtAmount.text = _amount.toString();
-                    dispatchEvent(new Event(Event.CHANGE));
+                    dispatchEvent(new Event("ADD_AMOUNT"));
                     break;
             }
         }
     }
 
+    public function get amount():Number {
+        return _amount;
+    }
 }
 }

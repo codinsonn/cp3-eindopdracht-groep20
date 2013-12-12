@@ -3,10 +3,11 @@ package splitr.mobile {
 import feathers.themes.MetalWorksMobileTheme;
 
 
-import splitr.mobile.view.AmountAdder;
-import splitr.mobile.view.FooterNav;
+import splitr.mobile.view.components.AmountAdder;
+import splitr.mobile.view.Footer;
 
 import splitr.mobile.view.Header;
+import splitr.mobile.view.components.OverviewItem;
 import splitr.mobile.view.pages.OverviewPage;
 import splitr.model.AppModel;
 
@@ -19,7 +20,9 @@ public class Splitr extends starling.display.Sprite {
 
     private var _header:Header;
 
-    private var _footerNav:FooterNav;
+    private var _footerNav:Footer;
+
+    private var _overviewItem:OverviewItem;
 
     private var _pages:Array;
 
@@ -68,12 +71,23 @@ public class Splitr extends starling.display.Sprite {
         var buttongap:uint = 10;
 
         if(!_footerNav){
-            _footerNav = new FooterNav();
+            _footerNav = new Footer();
             addChild(_footerNav);
         }
         _footerNav.resizedHandler(buttonSize, buttongap);
         _footerNav.y = stage.stageHeight - (buttonSize + 10);
         _footerNav.x = stage.stageWidth/2 - _footerNav.width/2;
+
+        // OVerviewtijdelijk
+        _overviewItem = new OverviewItem();
+        if(!_overviewItem){
+            _overviewItem = new OverviewItem();
+            addChild(_overviewItem);
+        }
+        _overviewItem.resizedHandler();
+        _overviewItem.x = stage.stageWidth/2
+        ;
+        _overviewItem.y = 100;
 }
 }
 }
