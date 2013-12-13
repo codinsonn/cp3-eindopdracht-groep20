@@ -2,6 +2,7 @@ package splitr.mobile.view {
 
 import flash.display.BitmapData;
 import flash.display.Shape;
+import flash.events.Event;
 
 import splitr.model.AppModel;
 
@@ -34,12 +35,35 @@ public class Header extends Sprite {
     public function Header(title:String = "SPLITR", bgColor:uint = 0x638179, titleColor:uint = 0x33423e)
     {
         this._appModel = AppModel.getInstance();
+        _appModel.addEventListener(AppModel.PAGE_CHANGED, pageChangedHandler);
 
         _titleString = title;
         _bgColor = bgColor;
         _titleColor = titleColor;
 
+        _txtTitle = new TextField(120, 36, "0", "OpenSansBold", 27, _titleColor);
+        _txtTitle.fontName = "OpenSansBold";
+        _txtTitle.text = _titleString;
+        _txtTitle.y = 6;
+        addChild(_txtTitle);
+
+        _headerPrevPageButton = new Button(Assets.getAtlas().getTexture("HeaderPrevButton"));
+        _headerPrevPageButton.x = 10;
+        _headerPrevPageButton.y = (50 - _headerPrevPageButton.height)/2;
+        _headerPrevPageButton.addEventListener(TouchEvent.TOUCH, prevPageButtonTouchedHandler);
+        addChild(_headerPrevPageButton);
+
         resizedHandler();
+    }
+
+    private function pageChangedHandler(e:flash.events.Event):void {
+        if(_appModel.currentPage != "Overview"){
+            _headerPrevPageButton.visible = true;
+            _headerPrevPageButton.enabled = true;
+        }else{
+            _headerPrevPageButton.visible = false;
+            _headerPrevPageButton.enabled = false;
+        }
     }
 
     public function resizedHandler(w:uint = 480, h:uint = 50):void{
@@ -61,32 +85,10 @@ public class Header extends Sprite {
         // Create new image from shape texture to serve as new background
         _headerBg = new Image(texture);
         _headerBg.x = _headerBg.y = 0;
-        addChild(_headerBg);
+        addChildAt(_headerBg, 0);
 
-        // Add title textfield if not existing already
-        if(_txtTitle){
-            removeChild(_txtTitle);
-        }
-
-        // Settings and adding of Textfield for 'Splitr' Title
-        _txtTitle = new TextField(120, 36, "0", "OpenSansBold", 27, _titleColor);
-        _txtTitle.fontName = "OpenSansBold";
-        _txtTitle.text = _titleString;
+        // Replacing of Textfield for 'Splitr' Title
         _txtTitle.x = w/2 - _txtTitle.width/2;
-        _txtTitle.y = 6;
-        addChild(_txtTitle);
-
-        // Add previous page icon if not on Overview page
-        if(_appModel.currentPage != "Overview"){
-            if(_headerPrevPageButton){
-                removeChild(_headerPrevPageButton);
-            }
-            _headerPrevPageButton = new Button(Assets.getTexture("SplitrHeaderBackButton"));
-            _headerPrevPageButton.x = 10;
-            _headerPrevPageButton.y = 0;
-            _headerPrevPageButton.addEventListener(TouchEvent.TOUCH, prevPageButtonTouchedHandler);
-            addChild(_headerPrevPageButton);
-        }
 
     }
 

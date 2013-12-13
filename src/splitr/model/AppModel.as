@@ -105,7 +105,7 @@ public class AppModel extends EventDispatcher {
         if(value != _currentPage){
             _previousPage = _currentPage;
             _currentPage = value;
-            dispatchEvent(new Event(AppModel.PAGE_CHANGED));
+            dispatchEvent(new Event("PAGE_CHANGED"));
         }
     }
 }

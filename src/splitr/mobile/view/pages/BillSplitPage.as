@@ -27,7 +27,7 @@ public class BillSplitPage extends Page {
 
     public function BillSplitPage(){
 
-        _billIcon = new Image(Assets.getTexture("SplitrBillIcon"));
+        _billIcon = new Image(Assets.getAtlas().getTexture("BillIcon"));
         _billIcon.x = 40;
         _billIcon.y = 85;
         addChild(_billIcon);
@@ -48,7 +48,7 @@ public class BillSplitPage extends Page {
         _txtBillTotal.y = 134;
         addChild(_txtBillTotal);
 
-        _photoRefButton = new Button(Assets.getTexture("SplitrPhotoRefButton"));
+        _photoRefButton = new Button(Assets.getAtlas().getTexture("PhotoRefButton"));
         _photoRefButton.y = 100;
         _photoRefButton.addEventListener(TouchEvent.TOUCH, photoRefButtonTouched);
         addChild(_photoRefButton);
@@ -78,7 +78,7 @@ public class BillSplitPage extends Page {
         addChild(_lblNumPeople);
 
         _setNumPeople = new AmountToggler(2);
-        _setNumPeople.y = 255;
+        _setNumPeople.y = 263;
         _setNumPeople.addEventListener(Event.CHANGE, numPeopleChangedHandler);
         addChild(_setNumPeople);
 
@@ -110,7 +110,7 @@ public class BillSplitPage extends Page {
         _txtBillTitle.x = _txtBillTotal.x = _billIcon.x + _billIcon.width + 10;
         _photoRefButton.x = w - _photoRefButton.width - 40;
         _addToTotal.x = w - _addToTotal.width - 40;
-        _setNumPeople.x = w - _addToTotal.width - 30;
+        _setNumPeople.x = w - _setNumPeople.width - 40;
 
     }
 

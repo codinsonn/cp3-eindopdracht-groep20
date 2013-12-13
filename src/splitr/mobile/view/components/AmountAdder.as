@@ -26,13 +26,13 @@ public class AmountAdder extends Sprite {
     {
         _amount = amount;
 
-        _subtractButton = new Button(Assets.getTexture("SplitrSubtractButton"));
+        _subtractButton = new Button(Assets.getAtlas().getTexture("SubtractButton"));
         _subtractButton.x = 0;
         _subtractButton.addEventListener(TouchEvent.TOUCH, subtractTouchedHandler);
         addChild(_subtractButton);
 
-        _textBackground = new Image(Assets.getTexture("SplitrInputBoxBg"));
-        _textBackground.x = 50;
+        _textBackground = new Image(Assets.getAtlas().getTexture("InputFieldBg"));
+        _textBackground.x = _subtractButton.width - 1;
         addChild(_textBackground);
 
         _txtAmount = new TextField(80, 50, "0", "OpenSansBold", 24, 0x33423e);
@@ -43,8 +43,8 @@ public class AmountAdder extends Sprite {
         _txtAmount.addEventListener(TouchEvent.TOUCH, textboxTouchedHandler);
         addChild(_txtAmount);
 
-        _addButton = new Button(Assets.getTexture("SplitrAddButton"));
-        _addButton.x = 150;
+        _addButton = new Button(Assets.getAtlas().getTexture("AddButton"));
+        _addButton.x = _textBackground.x + _textBackground.width - 1;
         _addButton.y = _subtractButton.y = _textBackground.y = _txtAmount.y = 0;
         _addButton.addEventListener(TouchEvent.TOUCH, addTouchedHandler);
         addChild(_addButton);

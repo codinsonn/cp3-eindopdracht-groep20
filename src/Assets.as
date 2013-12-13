@@ -6,6 +6,7 @@ import starling.text.BitmapFont;
 import starling.text.TextField;
 
 import starling.textures.Texture;
+import starling.textures.TextureAtlas;
 
 public class Assets {
 
@@ -16,51 +17,35 @@ public class Assets {
     [Embed(source = "/../assets/fonts/OpenSansBold.png")]
     public static const OpenSansBoldTexture:Class;
 
-    /* ---- Header icons/buttons ------------------------------------- */
-    [Embed(source="assets/graphics/SplitrHeaderBackButton.png")]
-    public static const SplitrHeaderBackButton:Class;
-
-    /* ---- Content/Bill icons/buttons ------------------------------------- */
-    [Embed(source="assets/graphics/SplitrItemIcon.png")]
-    public static const SplitrItemIcon:Class;
-
-    [Embed(source="assets/graphics/SplitrItemIconSelected.png")]
-    public static const SplitrItemIconSelected:Class;
-
-    [Embed(source="assets/graphics/SplitrPeopleIcon.png")]
-    public static const SplitrPeopleIcon:Class;
-
-    [Embed(source="assets/graphics/SplitrPeopleIconSelected.png")]
-    public static const SplitrPeopleIconSelected:Class;
-
-    [Embed(source="assets/graphics/SplitrBillIcon.png")]
-    public static const SplitrBillIcon:Class;
-
-    [Embed(source="assets/graphics/SplitrPhotoRefButton.png")]
-    public static const SplitrPhotoRefButton:Class;
-
-    [Embed(source="assets/graphics/SplitrAddButton.png")]
-    public static const SplitrAddButton:Class;
-
-    [Embed(source="assets/graphics/SplitrInputBoxBg.png")]
-    public static const SplitrInputBoxBg:Class;
-
-    [Embed(source="assets/graphics/SplitrSubtractButton.png")]
-    public static const SplitrSubtractButton:Class;
-
-    [Embed(source="assets/graphics/SplitrNumTogglerSubtractButton.png")]
-    public static const SplitrNumTogglerSubtractButton:Class;
-
-    [Embed(source="assets/graphics/SplitrNumTogglerAddButton.png")]
-    public static const SplitrNumTogglerAddButton:Class;
-
-    // Dictionary to check/pass textures
+    // Dictionary & Atlas to check/pass textures
     private static var splitrTextures:Dictionary = new Dictionary();
+    private static var splitrTextureAtlas:TextureAtlas;
+
+    // Spritesheet embedding
+    [Embed(source="/../assets/custom/SplitrSpritesheet.png")]
+    public static const SplitrSpritesheet:Class;
+
+    [Embed(source="/../assets/custom/SplitrSpritesheet.xml", mimeType="application/octet-stream")]
+    public static const SplitrSpritesheetXML:Class;
 
     public function Assets(){
         var texture:Texture = Texture.fromBitmap(new OpenSansBoldTexture());
         var xml:XML = XML(new OpenSansBoldXml());
         TextField.registerBitmapFont(new BitmapFont(texture, xml));
+    }
+
+    public static function getAtlas():TextureAtlas
+    {
+        // Create new TextureAtlas if it does not yet exist
+        if(splitrTextureAtlas == null){
+            var texture:Texture = getTexture("SplitrSpritesheet");
+            var xml:XML = XML(new SplitrSpritesheetXML());
+
+            splitrTextureAtlas = new TextureAtlas(texture, xml);
+        }
+
+        // Return the TextureAtlas
+        return splitrTextureAtlas;
     }
 
     public static function getTexture(name:String):Texture
@@ -69,6 +54,7 @@ public class Assets {
         if(splitrTextures[name] == undefined){
             var bitmap:Bitmap = new Assets[name]();
             splitrTextures[name] = Texture.fromBitmap(bitmap);
+            trace(splitrTextures[name]);
         }
 
         // Use the splitrTextures dictionary to check whether a variable with this name exists and return it

@@ -45,6 +45,8 @@ public class Splitr extends starling.display.Sprite {
         addChild(_equalBillsplit);
         _pages.push(_equalBillsplit);
 
+
+
         addEventListener(starling.events.Event.ADDED_TO_STAGE, addedToStageHandler);
     }
 

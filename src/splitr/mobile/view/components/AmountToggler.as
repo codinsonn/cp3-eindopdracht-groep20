@@ -20,12 +20,12 @@ public class AmountToggler extends Sprite {
     public function AmountToggler(amount:uint = 1){
         _amount = amount;
 
-        _subtractButton = new Button(Assets.getTexture("SplitrNumTogglerSubtractButton"));
+        _subtractButton = new Button(Assets.getAtlas().getTexture("PrevButtonIcon"));
         _subtractButton.x = 0;
         _subtractButton.addEventListener(TouchEvent.TOUCH, subtractTouchedHandler);
         addChild(_subtractButton);
 
-        _txtAmount = new TextField(50, 50, "0", "OpenSansBold", 24, 0x33423e);
+        _txtAmount = new TextField(50, 30, "0", "OpenSansBold", 24, 0x33423e);
         _txtAmount.fontName = "OpenSansBold";
         _txtAmount.text = _amount.toString();
         _txtAmount.touchable = true;
@@ -33,7 +33,7 @@ public class AmountToggler extends Sprite {
         _txtAmount.addEventListener(TouchEvent.TOUCH, txtNumberTouchedHandler);
         addChild(_txtAmount);
 
-        _addButton = new Button(Assets.getTexture("SplitrNumTogglerAddButton"));
+        _addButton = new Button(Assets.getAtlas().getTexture("NextButtonIcon"));
         _addButton.x = _txtAmount.x + _txtAmount.width;
         _addButton.y = _subtractButton.y = _txtAmount.y = 0;
         _addButton.addEventListener(TouchEvent.TOUCH, addTouchedHandler);
