@@ -1,11 +1,5 @@
-/**
- * Created with IntelliJ IDEA.
- * User: Panzerfaust
- * Date: 11/12/13
- * Time: 14:53
- * To change this template use File | Settings | File Templates.
- */
 package splitr.mobile.view {
+
 import feathers.controls.Button;
 
 import splitr.model.AppModel;
@@ -33,8 +27,8 @@ public class Footer extends Sprite {
         _overview = new Button();
         _createNew = new Button();
 
-        _overview.label = "overzicht";
-        _createNew.label= "nieuw";
+        _overview.label = "Overview";
+        _createNew.label= "New Bill";
 
         //_overview.defaultIcon = new Image( ICOONMAKEN );
         //_overview.iconPosition = Button.HORIZONTAL_ALIGN_CENTER;
@@ -64,23 +58,21 @@ public class Footer extends Sprite {
     }
 
     private function clickHandler(e:Event):void {
-        trace("geklikt", e.currentTarget);
 
         if( e.currentTarget == _overview){
-            _appModel.currentPage = "overview";
+            _appModel.currentPage = "Overview";
             _createNew.isSelected = false;
             _createNew.isEnabled = true;
             _overview.isEnabled = false;
             trace("current page = ", _appModel.currentPage);
         }
         if( e.currentTarget == _createNew){
-            _appModel.currentPage = "createnew";
+            _appModel.currentPage = "CreateNew";
             _overview.isSelected = false;
             _createNew.isEnabled = false;
             _overview.isEnabled = true;
             trace("current page = ", _appModel.currentPage);
         }
-
 
     }
 }

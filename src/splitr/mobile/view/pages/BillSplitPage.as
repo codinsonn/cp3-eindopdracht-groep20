@@ -1,12 +1,14 @@
 package splitr.mobile.view.pages {
 
+import feathers.controls.TextInput;
+import feathers.controls.text.StageTextTextEditor;
+
 import splitr.mobile.view.components.AmountAdder;
 import splitr.mobile.view.components.AmountToggler;
 
 import starling.display.Button;
 import starling.display.Image;
 import starling.events.Event;
-import starling.events.ResizeEvent;
 import starling.events.TouchEvent;
 import starling.text.TextField;
 import starling.utils.HAlign;
@@ -15,7 +17,7 @@ import starling.utils.VAlign;
 public class BillSplitPage extends Page {
 
     private var _billIcon:Image;
-    private var _txtBillTitle:TextField;
+    private var _txtBillTitle:StageTextTextEditor;
     private var _txtBillTotal:TextField;
     private var _photoRefButton:Button;
     private var _lblEditTotal:TextField;
@@ -32,13 +34,20 @@ public class BillSplitPage extends Page {
         _billIcon.y = 85;
         addChild(_billIcon);
 
-        _txtBillTitle = new TextField(180, 30, "0", "OpenSansBold", 24, 0x33423e);
+        _txtBillTitle = new StageTextTextEditor();
+        _txtBillTitle.isEditable = true;
+        _txtBillTitle.text = "Add title";
+        _txtBillTitle.width = 180;
+        _txtBillTitle.height = 30;
+        _txtBillTitle.y = 100;
+        addChild(_txtBillTitle);
+
+        /*_txtBillTitle = new TextField(180, 30, "0", "OpenSansBold", 24, 0x33423e);
         _txtBillTitle.fontName = "OpenSansBold";
         _txtBillTitle.text = "Add Title";
         _txtBillTitle.hAlign = HAlign.LEFT;
         _txtBillTitle.vAlign = VAlign.CENTER;
-        _txtBillTitle.y = 100;
-        addChild(_txtBillTitle);
+        _txtBillTitle.y = 100;*/
 
         _txtBillTotal = new TextField(180, 28, "0", "OpenSansBold", 19, 0x33423e);
         _txtBillTotal.fontName = "OpenSansBold";
@@ -90,12 +99,12 @@ public class BillSplitPage extends Page {
 
     }
 
-    private function subtractFromTotalHandler(e:AmountAdder):void {
-
+    private function subtractFromTotalHandler(e:Event):void {
+        trace("[Splitr]", "Amount subtracted from total: ", _addToTotal.amount);
     }
 
     private function addToTotalHandler(e:Event):void {
-
+        trace("[Splitr]", "Amount added to total: ", _addToTotal.amount);
     }
 
     private function photoRefButtonTouched(e:TouchEvent):void {

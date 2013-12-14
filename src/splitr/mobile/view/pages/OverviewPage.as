@@ -17,10 +17,10 @@ public class OverviewPage extends Page {
     private var _w:uint;
 
 
-    public function OverviewPage(w) {
+    public function OverviewPage(w:uint = 480) {
         _w = w;
         _appModel = AppModel.getInstance();
-        _appModel.currentPage = "overview";
+        _appModel.currentPage = "Overview";
 
         if(!_overviewItem){
             _overviewItem = new OverviewItem(_w);
@@ -57,6 +57,14 @@ public class OverviewPage extends Page {
                     break;
             }
         }
+    }
+
+    public function resizedHandler(w:uint = 480, h:uint = 800):void{
+
+        this.setPageSize(w, h);
+
+
+
     }
 
 }
