@@ -129,9 +129,5 @@ public class OverviewItem extends Sprite {
         _delete.alpha = 0;
         _edit.alpha = 0;
     }
-
-    public function get settled():Boolean {
-        return _settled;
-    }
 }
 }

@@ -24,7 +24,7 @@ public class OverviewPage extends Page {
     private var _billList:ScrollContainer;
     private var _listOption:ToggleSwitch;
 
-    public function OverviewPage(w:uint = 480) {
+    public function OverviewPage(w) {
         _w = w;
         _appModel = AppModel.getInstance();
         _appModel.currentPage = "overview";
@@ -71,7 +71,7 @@ public class OverviewPage extends Page {
                     break;
                 case "settledOn":
 
-                    if(_overviewItem.settled == true){
+                    if(_overviewItem.settled != false){
                         trace("SETTLED: ", _overviewItem.settled);
                     _billList.addChild(_overviewItem);
                     _overviewItem.y = _overviewItem.height*i;
@@ -79,8 +79,8 @@ public class OverviewPage extends Page {
                     break;
                 case "settledOff":
 
-                    if(_overviewItem.settled == false){
-                        trace("SETTLED: ", _overviewItem.settled);
+                    if(_overviewItem.settled != true){
+                        trace("UNSETTLED: ", _overviewItem.settled);
                     _billList.addChild(_overviewItem);
                     _overviewItem.y = _overviewItem.height*i;
                     }
@@ -119,14 +119,6 @@ public class OverviewPage extends Page {
                     break;
             }
         }
-    }
-
-    public function resizedHandler(w:uint = 480, h:uint = 800):void{
-
-        this.setPageSize(w, h);
-
-
-
     }
 
 }
