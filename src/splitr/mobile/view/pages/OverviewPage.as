@@ -24,7 +24,7 @@ public class OverviewPage extends Page {
     private var _billList:ScrollContainer;
     private var _listOption:ToggleSwitch;
 
-    public function OverviewPage(w) {
+    public function OverviewPage(w:uint = 480) {
         _w = w;
         _appModel = AppModel.getInstance();
         _appModel.currentPage = "overview";
@@ -119,6 +119,14 @@ public class OverviewPage extends Page {
                     break;
             }
         }
+    }
+
+    public function resizedHandler(w:uint = 480, h:uint = 800):void{
+
+        this.setPageSize(w, h);
+
+
+
     }
 
 }
