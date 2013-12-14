@@ -2,6 +2,9 @@ package splitr.mobile.view.pages {
 
 import feathers.controls.TextInput;
 import feathers.controls.text.StageTextTextEditor;
+import feathers.core.ITextEditor;
+
+import flash.text.TextFormat;
 
 import splitr.mobile.view.components.AmountAdder;
 import splitr.mobile.view.components.AmountToggler;
@@ -17,7 +20,7 @@ import starling.utils.VAlign;
 public class BillSplitPage extends Page {
 
     private var _billIcon:Image;
-    private var _txtBillTitle:StageTextTextEditor;
+    private var _txtBillTitle:TextInput;
     private var _txtBillTotal:TextField;
     private var _photoRefButton:Button;
     private var _lblEditTotal:TextField;
@@ -34,12 +37,12 @@ public class BillSplitPage extends Page {
         _billIcon.y = 85;
         addChild(_billIcon);
 
-        _txtBillTitle = new StageTextTextEditor();
-        _txtBillTitle.isEditable = true;
+        _txtBillTitle = new TextInput();
         _txtBillTitle.text = "Add title";
-        _txtBillTitle.width = 180;
-        _txtBillTitle.height = 30;
+        _txtBillTitle.textEditorProperties.textFormat = new TextFormat( "Source Sans Pro", 24, 0x33423e );
         _txtBillTitle.y = 100;
+        _txtBillTitle.prompt = "Add title";
+        _txtBillTitle.promptProperties.textFormat = new TextFormat( "Source Sans Pro", 24, 0x33423e );
         addChild(_txtBillTitle);
 
         /*_txtBillTitle = new TextField(180, 30, "0", "OpenSansBold", 24, 0x33423e);
@@ -47,7 +50,7 @@ public class BillSplitPage extends Page {
         _txtBillTitle.text = "Add Title";
         _txtBillTitle.hAlign = HAlign.LEFT;
         _txtBillTitle.vAlign = VAlign.CENTER;
-        _txtBillTitle.y = 100;*/
+        */
 
         _txtBillTotal = new TextField(180, 28, "0", "OpenSansBold", 19, 0x33423e);
         _txtBillTotal.fontName = "OpenSansBold";

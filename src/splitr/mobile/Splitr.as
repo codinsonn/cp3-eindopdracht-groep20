@@ -18,11 +18,10 @@ public class Splitr extends starling.display.Sprite {
 
     private var _appModel:AppModel;
 
+    private var _metalWorksMobileTheme:MetalWorksMobileTheme;
+
     private var _header:Header;
-
     private var _footer:Footer;
-
-    private var _overviewItem:OverviewItem;
 
     private var _pages:Array;
 

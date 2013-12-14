@@ -88,11 +88,11 @@ public class AppModel extends EventDispatcher {
 
     public function pageSwitch():void{
         switch(_currentPage){
-            case "overview":
-                trace("overview");
+            case "Overview":
+                trace("Overview");
                 break;
-            case "createNew":
-                trace("createNew");
+            case "CreateNew":
+                trace("CreateNew");
                 break;
         }
     }

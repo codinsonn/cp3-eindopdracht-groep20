@@ -1,4 +1,6 @@
 package {
+import feathers.controls.TextInput;
+
 import flash.display.Bitmap;
 import flash.utils.Dictionary;
 
@@ -32,6 +34,12 @@ public class Assets {
         var texture:Texture = Texture.fromBitmap(new OpenSansBoldTexture());
         var xml:XML = XML(new OpenSansBoldXml());
         TextField.registerBitmapFont(new BitmapFont(texture, xml));
+    }
+
+    public static function getBitmapFont():BitmapFont{
+        var texture:Texture = Texture.fromBitmap(new OpenSansBoldTexture());
+        var xml:XML = XML(new OpenSansBoldXml());
+        return new BitmapFont(texture, xml);
     }
 
     public static function getAtlas():TextureAtlas
