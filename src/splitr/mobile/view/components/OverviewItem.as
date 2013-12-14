@@ -38,6 +38,7 @@ public class OverviewItem extends Sprite {
         _leftX = 100;
         //_settled = settled;
         _settled = Math.random() >= 0.5;//DEMO SETTLED
+        trace("[OverviewItem]", "Settled:", _settled);
 
         var circleShape:Shape = new Shape();
         circleShape.graphics.beginFill(0x00ff00);
@@ -49,9 +50,9 @@ public class OverviewItem extends Sprite {
 
         var shape:Shape = new Shape();
         if(_settled == false){
-        shape.graphics.beginFill(0xff0000);
+            shape.graphics.beginFill(0xff0000);
         }else{
-        shape.graphics.beginFill(0x0000ff);
+            shape.graphics.beginFill(0x0000ff);
         }
         shape.graphics.drawRect(0, 0, _w, 50);
         shape.graphics.endFill();
@@ -128,6 +129,14 @@ public class OverviewItem extends Sprite {
         _billTotalField.x = _billNameField.x + _billNameField.width + 10;
         _delete.alpha = 0;
         _edit.alpha = 0;
+    }
+
+    public function get settled():Boolean {
+        return _settled;
+    }
+
+    public function set settled(value:Boolean):void {
+        //_settled = value;
     }
 }
 }

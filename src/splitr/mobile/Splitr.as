@@ -1,12 +1,12 @@
 package splitr.mobile {
 
+import feathers.controls.ScreenNavigator;
 import feathers.themes.MetalWorksMobileTheme;
 
 import flash.events.Event;
 
 import splitr.mobile.view.Footer;
 import splitr.mobile.view.Header;
-import splitr.mobile.view.components.OverviewItem;
 import splitr.mobile.view.pages.EqualBillsplitPage;
 import splitr.mobile.view.pages.OverviewPage;
 import splitr.model.AppModel;
@@ -18,7 +18,7 @@ public class Splitr extends starling.display.Sprite {
 
     private var _appModel:AppModel;
 
-    private var _metalWorksMobileTheme:MetalWorksMobileTheme;
+    private var _screenNavigator:ScreenNavigator;
 
     private var _header:Header;
     private var _footer:Footer;
@@ -27,10 +27,12 @@ public class Splitr extends starling.display.Sprite {
 
     public function Splitr()
     {
-        new MetalWorksMobileTheme();
+        var theme:MetalWorksMobileTheme = new MetalWorksMobileTheme();
 
         this._appModel = AppModel.getInstance();
         _appModel.addEventListener(AppModel.PAGE_CHANGED, pageChangedHandler);
+
+        _screenNavigator = new ScreenNavigator();
 
         _pages = new Array();
 
@@ -39,12 +41,10 @@ public class Splitr extends starling.display.Sprite {
         addChild(_overviewPage);
         _pages.push(_overviewPage);
 
-        var _equalBillsplit:EqualBillsplitPage = new EqualBillsplitPage();
+        /*var _equalBillsplit:EqualBillsplitPage = new EqualBillsplitPage();
         _equalBillsplit.x = _equalBillsplit.y = 0;
         addChild(_equalBillsplit);
-        _pages.push(_equalBillsplit);
-
-
+        _pages.push(_equalBillsplit);*/
 
         addEventListener(starling.events.Event.ADDED_TO_STAGE, addedToStageHandler);
     }

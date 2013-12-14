@@ -17,14 +17,15 @@ import starling.events.TouchPhase;
 public class OverviewPage extends Page {
 
     private var _appModel:AppModel;
-    private var _overviewItem:OverviewItem;
+    // private var _overviewItem:OverviewItem;
     private var _startDragX:Number;
     private var _startPanelX:Number;
     private var _w:uint;
     private var _billList:ScrollContainer;
+    private var _bills:Array;
     private var _listOption:ToggleSwitch;
 
-    public function OverviewPage(w) {
+    public function OverviewPage(w:uint = 480) {
         _w = w;
         _appModel = AppModel.getInstance();
         _appModel.currentPage = "overview";
@@ -42,52 +43,57 @@ public class OverviewPage extends Page {
     }
 
     private function createList(show:String):void {
-        if(!_billList){
-            _billList = new ScrollContainer();
-            addChild(_billList);
-        }else{
+        if(_billList){
             removeChild(_billList);
-            addChild(_billList);
         }
+
+        _billList = new ScrollContainer();
+        addChild(_billList);
 
         _billList.width = 480;
         _billList.height = 500;
         _billList.y = 200;
 
-        //for each(var bill in _appModel.bills){
-        for (var i:Number=0; i<20;){
-            // DEMOLOOP
-            _overviewItem = new OverviewItem(_w);
-            _overviewItem.resizedHandler();
-            _overviewItem.addEventListener(TouchEvent.TOUCH, touchHandler);
+        _bills = new Array();
 
+        //for each(var bill in _appModel.bills){
+        for (var i:Number=0; i<20; i++){
+            // DEMOLOOP
+            var overviewItem:OverviewItem = new OverviewItem(_w);
 
             switch(show)
             {
                 case "all":
-                        trace("ALL");
-                        _billList.addChild(_overviewItem);
-                        _overviewItem.y = _overviewItem.height*i;
+                    trace("[OverviewPage]", "----------- ", show, " ----------------");
+                    _billList.addChild(overviewItem);
+                    overviewItem.resizedHandler();
+                    overviewItem.addEventListener(TouchEvent.TOUCH, touchHandler);
+                    _bills.push(overviewItem);
+                    overviewItem.y = overviewItem.height * _bills.length;
                     break;
                 case "settledOn":
-
-                    if(_overviewItem.settled != false){
-                        trace("SETTLED: ", _overviewItem.settled);
-                    _billList.addChild(_overviewItem);
-                    _overviewItem.y = _overviewItem.height*i;
+                    trace("[OverviewPage]", "----------- ", show, " ----------------");
+                    if(overviewItem.settled == false){
+                        trace("SETTLED:", overviewItem.settled);
+                        _billList.addChild(overviewItem);
+                        overviewItem.resizedHandler();
+                        overviewItem.addEventListener(TouchEvent.TOUCH, touchHandler);
+                        _bills.push(overviewItem);
+                        overviewItem.y = overviewItem.height * _bills.length;
                     }
                     break;
                 case "settledOff":
-
-                    if(_overviewItem.settled != true){
-                        trace("UNSETTLED: ", _overviewItem.settled);
-                    _billList.addChild(_overviewItem);
-                    _overviewItem.y = _overviewItem.height*i;
+                    trace("[OverviewPage]", "----------- ", show, " ----------------");
+                    if(overviewItem.settled == true){
+                        trace("UNSETTLED:", overviewItem.settled);
+                        _billList.addChild(overviewItem);
+                        overviewItem.resizedHandler();
+                        overviewItem.addEventListener(TouchEvent.TOUCH, touchHandler);
+                        _bills.push(overviewItem);
+                        overviewItem.y = overviewItem.height * _bills.length;
                     }
                     break;
             }
-
-            i++
         }
     }
 
@@ -119,6 +125,12 @@ public class OverviewPage extends Page {
                     break;
             }
         }
+    }
+
+    public function resizedHandler(w:uint = 480, h:uint = 800):void{
+
+        this.setPageSize(w, h);
+
     }
 
 }
