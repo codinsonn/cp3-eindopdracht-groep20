@@ -36,12 +36,6 @@ public class Assets {
         TextField.registerBitmapFont(new BitmapFont(texture, xml));
     }
 
-    public static function getBitmapFont():BitmapFont{
-        var texture:Texture = Texture.fromBitmap(new OpenSansBoldTexture());
-        var xml:XML = XML(new OpenSansBoldXml());
-        return new BitmapFont(texture, xml);
-    }
-
     public static function getAtlas():TextureAtlas
     {
         // Create new TextureAtlas if it does not yet exist

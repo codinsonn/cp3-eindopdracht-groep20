@@ -1,95 +1,91 @@
 package splitr.mobile {
 
 import feathers.controls.ScreenNavigator;
-import feathers.themes.MetalWorksMobileTheme;
+import feathers.controls.ScreenNavigatorItem;
+import feathers.motion.transitions.ScreenSlidingStackTransitionManager;
+import feathers.themes.MinimalMobileTheme;
 
 import flash.events.Event;
 
-import splitr.mobile.view.Footer;
-import splitr.mobile.view.Header;
-import splitr.mobile.view.pages.EqualBillsplitPage;
+import splitr.mobile.view.pages.AbsoluteSplitPage;
+import splitr.mobile.view.pages.EqualSplitPage;
 import splitr.mobile.view.pages.OverviewPage;
+import splitr.mobile.view.pages.PercentualSplitPage;
+import splitr.mobile.view.pages.PhotoRefPage;
+
 import splitr.model.AppModel;
 
-import starling.display.Sprite;
-import starling.events.Event;
+public class Splitr extends ScreenNavigator {
 
-public class Splitr extends starling.display.Sprite {
+    private static const OVERVIEWPAGE:String = "overviewPage";
+    private static const EQUALSPLITPAGE:String = "equalSplitPage";
+    private static const PERCENTUALSPLITPAGE:String = "percentualSplitPage";
+    private static const ABSOLUTESPLITPAGE:String = "absoluteSplitPage";
+    private static const PHOTOREFPAGE:String = "photoRefPage";
 
     private var _appModel:AppModel;
-
-    private var _screenNavigator:ScreenNavigator;
-
-    private var _header:Header;
-    private var _footer:Footer;
-
-    private var _pages:Array;
+    private var screenTransitionManager:ScreenSlidingStackTransitionManager;
 
     public function Splitr()
     {
-        var theme:MetalWorksMobileTheme = new MetalWorksMobileTheme();
+        // Initialize the theme
+        new MinimalMobileTheme();
 
+        // Get (singleton) Appmodel instance
         this._appModel = AppModel.getInstance();
         _appModel.addEventListener(AppModel.PAGE_CHANGED, pageChangedHandler);
 
-        _screenNavigator = new ScreenNavigator();
+        // Add the overview panelscreen/homepage to our ScreenNavigator
+        addScreen(OVERVIEWPAGE, new ScreenNavigatorItem(OverviewPage, {
+            equalSplitPage: newEqualSplitPageHandler,
+            percentualSplitPage: newPercentualSplitPage,
+            absoluteSplitPage: newAbsoluteSplitPage
+        }));
 
-        _pages = new Array();
+        // Add the equal split panelscreen/page to our ScreenNavigator
+        addScreen(EQUALSPLITPAGE, new ScreenNavigatorItem(EqualSplitPage, {
+            complete: OVERVIEWPAGE
+        }));
 
-        var _overviewPage:OverviewPage = new OverviewPage();
-        _overviewPage.x = _overviewPage.y = 0;
-        addChild(_overviewPage);
-        _pages.push(_overviewPage);
+        // Add the percentual split panelscreen/page to our ScreenNavigator
+        addScreen(PERCENTUALSPLITPAGE, new ScreenNavigatorItem(PercentualSplitPage, {
+            complete: OVERVIEWPAGE
+        }));
 
-        /*var _equalBillsplit:EqualBillsplitPage = new EqualBillsplitPage();
-        _equalBillsplit.x = _equalBillsplit.y = 0;
-        addChild(_equalBillsplit);
-        _pages.push(_equalBillsplit);*/
+        // Add the absolute split panelscreen/page to our ScreenNavigator
+        addScreen(ABSOLUTESPLITPAGE, new ScreenNavigatorItem(AbsoluteSplitPage, {
+            complete: OVERVIEWPAGE
+        }));
 
-        addEventListener(starling.events.Event.ADDED_TO_STAGE, addedToStageHandler);
+        // Add the photo reference panelscreen/page to our ScreenNavigator
+        addScreen(PHOTOREFPAGE, new ScreenNavigatorItem(PhotoRefPage, {
+            // Not sure what to put here
+        }));
+
+        // Transition settings
+        screenTransitionManager = new ScreenSlidingStackTransitionManager(this);
+        screenTransitionManager.duration = .3;
+
+        // Initialize the overview screen as homepage on Application startup
+        this.showScreen(OVERVIEWPAGE);
+
+    }
+
+    private function newEqualSplitPageHandler():void {
+        this.showScreen(EQUALSPLITPAGE);
+    }
+
+    private function newPercentualSplitPage():void {
+        this.showScreen(PERCENTUALSPLITPAGE);
+    }
+
+    private function newAbsoluteSplitPage():void {
+        this.showScreen(ABSOLUTESPLITPAGE);
     }
 
     private function pageChangedHandler(e:flash.events.Event):void {
         trace("[Splitr]","Page changed:", _appModel.currentPage);
     }
 
-    private function addedToStageHandler(e:starling.events.Event):void {
-        removeEventListener(starling.events.Event.ADDED_TO_STAGE, addedToStageHandler);
-        stage.addEventListener(starling.events.Event.RESIZE, resizedHandler);
-
-        layout();
-    }
-
-    private function resizedHandler(e:starling.events.Event):void {
-        layout();
-    }
-
-    private function layout():void {
-        trace("[Starling] Resize:", stage.stageWidth, stage.stageHeight);
-
-        // Header resize
-        if(!_header){
-            _header = new Header();
-            addChild(_header);
-        }
-        _header.resizedHandler(stage.stageWidth, 50);
-
-        // Resize/update all pages
-        for(var i:uint = 0; i < _pages.length; i++){
-            _pages[i].resizedHandler(stage.stageWidth, stage.stageHeight);
-        }
-
-        // Footer resize
-        var buttonSize:uint = 60;
-        var buttongap:uint = 10;
-        if(!_footer){
-            _footer = new Footer();
-            addChild(_footer);
-        }
-        _footer.resizedHandler(buttonSize, buttongap);
-        _footer.y = stage.stageHeight - (buttonSize + 10);
-        _footer.x = stage.stageWidth/2 - _footer.width/2;
-
-}
 }
 }
