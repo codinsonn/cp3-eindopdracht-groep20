@@ -108,6 +108,10 @@ public class AppModel extends EventDispatcher {
             dispatchEvent(new Event("PAGE_CHANGED"));
         }
     }
+
+    public function get previousPage():String {
+        return _previousPage;
+    }
 }
 }
 internal class Enforcer{}

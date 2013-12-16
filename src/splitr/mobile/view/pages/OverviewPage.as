@@ -9,6 +9,7 @@ import splitr.mobile.view.components.OverviewItem;
 import splitr.model.AppModel;
 
 import starling.events.Event;
+
 import starling.events.Touch;
 import starling.events.TouchEvent;
 import starling.events.TouchPhase;
@@ -40,14 +41,14 @@ public class OverviewPage extends PanelScreen {
         _listOption.y = 60;
         _listOption.isSelected = true;
         _listOption.width = 100;
-        _listOption.addEventListener(Event.CHANGE, optionHandler);
+        _listOption.addEventListener(starling.events.Event.CHANGE, optionHandler);
         addChild(_listOption);
 
         createList();
 
     }
 
-    private function optionHandler(e:Event):void {
+    private function optionHandler(e:starling.events.Event):void {
         if(_listOption.isSelected == true){
             createList("Settled");
         }else{
@@ -78,9 +79,7 @@ public class OverviewPage extends PanelScreen {
             {
                 case "Settled":
                     if(overviewItem.settled == false){
-                        //trace("SETTLED:", overviewItem.settled);
                         _billList.addChild(overviewItem);
-                        overviewItem.resizedHandler();
                         overviewItem.addEventListener(TouchEvent.TOUCH, touchHandler);
                         overviewItem.addEventListener(OverviewItem.EDIT_BILL, editBillHandler);
                         overviewItem.addEventListener(OverviewItem.DELETE_BILL, deleteBillHandler);
@@ -90,10 +89,10 @@ public class OverviewPage extends PanelScreen {
                     break;
                 case "Unsettled":
                     if(overviewItem.settled == true){
-                        //trace("UNSETTLED:", overviewItem.settled);
                         _billList.addChild(overviewItem);
-                        overviewItem.resizedHandler();
                         overviewItem.addEventListener(TouchEvent.TOUCH, touchHandler);
+                        overviewItem.addEventListener(OverviewItem.EDIT_BILL, editBillHandler);
+                        overviewItem.addEventListener(OverviewItem.DELETE_BILL, deleteBillHandler);
                         _bills.push(overviewItem);
                         overviewItem.y = overviewItem.height * _bills.length;
                     }
@@ -101,8 +100,9 @@ public class OverviewPage extends PanelScreen {
                 case "All":
                 default:
                     _billList.addChild(overviewItem);
-                    overviewItem.resizedHandler();
                     overviewItem.addEventListener(TouchEvent.TOUCH, touchHandler);
+                    overviewItem.addEventListener(OverviewItem.EDIT_BILL, editBillHandler);
+                    overviewItem.addEventListener(OverviewItem.DELETE_BILL, deleteBillHandler);
                     _bills.push(overviewItem);
                     overviewItem.y = overviewItem.height * _bills.length;
                     break;
@@ -110,20 +110,20 @@ public class OverviewPage extends PanelScreen {
         }
     }
 
-    private function deleteBillHandler(e:Event):void {
+    private function deleteBillHandler(e:starling.events.Event):void {
         var bill:OverviewItem = e.currentTarget as OverviewItem;
         trace("[Overview]", "Delete Bill:", bill);
     }
 
-    private function editBillHandler(e:Event):void {
+    private function editBillHandler(e:starling.events.Event):void {
         var bill:OverviewItem = e.currentTarget as OverviewItem;
         trace("[Overview]", "Edit Bill:", bill);
     }
 
-    private function touchHandler(event:TouchEvent):void {
-        var touchedObject:OverviewItem = event.currentTarget as OverviewItem;
+    private function touchHandler(e:TouchEvent):void {
+        var touchedObject:OverviewItem = e.currentTarget as OverviewItem;
         var elementsX:Number = new Number();
-        var touch:Touch = event.getTouch(touchedObject);
+        var touch:Touch = e.getTouch(touchedObject);
         if(touch != null) {
             switch(touch.phase) {
                 case TouchPhase.BEGAN:

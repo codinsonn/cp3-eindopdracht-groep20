@@ -2,6 +2,7 @@ package {
 
 import flash.display.Sprite;
 import flash.display.StageAlign;
+import flash.display.StageOrientation;
 import flash.display.StageScaleMode;
 import flash.events.Event;
 import flash.geom.Rectangle;
@@ -32,7 +33,7 @@ public class main extends Sprite {
         _starling.viewPort = new Rectangle(0, 0, stage.stageWidth, stage.stageHeight);
         _starling.stage.stageWidth = stage.stageWidth;
         _starling.stage.stageHeight = stage.stageHeight;
-        _starling.stage.dispatchEvent(new starling.events.Event(starling.events.Event.RESIZE))
+        _starling.stage.dispatchEvent(new starling.events.Event(starling.events.Event.RESIZE));
     }
 
 }

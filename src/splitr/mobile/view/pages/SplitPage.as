@@ -5,16 +5,20 @@ import feathers.controls.PanelScreen;
 import splitr.mobile.view.components.AmountEditor;
 import splitr.mobile.view.components.NumStepper;
 import splitr.mobile.view.components.TextfieldToggler;
+import splitr.model.AppModel;
 
 import starling.display.Button;
+import starling.display.DisplayObject;
 import starling.display.Image;
 import starling.events.Event;
-import starling.events.TouchEvent;
 import starling.text.TextField;
 import starling.utils.HAlign;
 import starling.utils.VAlign;
 
 public class SplitPage extends PanelScreen {
+
+    private var _appModel:AppModel;
+    private var _headerBackButton:Button;
 
     private var _billIcon:Image;
     private var _txtBillTitle:TextfieldToggler;
@@ -28,6 +32,12 @@ public class SplitPage extends PanelScreen {
     private var _billTotal:Number = 0.00;
 
     public function SplitPage(w:uint = 480) {
+
+        this._appModel = AppModel.getInstance();
+
+        _headerBackButton = new Button(Assets.getAtlas().getTexture("HeaderPrevButton"));
+        _headerBackButton.addEventListener(Event.TRIGGERED, backButtonTriggeredHandler);
+        headerProperties.leftItems = new <DisplayObject>[_headerBackButton];
 
         _billIcon = new Image(Assets.getAtlas().getTexture("BillIcon"));
         _billIcon.x = 40;
@@ -47,7 +57,7 @@ public class SplitPage extends PanelScreen {
 
         _photoRefButton = new Button(Assets.getAtlas().getTexture("PhotoRefButton"));
         _photoRefButton.y = 50;
-        _photoRefButton.addEventListener(TouchEvent.TOUCH, photoRefButtonTouched);
+        _photoRefButton.addEventListener(Event.TRIGGERED, photoRefButtonTriggered);
         addChild(_photoRefButton);
 
         _lblEditTotal = new TextField(180, 30, "0", "OpenSansBold", 24, 0x3FC6F5);
@@ -88,6 +98,10 @@ public class SplitPage extends PanelScreen {
 
     }
 
+    private function backButtonTriggeredHandler(e:Event):void {
+        _appModel.currentPage = "Overview";
+    }
+
     private function numPeopleChangedHandler(e:Event):void {
 
     }
@@ -115,8 +129,8 @@ public class SplitPage extends PanelScreen {
         _editTotal.amount = 0.00;
     }
 
-    private function photoRefButtonTouched(e:TouchEvent):void {
-
+    private function photoRefButtonTriggered(e:Event):void {
+        this._appModel.currentPage = "PhotoReference";
     }
 
 }

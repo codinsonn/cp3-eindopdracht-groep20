@@ -66,9 +66,32 @@ public class Splitr extends ScreenNavigator {
         screenTransitionManager = new ScreenSlidingStackTransitionManager(this);
         screenTransitionManager.duration = .3;
 
-        // Initialize the overview screen as homepage on Application startup
-        this.showScreen(EQUALSPLITPAGE);
+        // Initialize the home (overview) screen via the appModel
+        _appModel.currentPage = "EqualSplit";
 
+    }
+
+    private function pageChangedHandler(e:flash.events.Event):void {
+        trace("[Splitr]","Page changed:", _appModel.currentPage);
+
+        switch (_appModel.currentPage){
+            case "EqualSplit":
+                this.showScreen(EQUALSPLITPAGE);
+                break;
+            case "PercentualSplit":
+                this.showScreen(PERCENTUALSPLITPAGE);
+                break;
+            case "AbsoluteSplit":
+                this.showScreen(ABSOLUTESPLITPAGE);
+                break;
+            case "PhotoReference":
+                this.showScreen(PHOTOREFPAGE);
+                break;
+            case "Overview":
+            default:
+                this.showScreen(OVERVIEWPAGE);
+                break;
+        }
     }
 
     private function newEqualSplitPageHandler():void {
@@ -81,10 +104,6 @@ public class Splitr extends ScreenNavigator {
 
     private function newAbsoluteSplitPage():void {
         this.showScreen(ABSOLUTESPLITPAGE);
-    }
-
-    private function pageChangedHandler(e:flash.events.Event):void {
-        trace("[Splitr]","Page changed:", _appModel.currentPage);
     }
 
 }

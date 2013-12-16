@@ -30,40 +30,25 @@ public class OverviewItem extends Sprite {
 
     public function OverviewItem(_w:uint = 480, _billName:String = "Bill Name", _billTotal:Number = 0.00, id:Number = 0, optionSize:uint = 25, settled:Boolean = false ) {
 
-        trace("[Overviewitem]")
-
         _optionSize = optionSize;
         _leftX = 100;
         _settled = Math.random() >= 0.5; //DEMO SETTLED
 
         // Draw item background
-        var bgShape:Shape = new Shape();
-        bgShape.graphics.beginFill(0xf3f3f3);
-        bgShape.graphics.drawRect(0, 0, _w, 50);
-        bgShape.graphics.endFill();
-        var shapeData:BitmapData = new BitmapData(_w * .6, 50, true, 0);
-        shapeData.draw(bgShape);
-        var texture:Texture = Texture.fromBitmapData(shapeData);
-        _itemBg = new Image(texture);
+        _itemBg = new Image(createTextureFromRectShape(_w *.6, 50, 0xf3f3f3));
         _itemBg.x = _leftX;
         addChild(_itemBg);
-
-        var shape:Shape = new Shape();
-        if(_settled == false){
-            shape.graphics.beginFill(0xfe625d);
-        }else{
-            shape.graphics.beginFill(0x46d7c6);
-        }
-        shape.graphics.drawRect(0, 0, _w * .6, 50);
-        shape.graphics.endFill();
-        var shapeData:BitmapData = new BitmapData(_w * .6, 50, true, 0);
-        shapeData.draw(shape);
-        var texture:Texture = Texture.fromBitmapData(shapeData);
 
         _delete = new Image(Assets.getAtlas().getTexture("DeleteIcon"));
         _edit = new Image(Assets.getAtlas().getTexture("EditIcon"));
 
-        _panel = new Image(texture);
+        var color:uint;
+        if(_settled == false){
+            color = 0xfe625d;
+        }else{
+            color = 0x46d7c6;
+        }
+        _panel = new Image(createTextureFromRectShape(_w * .6, 50, color));
         _panel.x = _w/2 - _panel.width/2;
         addChild(_panel);
 
@@ -97,13 +82,20 @@ public class OverviewItem extends Sprite {
         _delete.alpha = 0;
         _edit.x = _w - _edit.width;
         _edit.y = (_panel.y + _panel.height/2) -    _edit.height/2;
-        _edit.alpha = 0
-        resizedHandler();
+        _edit.alpha = 0;
 
     }
 
-    public function resizedHandler():void {
-        trace("resize [OverViewItem]");
+    private function createTextureFromRectShape(w:uint = 480, h:uint = 50, color:uint = 0xf3f3f3):Texture{
+        var shape:Shape = new Shape();
+        shape.graphics.beginFill(color);
+        shape.graphics.drawRect(0, 0, w, 50);
+        shape.graphics.endFill();
+        var shapeData:BitmapData = new BitmapData(w, 50, true, 0);
+        shapeData.draw(shape);
+        var texture:Texture = Texture.fromBitmapData(shapeData);
+
+        return texture;
     }
 
     public function setElementsX(objectPosition:Number):void {
@@ -119,12 +111,8 @@ public class OverviewItem extends Sprite {
 
     public function release():void {
         if(_billNameField.x > (_leftX + 50)){
-            // Edit funtie
-            trace("EDIT");
             dispatchEventWith("EDIT_BILL", false);
         }else if(_billNameField.x < (_leftX - 50)){
-            // Delete functie
-            trace("DELETE");
             dispatchEventWith("DELETE_BILL", false);
         }
         resetElementsX();
@@ -142,8 +130,5 @@ public class OverviewItem extends Sprite {
         return _settled;
     }
 
-    public function set settled(value:Boolean):void {
-        //_settled = value;
-    }
 }
 }
