@@ -67,7 +67,7 @@ public class Splitr extends ScreenNavigator {
         screenTransitionManager.duration = .3;
 
         // Initialize the overview screen as homepage on Application startup
-        this.showScreen(OVERVIEWPAGE);
+        this.showScreen(EQUALSPLITPAGE);
 
     }
 

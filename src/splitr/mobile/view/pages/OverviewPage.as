@@ -37,7 +37,7 @@ public class OverviewPage extends PanelScreen {
 
         _listOption = new ToggleSwitch();
         _listOption.x = _width/2 - _listOption.width/2;
-        _listOption.y = 110;
+        _listOption.y = 60;
         _listOption.isSelected = true;
         _listOption.width = 100;
         _listOption.addEventListener(Event.CHANGE, optionHandler);
@@ -65,7 +65,7 @@ public class OverviewPage extends PanelScreen {
 
         _billList.width = 480;
         _billList.height = 500;
-        _billList.y = 200;
+        _billList.y = 150;
 
         _bills = new Array();
 

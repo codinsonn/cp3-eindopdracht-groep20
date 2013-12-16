@@ -9,7 +9,7 @@ import starling.events.TouchEvent;
 import starling.events.TouchPhase;
 import starling.text.TextField;
 
-public class AmountToggler extends Sprite {
+public class NumStepper extends Sprite {
 
     private var _subtractButton:Button;
     private var _txtAmount:TextField;
@@ -17,7 +17,7 @@ public class AmountToggler extends Sprite {
 
     private var _amount:uint;
 
-    public function AmountToggler(amount:uint = 1){
+    public function NumStepper(amount:uint = 1){
         _amount = amount;
 
         _subtractButton = new Button(Assets.getAtlas().getTexture("PrevButtonIcon"));
@@ -25,7 +25,7 @@ public class AmountToggler extends Sprite {
         _subtractButton.addEventListener(TouchEvent.TOUCH, subtractTouchedHandler);
         addChild(_subtractButton);
 
-        _txtAmount = new TextField(50, 30, "0", "OpenSansBold", 24, 0x33423e);
+        _txtAmount = new TextField(50, 30, "0", "OpenSansBold", 24, 0x3FC6F5);
         _txtAmount.fontName = "OpenSansBold";
         _txtAmount.text = _amount.toString();
         _txtAmount.touchable = true;

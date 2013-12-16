@@ -67,7 +67,7 @@ public class OverviewItem extends Sprite {
         _panel.x = _w/2 - _panel.width/2;
         addChild(_panel);
 
-        _billNameField = new TextField(120, 30, "0", "OpenSansBold", 27, 0x000000);
+        _billNameField = new TextField(120, 30, "0", "OpenSansBold", 27, 0xf3f3f3);
         _billNameField.autoScale = true;
         _billNameField.vAlign = VAlign.CENTER;
         _billNameField.hAlign = HAlign.LEFT;
@@ -78,7 +78,7 @@ public class OverviewItem extends Sprite {
         _billNameField.y = _panel.height/2 - _billNameField.height/2;
         addChild(_billNameField);
 
-        _billTotalField = new TextField(120, 30, "0", "OpenSansBold", 27, 0x000000);
+        _billTotalField = new TextField(120, 30, "0", "OpenSansBold", 27, 0xf3f3f3);
         _billTotalField.autoScale = true;
         _billTotalField.vAlign = VAlign.CENTER;
         _billTotalField.hAlign = HAlign.RIGHT;
