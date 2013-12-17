@@ -67,7 +67,7 @@ public class Splitr extends ScreenNavigator {
         screenTransitionManager.duration = .3;
 
         // Initialize the home (overview) screen via the appModel
-        _appModel.currentPage = "EqualSplit";
+        _appModel.currentPage = "Overview";
 
     }
 

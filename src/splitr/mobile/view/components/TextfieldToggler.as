@@ -48,11 +48,19 @@ public class TextfieldToggler extends Sprite {
     }
 
     private function labelTouchedHandler(e:TouchEvent):void {
-        _label.removeEventListener(TouchEvent.TOUCH, labelTouchedHandler);
-        _input.visible = true;
-        _input.addEventListener(FeathersEventType.ENTER, enterKeyDownHandler);
-        _input.addEventListener(FeathersEventType.FOCUS_OUT, focusOutHandler);
-        _input.setFocus();
+        var touchedObject:DisplayObject = e.currentTarget as DisplayObject;
+        var touch:Touch = e.getTouch(touchedObject);
+        if(touch != null) {
+            switch(touch.phase){
+                case TouchPhase.ENDED:
+                    _label.removeEventListener(TouchEvent.TOUCH, labelTouchedHandler);
+                    _input.visible = true;
+                    _input.addEventListener(FeathersEventType.ENTER, enterKeyDownHandler);
+                    _input.addEventListener(FeathersEventType.FOCUS_OUT, focusOutHandler);
+                    _input.setFocus();
+                    break;
+            }
+        }
     }
 
     private function focusOutHandler(e:Event):void {
