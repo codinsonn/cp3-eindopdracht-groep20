@@ -7,6 +7,7 @@ public class BillVO {
     public var billTitle:String = "Add title";
     public var billTotal:Number = 0.00;
     public var billGroup:Array = []; // PersonVO
+    public var photoReference:String = "None";
     public var settledState:Boolean = false;
 
     public function BillVO() {}

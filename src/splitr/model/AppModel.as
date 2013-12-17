@@ -99,6 +99,12 @@ public class AppModel extends EventDispatcher {
         }
     }
 
+    public function setIds():void{
+        for(var i:uint = 0; i < _bills.length; i++){
+            _bills[i].billId = i;
+        }
+    }
+
     public function get currentPage():String {
         return _currentPage;
     }

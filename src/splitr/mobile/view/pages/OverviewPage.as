@@ -40,8 +40,15 @@ public class OverviewPage extends PanelScreen {
         // Set header title
         this.headerProperties.title = "SPLITR";
 
-        _txtOverview = new TextField(400, 50, "0", "PF Ronda Seven", 20, 0xCCCCCC);
-        _txtOverview.text = "Tap to view. Drag to edit/delete.";
+        var message:String;
+        if(_appModel.bills.length < 1){
+            message = "No bills yet. Choose split method:";
+        }else{
+            message = "Drag right to edit, left to delete.";
+        }
+
+        _txtOverview = new TextField(400, 50, "0", "PF Ronda Seven", 19, 0xCCCCCC);
+        _txtOverview.text = message;
         _txtOverview.hAlign = HAlign.CENTER;
         _txtOverview.x = _width/2 - _txtOverview.width/2;
         _txtOverview.y = 60;
@@ -85,20 +92,6 @@ public class OverviewPage extends PanelScreen {
 
     }
 
-    private function changeBillHandler():void{
-        switch (_appModel.bills[_appModel.currentBill].billType){
-            case "Equal":
-                _appModel.currentPage = "EqualSplit";
-                break;
-            case "Percentual":
-                _appModel.currentPage = "PercentualSplit";
-                break;
-            case "Absolute":
-                _appModel.currentPage = "AbsoluteSplit";
-                break;
-        }
-    }
-
     private function newEqualHandler(e:Event):void {
         _appModel.createNewPage = true;
         _appModel.currentPage = "EqualSplit";
@@ -132,7 +125,7 @@ public class OverviewPage extends PanelScreen {
 
         _billList.width = 480;
         _billList.height = 540;
-        _billList.y = 110;
+        _billList.y = 116;
 
         _bills = new Array();
 
@@ -173,12 +166,27 @@ public class OverviewPage extends PanelScreen {
 
     private function deleteBillHandler(e:starling.events.Event):void {
         var bill:OverviewItem = e.currentTarget as OverviewItem;
-        trace("[Overview]", "Delete Bill:", bill);
+        _appModel.bills.splice(bill.billVO.billId);
+
+        _appModel.setIds();
+        createList();
     }
 
     private function editBillHandler(e:starling.events.Event):void {
         var bill:OverviewItem = e.currentTarget as OverviewItem;
-        trace("[Overview]", "Edit Bill:", bill);
+        _appModel.currentBill = bill.billVO.billId;
+
+        switch (_appModel.bills[_appModel.currentBill].billType){
+            case "Equal":
+                _appModel.currentPage = "EqualSplit";
+                break;
+            case "Percentual":
+                _appModel.currentPage = "PercentualSplit";
+                break;
+            case "Absolute":
+                _appModel.currentPage = "AbsoluteSplit";
+                break;
+        }
     }
 
     private function touchHandler(e:TouchEvent):void {

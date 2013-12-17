@@ -28,10 +28,6 @@ public class SplitPage extends PanelScreen {
     private var _photoRefButton:Button;
     private var _lblEditTotal:TextField;
     private var _editTotal:AmountEditor;
-    private var _lblNumPeople:TextField;
-    private var _setNumPeople:NumStepper;
-
-    private var _numPeople:uint;
 
     public function SplitPage(w:uint = 480) {
 
@@ -54,14 +50,14 @@ public class SplitPage extends PanelScreen {
         _billIcon.y = 35;
         addChild(_billIcon);
 
-        _txtBillTitle = new TextfieldToggler(190, 60, 20, "OpenSansBold", _appModel.bills[_appModel.currentBill].billTitle, 0x3FC6F5, "My Awesome Bill");
+        _txtBillTitle = new TextfieldToggler(190, 60, 20, "PF Ronda Seven", _appModel.bills[_appModel.currentBill].billTitle, 0x3FC6F5, "My Awesome Bill");
         _txtBillTitle.y = 30;
         _txtBillTitle.maxChars = 20;
         _txtBillTitle.addEventListener(Event.CHANGE, billTitleChangedHandler);
         addChild(_txtBillTitle);
 
-        _txtBillTotal = new TextField(180, 28, "0", "OpenSansBold", 17, 0x3FC6F5);
-        _txtBillTotal.fontName = "OpenSansBold";
+        _txtBillTotal = new TextField(180, 28, "0", "PF Ronda Seven", 17, 0x3FC6F5);
+        _txtBillTotal.fontName = "PF Ronda Seven";
         _txtBillTotal.hAlign = HAlign.LEFT;
         _txtBillTotal.vAlign = VAlign.CENTER;
         _txtBillTotal.y = 75;
@@ -72,7 +68,7 @@ public class SplitPage extends PanelScreen {
         _photoRefButton.addEventListener(Event.TRIGGERED, photoRefButtonTriggered);
         addChild(_photoRefButton);
 
-        _lblEditTotal = new TextField(180, 30, "0", "OpenSansBold", 24, 0x3FC6F5);
+        _lblEditTotal = new TextField(180, 30, "0", "OpenSansBold", 24, 0x46D7C6);
         _lblEditTotal.fontName = "OpenSansBold";
         _lblEditTotal.text = "Edit total:";
         _lblEditTotal.hAlign = HAlign.LEFT;

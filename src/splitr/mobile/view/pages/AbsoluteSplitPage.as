@@ -9,6 +9,7 @@ public class AbsoluteSplitPage extends SplitPage {
     public function AbsoluteSplitPage() {
 
         _appModel = AppModel.getInstance();
+        _appModel.bills[_appModel.currentBill].billType = "Absolute";
 
         this.headerProperties.title = "SPLIT ABSOLUTE";
 

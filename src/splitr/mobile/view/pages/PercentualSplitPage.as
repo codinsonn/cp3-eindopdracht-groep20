@@ -9,6 +9,7 @@ public class PercentualSplitPage extends SplitPage {
     public function PercentualSplitPage() {
 
         _appModel = AppModel.getInstance();
+        _appModel.bills[_appModel.currentBill].billType = "Equal";
 
         this.headerProperties.title = "SPLIT PERCENTUAL";
 

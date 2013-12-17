@@ -32,26 +32,29 @@ public class AmountEditor extends Sprite {
         addChild(_subtractButton);
 
         _textBackground = new Image(Assets.getAtlas().getTexture("InputFieldBg"));
+        _textBackground.width = 110;
         _textBackground.x = _subtractButton.width - 1;
         addChild(_textBackground);
 
-        _txtAmount = new TextfieldToggler(100, 50, 24, "OpenSansBold", "0.00", 0x3FC6F5, "0.00");
-        _txtAmount.x = 50;
+        _txtAmount = new TextfieldToggler(110, 50, 20, "PF Ronda Seven", "0.00", 0x46D7C6, "0.00");
+        _txtAmount.x = _subtractButton.width;
         _txtAmount.textAlignCenter = true;
-        _txtAmount.maxChars = 5;
+        _txtAmount.maxChars = 6;
         _txtAmount.inputRestrict = "0-9\.";
         _txtAmount.addEventListener(Event.CHANGE, amountChangedHandler);
         addChild(_txtAmount);
 
         _addButton = new Button(Assets.getAtlas().getTexture("AddButton"));
-        _addButton.x = _textBackground.x + _textBackground.width - 1;
+        _addButton.x = _txtAmount.x + _txtAmount.width - 2;
         _addButton.y = _subtractButton.y = _textBackground.y = _txtAmount.y = 0;
         _addButton.addEventListener(TouchEvent.TOUCH, addTouchedHandler);
         addChild(_addButton);
     }
 
     private function amountChangedHandler(e:Event):void {
-        this._amount = Number(_txtAmount.text);
+        var amount:String = Number(_txtAmount.text).toFixed(2);
+        this._amount = Number(amount);
+        _txtAmount.text = amount;
     }
 
     private function subtractTouchedHandler(e:TouchEvent):void {

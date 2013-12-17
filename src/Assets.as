@@ -2,6 +2,8 @@ package {
 import feathers.controls.TextInput;
 
 import flash.display.Bitmap;
+import flash.display.BitmapData;
+import flash.display.Shape;
 import flash.utils.Dictionary;
 
 import starling.text.BitmapFont;
@@ -61,6 +63,18 @@ public class Assets {
 
         // Use the splitrTextures dictionary to check whether a variable with this name exists and return it
         return splitrTextures[name];
+    }
+
+    public static function createTextureFromRectShape(w:uint = 480, h:uint = 50, color:uint = 0xf3f3f3):Texture{
+        var shape:Shape = new Shape();
+        shape.graphics.beginFill(color);
+        shape.graphics.drawRect(0, 0, w, 50);
+        shape.graphics.endFill();
+        var shapeData:BitmapData = new BitmapData(w, 50, true, 0);
+        shapeData.draw(shape);
+        var texture:Texture = Texture.fromBitmapData(shapeData);
+
+        return texture;
     }
 
 }

@@ -83,7 +83,8 @@ package feathers.themes
 	import starling.display.Quad;
 	import starling.events.Event;
 	import starling.text.BitmapFont;
-	import starling.textures.Texture;
+    import starling.text.TextField;
+    import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 	import starling.textures.TextureSmoothing;
 
@@ -116,6 +117,7 @@ package feathers.themes
 		protected static const LIST_BACKGROUND_COLOR:uint = 0xf8f8f8;
 		protected static const LIST_HEADER_BACKGROUND_COLOR:uint = 0xeeeeee;
 		protected static const PRIMARY_TEXT_COLOR:uint = 0x666666;
+        protected static const HEADER_TEXT_COLOR:uint = 0xFAE3B4;
 		protected static const DISABLED_TEXT_COLOR:uint = 0x999999;
 		protected static const MODAL_OVERLAY_COLOR:uint = 0x666666;
 		protected static const MODAL_OVERLAY_ALPHA:Number = 0.8;
@@ -315,6 +317,7 @@ package feathers.themes
 			}
 
 			this.bitmapFont = new BitmapFont(this.atlas.getTexture("pf_ronda_seven_0"), XML(new ATLAS_FONT_XML()));
+            TextField.registerBitmapFont(this.bitmapFont);
 
 			this.buttonUpSkinTextures = new Scale9Textures(this.atlas.getTexture("button-up-skin"), BUTTON_SCALE_9_GRID);
 			this.buttonDownSkinTextures = new Scale9Textures(this.atlas.getTexture("button-down-skin"), BUTTON_DOWN_SCALE_9_GRID);
@@ -1034,7 +1037,8 @@ package feathers.themes
 			backgroundSkin.height = 88 * this.scale;
 			header.backgroundSkin = backgroundSkin;
 
-			header.titleProperties.textFormat = this.primaryTextFormat;
+			//header.titleProperties.textFormat = this.primaryTextFormat;
+            header.titleProperties.textFormat = new BitmapFontTextFormat(bitmapFont, 21, HEADER_TEXT_COLOR);
 			header.titleProperties.disabledTextFormat = this.disabledTextFormat;
 		}
 
@@ -1052,7 +1056,8 @@ package feathers.themes
 			backgroundSkin.height = 88 * this.scale;
 			header.backgroundSkin = backgroundSkin;
 
-			header.titleProperties.textFormat = this.primaryTextFormat;
+            //header.titleProperties.textFormat = this.primaryTextFormat;
+            header.titleProperties.textFormat = new BitmapFontTextFormat(bitmapFont, 21, HEADER_TEXT_COLOR);
 			header.titleProperties.disabledTextFormat = this.disabledTextFormat;
 		}
 
@@ -1066,7 +1071,8 @@ package feathers.themes
 			input.paddingLeft = input.paddingRight = 16 * this.scale;
 			input.textEditorProperties.fontFamily = "_sans";
 			input.textEditorProperties.fontSize = this.inputFontSize;
-			input.textEditorProperties.color = PRIMARY_TEXT_COLOR;
+            input.textEditorProperties.color = 0x1E4147;
+			//input.textEditorProperties.color = PRIMARY_TEXT_COLOR;
 
 			const backgroundSkin:Scale9Image = new Scale9Image(insetBackgroundSkinTextures, this.scale);
 			backgroundSkin.width = 264 * this.scale;
