@@ -37,9 +37,7 @@ public class Splitr extends ScreenNavigator {
 
         // Add the overview panelscreen/homepage to our ScreenNavigator
         addScreen(OVERVIEWPAGE, new ScreenNavigatorItem(OverviewPage, {
-            equalSplitPage: newEqualSplitPageHandler,
-            percentualSplitPage: newPercentualSplitPage,
-            absoluteSplitPage: newAbsoluteSplitPage
+
         }));
 
         // Add the equal split panelscreen/page to our ScreenNavigator
@@ -92,18 +90,6 @@ public class Splitr extends ScreenNavigator {
                 this.showScreen(OVERVIEWPAGE);
                 break;
         }
-    }
-
-    private function newEqualSplitPageHandler():void {
-        this.showScreen(EQUALSPLITPAGE);
-    }
-
-    private function newPercentualSplitPage():void {
-        this.showScreen(PERCENTUALSPLITPAGE);
-    }
-
-    private function newAbsoluteSplitPage():void {
-        this.showScreen(ABSOLUTESPLITPAGE);
     }
 
 }

@@ -9,6 +9,7 @@ public class EqualSplitPage extends SplitPage {
     public function EqualSplitPage() {
 
         _appModel = AppModel.getInstance();
+        _appModel.bills[_appModel.currentBill].billType = "Equal";
 
         this.headerProperties.title = "SPLIT EQUAL";
 

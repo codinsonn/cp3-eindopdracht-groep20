@@ -28,7 +28,7 @@ public class AmountEditor extends Sprite {
 
         _subtractButton = new Button(Assets.getAtlas().getTexture("SubtractButton"));
         _subtractButton.x = 0;
-        _subtractButton.addEventListener(Event.TRIGGERED, subtractTriggeredHandler);
+        _subtractButton.addEventListener(TouchEvent.TOUCH, subtractTouchedHandler);
         addChild(_subtractButton);
 
         _textBackground = new Image(Assets.getAtlas().getTexture("InputFieldBg"));
@@ -46,7 +46,7 @@ public class AmountEditor extends Sprite {
         _addButton = new Button(Assets.getAtlas().getTexture("AddButton"));
         _addButton.x = _textBackground.x + _textBackground.width - 1;
         _addButton.y = _subtractButton.y = _textBackground.y = _txtAmount.y = 0;
-        _addButton.addEventListener(Event.TRIGGERED, addTriggeredHandler);
+        _addButton.addEventListener(TouchEvent.TOUCH, addTouchedHandler);
         addChild(_addButton);
     }
 
@@ -54,12 +54,28 @@ public class AmountEditor extends Sprite {
         this._amount = Number(_txtAmount.text);
     }
 
-    private function subtractTriggeredHandler(e:Event):void {
-        dispatchEvent(new Event("SUBTRACT_AMOUNT"));
+    private function subtractTouchedHandler(e:TouchEvent):void {
+        var touchedObject:DisplayObject = e.currentTarget as DisplayObject;
+        var touch:Touch = e.getTouch(touchedObject);
+        if(touch != null) {
+            switch(touch.phase){
+                case TouchPhase.ENDED:
+                    dispatchEvent(new Event("SUBTRACT_AMOUNT"));
+                    break;
+            }
+        }
     }
 
-    private function addTriggeredHandler(e:Event):void {
-        dispatchEvent(new Event("ADD_AMOUNT"));
+    private function addTouchedHandler(e:TouchEvent):void {
+        var touchedObject:DisplayObject = e.currentTarget as DisplayObject;
+        var touch:Touch = e.getTouch(touchedObject);
+        if(touch != null) {
+            switch(touch.phase){
+                case TouchPhase.ENDED:
+                    dispatchEvent(new Event("ADD_AMOUNT"));
+                    break;
+            }
+        }
     }
 
     public function get amount():Number {

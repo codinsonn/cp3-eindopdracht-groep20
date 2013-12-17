@@ -34,6 +34,7 @@ public class OverviewPage extends PanelScreen {
     public function OverviewPage(w:uint = 480) {
 
         this._appModel = AppModel.getInstance();
+        this._appModel.currentBill = -1;
         this._width = w;
 
         // Set header title
@@ -50,10 +51,11 @@ public class OverviewPage extends PanelScreen {
         _listOption.width = 100;
         _listOption.x = _width/2 - 50;
         _listOption.y = 10;
-        //_listOption.customOnTrackName = "Settled";
-        //_listOption.customOffTrackName = "Unsettled";
         _listOption.isSelected = true;
         _listOption.addEventListener(starling.events.Event.CHANGE, optionHandler);
+        if(_appModel.bills.length < 1){
+            _listOption.isEnabled = false;
+        }
         addChild(_listOption);
 
         createList();
@@ -83,15 +85,32 @@ public class OverviewPage extends PanelScreen {
 
     }
 
+    private function changeBillHandler():void{
+        switch (_appModel.bills[_appModel.currentBill].billType){
+            case "Equal":
+                _appModel.currentPage = "EqualSplit";
+                break;
+            case "Percentual":
+                _appModel.currentPage = "PercentualSplit";
+                break;
+            case "Absolute":
+                _appModel.currentPage = "AbsoluteSplit";
+                break;
+        }
+    }
+
     private function newEqualHandler(e:Event):void {
+        _appModel.createNewPage = true;
         _appModel.currentPage = "EqualSplit";
     }
 
     private function newPercentualHandler(e:Event):void {
+        _appModel.createNewPage = true;
         _appModel.currentPage = "PercentualSplit";
     }
 
     private function newAbsoluteHandler(e:Event):void {
+        _appModel.createNewPage = true;
         _appModel.currentPage = "AbsoluteSplit";
     }
 
@@ -117,44 +136,39 @@ public class OverviewPage extends PanelScreen {
 
         _bills = new Array();
 
-        //for each(var bill in _appModel.bills){
-        for (var i:uint = 0; i < 20; i++){
-            // DEMOLOOP
-            var overviewItem:OverviewItem = new OverviewItem(_width);
 
+        _appModel.bills.reverse();
+        for(var i:uint = 0; i < _appModel.bills.length; i++){
+            var overviewItem:OverviewItem = new OverviewItem(_width);
             switch(billsToShow)
             {
                 case "Settled":
-                    if(overviewItem.settled == false){
+                    if(_appModel.bills[i].settledState == true){
+                        overviewItem.billVO = _appModel.bills[i];
                         _billList.addChild(overviewItem);
-                        overviewItem.addEventListener(TouchEvent.TOUCH, touchHandler);
-                        overviewItem.addEventListener(OverviewItem.EDIT_BILL, editBillHandler);
-                        overviewItem.addEventListener(OverviewItem.DELETE_BILL, deleteBillHandler);
                         _bills.push(overviewItem);
-                        overviewItem.y = overviewItem.height * _bills.length - 50;
                     }
                     break;
                 case "Unsettled":
-                    if(overviewItem.settled == true){
+                    if(_appModel.bills[i].settledState == false){
+                        overviewItem.billVO = _appModel.bills[i];
                         _billList.addChild(overviewItem);
-                        overviewItem.addEventListener(TouchEvent.TOUCH, touchHandler);
-                        overviewItem.addEventListener(OverviewItem.EDIT_BILL, editBillHandler);
-                        overviewItem.addEventListener(OverviewItem.DELETE_BILL, deleteBillHandler);
                         _bills.push(overviewItem);
-                        overviewItem.y = overviewItem.height * _bills.length - 50;
                     }
                     break;
                 case "All":
-                default:
+                    overviewItem.billVO = _appModel.bills[i];
                     _billList.addChild(overviewItem);
-                    overviewItem.addEventListener(TouchEvent.TOUCH, touchHandler);
-                    overviewItem.addEventListener(OverviewItem.EDIT_BILL, editBillHandler);
-                    overviewItem.addEventListener(OverviewItem.DELETE_BILL, deleteBillHandler);
                     _bills.push(overviewItem);
-                    overviewItem.y = overviewItem.height * _bills.length - 50;
                     break;
             }
+
+            overviewItem.addEventListener(TouchEvent.TOUCH, touchHandler);
+            overviewItem.addEventListener(OverviewItem.EDIT_BILL, editBillHandler);
+            overviewItem.addEventListener(OverviewItem.DELETE_BILL, deleteBillHandler);
+            overviewItem.y = overviewItem.height * _bills.length - 50;
         }
+        _appModel.bills.reverse();
     }
 
     private function deleteBillHandler(e:starling.events.Event):void {

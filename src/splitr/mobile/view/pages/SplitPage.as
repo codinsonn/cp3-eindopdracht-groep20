@@ -6,6 +6,8 @@ import splitr.mobile.view.components.AmountEditor;
 import splitr.mobile.view.components.NumStepper;
 import splitr.mobile.view.components.TextfieldToggler;
 import splitr.model.AppModel;
+import splitr.vo.BillVO;
+import splitr.vo.PersonVO;
 
 import starling.display.Button;
 import starling.display.DisplayObject;
@@ -29,11 +31,19 @@ public class SplitPage extends PanelScreen {
     private var _lblNumPeople:TextField;
     private var _setNumPeople:NumStepper;
 
-    private var _billTotal:Number = 0.00;
+    private var _numPeople:uint;
 
     public function SplitPage(w:uint = 480) {
 
         this._appModel = AppModel.getInstance();
+
+        if(_appModel.createNewPage == true){
+            var _billId:uint = _appModel.bills.length;
+            _appModel.currentBill = _billId;
+            _appModel.bills[_appModel.currentBill] = new BillVO();
+            _appModel.bills[_appModel.currentBill].billId = _billId;
+            _appModel.createNewPage = false;
+        }
 
         _headerBackButton = new Button(Assets.getAtlas().getTexture("HeaderPrevButton"));
         _headerBackButton.addEventListener(Event.TRIGGERED, backButtonTriggeredHandler);
@@ -44,11 +54,13 @@ public class SplitPage extends PanelScreen {
         _billIcon.y = 35;
         addChild(_billIcon);
 
-        _txtBillTitle = new TextfieldToggler(180, 60, 21, "OpenSansBold", "Add title", 0x3FC6F5, "My Awesome Bill");
+        _txtBillTitle = new TextfieldToggler(190, 60, 20, "OpenSansBold", _appModel.bills[_appModel.currentBill].billTitle, 0x3FC6F5, "My Awesome Bill");
         _txtBillTitle.y = 30;
+        _txtBillTitle.maxChars = 20;
+        _txtBillTitle.addEventListener(Event.CHANGE, billTitleChangedHandler);
         addChild(_txtBillTitle);
 
-        _txtBillTotal = new TextField(180, 28, "0", "OpenSansBold", 19, 0x3FC6F5);
+        _txtBillTotal = new TextField(180, 28, "0", "OpenSansBold", 17, 0x3FC6F5);
         _txtBillTotal.fontName = "OpenSansBold";
         _txtBillTotal.hAlign = HAlign.LEFT;
         _txtBillTotal.vAlign = VAlign.CENTER;
@@ -75,43 +87,33 @@ public class SplitPage extends PanelScreen {
         _editTotal.addEventListener(AmountEditor.SUBTRACT_AMOUNT, subtractFromTotalHandler);
         addChild(_editTotal);
 
-        _lblNumPeople = new TextField(180, 30, "0", "OpenSansBold", 24, 0x3FC6F5);
-        _lblNumPeople.fontName = "OpenSansBold";
-        _lblNumPeople.text = "Num people:";
-        _lblNumPeople.hAlign = HAlign.LEFT;
-        _lblNumPeople.vAlign = VAlign.CENTER;
-        _lblNumPeople.x = 40;
-        _lblNumPeople.y = 210;
-        addChild(_lblNumPeople);
-
-        _setNumPeople = new NumStepper(2);
-        _setNumPeople.y = 213;
-        _setNumPeople.addEventListener(Event.CHANGE, numPeopleChangedHandler);
-        addChild(_setNumPeople);
-
         _txtBillTitle.x = _txtBillTotal.x = _billIcon.x + _billIcon.width + 10;
         _photoRefButton.x = w - _photoRefButton.width - 40;
         _editTotal.x = w - _editTotal.width - 40;
-        _setNumPeople.x = w - _setNumPeople.width - 40;
 
         billTotalChangedHandler();
 
     }
 
+    private function billTitleChangedHandler(e:Event):void {
+        _appModel.bills[_appModel.currentBill].billTitle = _txtBillTitle.text;
+    }
+
     private function backButtonTriggeredHandler(e:Event):void {
+        saveBill();
         _appModel.currentPage = "Overview";
     }
 
-    private function numPeopleChangedHandler(e:Event):void {
+    private function saveBill():void {
 
     }
 
     private function subtractFromTotalHandler(e:Event):void {
         trace("[Splitr]", "Amount subtracted from total: ", _editTotal.amount);
-        if(_billTotal - _editTotal.amount >= 0.00){
-            _billTotal -= _editTotal.amount;
+        if(_appModel.bills[_appModel.currentBill].billTotal - _editTotal.amount >= 0.00){
+            _appModel.bills[_appModel.currentBill].billTotal -= _editTotal.amount;
         }else{
-            _billTotal = 0.00;
+            _appModel.bills[_appModel.currentBill].billTotal = 0.00;
         }
 
         billTotalChangedHandler();
@@ -119,17 +121,18 @@ public class SplitPage extends PanelScreen {
 
     private function addToTotalHandler(e:Event):void {
         trace("[Splitr]", "Amount added to total: ", _editTotal.amount);
-        _billTotal += _editTotal.amount;
+        _appModel.bills[_appModel.currentBill].billTotal += _editTotal.amount;
 
         billTotalChangedHandler();
     }
 
     private function billTotalChangedHandler(e:Event = null):void{
-        _txtBillTotal.text = _billTotal.toString() + " EUR";
+        _txtBillTotal.text = _appModel.bills[_appModel.currentBill].billTotal.toString() + " EUR";
         _editTotal.amount = 0.00;
     }
 
     private function photoRefButtonTriggered(e:Event):void {
+        saveBill();
         this._appModel.currentPage = "PhotoReference";
     }
 

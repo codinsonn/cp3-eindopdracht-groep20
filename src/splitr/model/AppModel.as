@@ -11,10 +11,12 @@ public class AppModel extends EventDispatcher {
     public static const PEOPLE_CHANGED:String = "PEOPLE_CHANGED";
     public static const BILLS_CHANGED:String = "BILLS_CHANGED";
 
-    public static const CURRENT_PERSON_CHANGED:String = "CURRENT_PERSON_CHANGED";
-    public static const CURRENT_BILL_CHANGED:String = "CURRENT_BILL_CHANGED";
+    public static const CURRENT_BILL_TOTAL_CHANGED:String = "CURRENT_BILL_TOTAL_CHANGED";
+    public static const CURRENT_BILL_PEOPLE_CHANGED:String = "CURRENT_BILL_PEOPLE_CHANGED";
 
     public static const PAGE_CHANGED:String = "PAGE_CHANGED";
+
+    private var _createNewPage:Boolean = false;
 
     private var _people:Array;
     private var _bills:Array;
@@ -111,6 +113,16 @@ public class AppModel extends EventDispatcher {
 
     public function get previousPage():String {
         return _previousPage;
+    }
+
+    public function get createNewPage():Boolean {
+        return _createNewPage;
+    }
+
+    public function set createNewPage(value:Boolean):void {
+        if(value != _createNewPage){
+            _createNewPage = value;
+        }
     }
 }
 }

@@ -123,6 +123,7 @@ public class TextfieldToggler extends Sprite {
         if(value != _text){
             _text = value;
             _label.text = _text;
+            _input.text = _text;
         }
     }
 }

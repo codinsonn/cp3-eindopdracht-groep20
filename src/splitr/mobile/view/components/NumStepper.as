@@ -22,13 +22,12 @@ public class NumStepper extends Sprite {
 
         _subtractButton = new Button(Assets.getAtlas().getTexture("PrevButtonIcon"));
         _subtractButton.x = 0;
-        _subtractButton.addEventListener(Event.TRIGGERED, subtractTriggeredHandler);
+        _subtractButton.addEventListener(TouchEvent.TOUCH, subtractTouchedHandler);
         addChild(_subtractButton);
 
         _txtAmount = new TextField(50, 30, "0", "OpenSansBold", 24, 0x3FC6F5);
         _txtAmount.fontName = "OpenSansBold";
         _txtAmount.text = _amount.toString();
-        _txtAmount.touchable = true;
         _txtAmount.x = _subtractButton.width;
         addChild(_txtAmount);
 
@@ -39,19 +38,38 @@ public class NumStepper extends Sprite {
         addChild(_addButton);
     }
 
-    private function subtractTriggeredHandler(e:Event):void {
-        if(_amount > 1){
-            _amount--;
-            _txtAmount.text = _amount.toString();
-            dispatchEvent(new Event(Event.CHANGE));
+    private function subtractTouchedHandler(e:TouchEvent):void {
+        var touchedObject:DisplayObject = e.currentTarget as DisplayObject;
+        var touch:Touch = e.getTouch(touchedObject);
+        if(touch != null) {
+            switch(touch.phase){
+                case TouchPhase.ENDED:
+                    if(_amount > 1){
+                        _amount--;
+                        _txtAmount.text = _amount.toString();
+                        dispatchEvent(new Event(Event.CHANGE));
+                    }
+                    break;
+            }
         }
     }
 
-    private function addTouchedHandler(e:Event):void {
-        _amount++;
-        _txtAmount.text = _amount.toString();
-        dispatchEvent(new Event(Event.CHANGE));
+    private function addTouchedHandler(e:TouchEvent):void {
+        var touchedObject:DisplayObject = e.currentTarget as DisplayObject;
+        var touch:Touch = e.getTouch(touchedObject);
+        if(touch != null) {
+            switch(touch.phase){
+                case TouchPhase.ENDED:
+                    _amount++;
+                    _txtAmount.text = _amount.toString();
+                    dispatchEvent(new Event(Event.CHANGE));
+                    break;
+            }
+        }
     }
 
+    public function get amount():uint {
+        return _amount;
+    }
 }
 }
