@@ -78,8 +78,7 @@ public class AppModel extends EventDispatcher {
             billVO.billType = bill.billType;
             billVO.billTitle = bill.billTitle;
             billVO.billTotal = bill.billTotal;
-            trace("[BILLGROUP]-------- ", billVO.billGroup);
-            for each(var person:Object in billVO.billGroup){
+            for each(var person:Object in bill.billGroup){
                 var personVO:PersonVO = new PersonVO();
                 personVO.personName = person.personName;
                 personVO.personShare = person.personShare;

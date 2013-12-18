@@ -60,10 +60,9 @@ public class PersonItem extends Sprite {
 
         createPanel();
 
-        _personNameField = new TextfieldToggler(150, 40, 20, "PF Ronda Seven", _PersonName , 0x3FC6F5, "My Awesome Person");
+        _personNameField = new TextfieldToggler(150, 40, 20, "PF Ronda Seven", _PersonName , 0xF3F3F3, "My Awesome Person");
         _personNameField.y = _panel.height/2 - _personNameField.height/2;
         _personNameField.x = _itemBg.x + 10;
-
 
         //SLIDER, STATIC, NOG IETRS
 
@@ -116,7 +115,7 @@ public class PersonItem extends Sprite {
 
     private function buildEqual():void {
         trace("EQUAL");
-        _equalShare = new TextField(180, 30, "0", "OpenSansBold", 18, 0xf3f3f3);
+        _equalShare = new TextField(180, 30, "0", "OpenSansBold", 18, 0xF3F3F3);
         _equalShare.y = _panel.height/2 - _equalShare.height/2;
         _equalShare.x = (_panel.width + _panel.x) - (_equalShare.width + 10);
         _equalShare.text = "€ " + _personNameShare.toString();
@@ -126,7 +125,7 @@ public class PersonItem extends Sprite {
 
     private function buildAbsolute():void {
         trace("ABSOLUTE");
-        _editableShare = new TextfieldToggler(150, 40, 20, "PF Ronda Seven", "0" , 0x3FC6F5, "My Awesome Person");
+        _editableShare = new TextfieldToggler(150, 40, 20, "PF Ronda Seven", "0" , 0xF3F3F3, "My Awesome Person");
         _editableShare.y = _panel.height/2 - _editableShare.height/2;
         _editableShare.x = (_panel.width + _panel.x) - (_editableShare.width + 10);
         _editableShare.text = "€ " + _personNameShare.toString();

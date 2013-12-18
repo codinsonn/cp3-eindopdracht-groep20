@@ -28,6 +28,8 @@ public class OverviewPage extends PanelScreen {
     private var _bills:Array;
 
     private var _txtOverview:TextField;
+    private var _settledLabel:TextField;
+    private var _unsettledLabel:TextField;
     private var _listOption:ToggleSwitch;
     private var _billList:ScrollContainer;
     private var _newEqualSplitButton:Button;
@@ -55,12 +57,21 @@ public class OverviewPage extends PanelScreen {
             message = "Drag left to delete, left to settle.";
         }
 
-        _txtOverview = new TextField(400, 50, "0", "PF Ronda Seven", 19, 0xCCCCCC);
-        _txtOverview.text = message;
-        _txtOverview.hAlign = HAlign.CENTER;
-        _txtOverview.x = _width/2 - _txtOverview.width/2;
-        _txtOverview.y = 60;
-        addChild(_txtOverview);
+        _settledLabel = new TextField(150, 50, "0", "OpenSansBold", 15, 0xAAC789);
+        _settledLabel.text = "SETTLED";
+        _settledLabel.hAlign = HAlign.RIGHT;
+        _settledLabel.alpha = .25;
+        _settledLabel.x = _width/2 - _settledLabel.width - 70;
+        _settledLabel.y = 10;
+        addChild(_settledLabel);
+
+        _unsettledLabel = new TextField(150, 50, "0", "OpenSansBold", 15, 0xF34A53);
+        _unsettledLabel.text = "UNSETTLED";
+        _unsettledLabel.hAlign = HAlign.LEFT;
+        _unsettledLabel.alpha = .25;
+        _unsettledLabel.x = _width/2 + 70;
+        _unsettledLabel.y = 10;
+        addChild(_unsettledLabel);
 
         _listOption = new ToggleSwitch();
         _listOption.width = 100;
@@ -72,6 +83,13 @@ public class OverviewPage extends PanelScreen {
             _listOption.isEnabled = false;
         }
         addChild(_listOption);
+
+        _txtOverview = new TextField(400, 50, "0", "PF Ronda Seven", 19, 0xCCCCCC);
+        _txtOverview.text = message;
+        _txtOverview.hAlign = HAlign.CENTER;
+        _txtOverview.x = _width/2 - _txtOverview.width/2;
+        _txtOverview.y = 60;
+        addChild(_txtOverview);
 
         createList();
 
@@ -129,9 +147,9 @@ public class OverviewPage extends PanelScreen {
 
     private function optionHandler(e:starling.events.Event):void {
         if(_listOption.isSelected == true){
-            createList("Settled");
-        }else{
             createList("Unsettled");
+        }else{
+            createList("Settled");
         }
     }
 
@@ -160,6 +178,8 @@ public class OverviewPage extends PanelScreen {
                         overviewItem.billVO = _appModel.bills[i];
                         _billList.addChild(overviewItem);
                         _bills.push(overviewItem);
+                        _settledLabel.alpha = 1;
+                        _unsettledLabel.alpha = .25;
                     }
                     break;
                 case "Unsettled":
@@ -167,6 +187,8 @@ public class OverviewPage extends PanelScreen {
                         overviewItem.billVO = _appModel.bills[i];
                         _billList.addChild(overviewItem);
                         _bills.push(overviewItem);
+                        _settledLabel.alpha = .25;
+                        _unsettledLabel.alpha = 1;
                     }
                     break;
                 case "All":
