@@ -4,6 +4,7 @@ import feathers.controls.Button;
 import feathers.controls.PanelScreen;
 import feathers.controls.ScrollContainer;
 import feathers.controls.ToggleSwitch;
+import flash.events.Event;
 
 import splitr.mobile.view.components.OverviewItem;
 import splitr.model.AppModel;
@@ -33,13 +34,18 @@ public class OverviewPage extends PanelScreen {
 
     public function OverviewPage(w:uint = 480) {
 
-        this._appModel = AppModel.getInstance();
-        this._appModel.currentBill = -1;
-        this._width = w;
+        _appModel = AppModel.getInstance();
 
         // Set header title
-        this.headerProperties.title = "SPLITR";
+        headerProperties.title = "SPLITR";
+        _width = w;
 
+        _appModel.addEventListener(AppModel.BILLS_CHANGED, billsChangedHandler);
+        _appModel.load();
+
+    }
+
+    private function initPage():void{
         var message:String;
         if(_appModel.bills.length < 1){
             message = "No bills yet. Choose split method:";
@@ -68,41 +74,44 @@ public class OverviewPage extends PanelScreen {
         createList();
 
         _newEqualSplitButton = new Button();
-        _newEqualSplitButton.label = "Equal";
+        _newEqualSplitButton.label = "+ Equal";
         _newEqualSplitButton.width = _width/3;
         _newEqualSplitButton.x = 0;
-        _newEqualSplitButton.addEventListener(Event.TRIGGERED, newEqualHandler);
+        _newEqualSplitButton.addEventListener(starling.events.Event.TRIGGERED, newEqualHandler);
         addChild(_newEqualSplitButton);
 
         _newPercentualSplitButton = new Button();
-        _newPercentualSplitButton.label = "Percentual";
+        _newPercentualSplitButton.label = "+ Percentual";
         _newPercentualSplitButton.width = _width/3;
         _newPercentualSplitButton.x = _width * 1/3;
-        _newPercentualSplitButton.addEventListener(Event.TRIGGERED, newPercentualHandler);
+        _newPercentualSplitButton.addEventListener(starling.events.Event.TRIGGERED, newPercentualHandler);
         addChild(_newPercentualSplitButton);
 
         _newAbsoluteSplitButton = new Button();
-        _newAbsoluteSplitButton.label = "Absolute";
+        _newAbsoluteSplitButton.label = "+ Absolute";
         _newAbsoluteSplitButton.width = _width/3;
         _newAbsoluteSplitButton.x = _width * 2/3;
-        _newAbsoluteSplitButton.addEventListener(Event.TRIGGERED, newAbsoluteHandler);
+        _newAbsoluteSplitButton.addEventListener(starling.events.Event.TRIGGERED, newAbsoluteHandler);
         addChild(_newAbsoluteSplitButton);
 
         _newEqualSplitButton.y = _newPercentualSplitButton.y = _newAbsoluteSplitButton.y = 681;
-
     }
 
-    private function newEqualHandler(e:Event):void {
+    private function billsChangedHandler(e:flash.events.Event):void {
+        initPage();
+    }
+
+    private function newEqualHandler(e:starling.events.Event):void {
         _appModel.createNewPage = true;
         _appModel.currentPage = "EqualSplit";
     }
 
-    private function newPercentualHandler(e:Event):void {
+    private function newPercentualHandler(e:starling.events.Event):void {
         _appModel.createNewPage = true;
         _appModel.currentPage = "PercentualSplit";
     }
 
-    private function newAbsoluteHandler(e:Event):void {
+    private function newAbsoluteHandler(e:starling.events.Event):void {
         _appModel.createNewPage = true;
         _appModel.currentPage = "AbsoluteSplit";
     }
@@ -116,6 +125,8 @@ public class OverviewPage extends PanelScreen {
     }
 
     private function createList(billsToShow:String = "All"):void {
+        trace("[Overview]", "Bills:", _appModel.bills);
+
         if(_billList){
             removeChild(_billList);
         }
@@ -166,7 +177,7 @@ public class OverviewPage extends PanelScreen {
 
     private function deleteBillHandler(e:starling.events.Event):void {
         var bill:OverviewItem = e.currentTarget as OverviewItem;
-        _appModel.bills.splice(bill.billVO.billId);
+        _appModel.bills.splice(bill.billVO.billId, 1);
 
         _appModel.setIds();
         createList();

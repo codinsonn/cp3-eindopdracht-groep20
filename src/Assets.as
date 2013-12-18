@@ -11,6 +11,7 @@ import starling.text.TextField;
 
 import starling.textures.Texture;
 import starling.textures.TextureAtlas;
+import starling.utils.AssetManager;
 
 public class Assets {
 

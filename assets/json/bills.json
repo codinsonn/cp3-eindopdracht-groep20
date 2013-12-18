@@ -1,0 +1,29 @@
+[
+    {
+        "billId":0,
+        "billType":"Equal",
+        "billTitle":"Dinner for two",
+        "billTotal":30,
+        "billGroup":[
+            {
+                "personName":"Thorr",
+                "personShare":15
+            },{
+                "personName":"Jolien",
+                "personShare":15
+            }
+        ],
+        "photoReference":"none",
+        "settledState":false
+    },{
+        "billId":1,
+        "billType":"Percentual",
+        "billTitle":"Night out",
+        "billTotal":178.69,
+        "billGroup":[
+
+        ],
+        "photoReference":"none",
+        "settledState":false
+    }
+]

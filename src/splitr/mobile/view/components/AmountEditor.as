@@ -37,8 +37,9 @@ public class AmountEditor extends Sprite {
         addChild(_textBackground);
 
         _txtAmount = new TextfieldToggler(110, 50, 20, "PF Ronda Seven", "0.00", 0x46D7C6, "0.00");
+        new TextfieldToggler()
         _txtAmount.x = _subtractButton.width;
-        _txtAmount.textAlignCenter = true;
+        _txtAmount.textHAlignCenter = true;
         _txtAmount.maxChars = 6;
         _txtAmount.inputRestrict = "0-9\.";
         _txtAmount.addEventListener(Event.CHANGE, amountChangedHandler);

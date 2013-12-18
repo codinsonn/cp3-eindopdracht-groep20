@@ -87,6 +87,7 @@ public class Splitr extends ScreenNavigator {
                 break;
             case "Overview":
             default:
+                trace("[Overview]", "Panelscreen");
                 this.showScreen(OVERVIEWPAGE);
                 break;
         }

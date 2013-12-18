@@ -31,7 +31,7 @@ public class SplitPage extends PanelScreen {
 
     public function SplitPage(w:uint = 480) {
 
-        this._appModel = AppModel.getInstance();
+        _appModel = AppModel.getInstance();
 
         if(_appModel.createNewPage == true){
             var _billId:uint = _appModel.bills.length;
@@ -50,7 +50,7 @@ public class SplitPage extends PanelScreen {
         _billIcon.y = 35;
         addChild(_billIcon);
 
-        _txtBillTitle = new TextfieldToggler(190, 60, 20, "PF Ronda Seven", _appModel.bills[_appModel.currentBill].billTitle, 0x3FC6F5, "My Awesome Bill");
+        _txtBillTitle = new TextfieldToggler(200, 50, 20, "PF Ronda Seven", _appModel.bills[_appModel.currentBill].billTitle, 0x3FC6F5, "My Awesome Bill");
         _txtBillTitle.y = 30;
         _txtBillTitle.maxChars = 20;
         _txtBillTitle.addEventListener(Event.CHANGE, billTitleChangedHandler);
@@ -96,16 +96,11 @@ public class SplitPage extends PanelScreen {
     }
 
     private function backButtonTriggeredHandler(e:Event):void {
-        saveBill();
+        _appModel.save();
         _appModel.currentPage = "Overview";
     }
 
-    private function saveBill():void {
-
-    }
-
     private function subtractFromTotalHandler(e:Event):void {
-        trace("[Splitr]", "Amount subtracted from total: ", _editTotal.amount);
         if(_appModel.bills[_appModel.currentBill].billTotal - _editTotal.amount >= 0.00){
             _appModel.bills[_appModel.currentBill].billTotal -= _editTotal.amount;
         }else{
@@ -116,7 +111,6 @@ public class SplitPage extends PanelScreen {
     }
 
     private function addToTotalHandler(e:Event):void {
-        trace("[Splitr]", "Amount added to total: ", _editTotal.amount);
         _appModel.bills[_appModel.currentBill].billTotal += _editTotal.amount;
 
         billTotalChangedHandler();
@@ -128,8 +122,7 @@ public class SplitPage extends PanelScreen {
     }
 
     private function photoRefButtonTriggered(e:Event):void {
-        saveBill();
-        this._appModel.currentPage = "PhotoReference";
+        _appModel.currentPage = "PhotoReference";
     }
 
 }

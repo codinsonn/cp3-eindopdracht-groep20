@@ -1063,16 +1063,17 @@ package feathers.themes
 
 		protected function baseTextInputInitializer(input:TextInput):void
 		{
-			input.minWidth = input.minHeight = 66 * this.scale;
-			input.minTouchWidth = input.minTouchHeight = 66 * this.scale;
+			input.minWidth = input.minHeight = 50 * this.scale;
+			input.minTouchWidth = input.minTouchHeight = 50 * this.scale;
 			input.gap = 8 * this.scale;
-			input.paddingTop = 14 * this.scale;
-			input.paddingBottom = 8 * this.scale;
-			input.paddingLeft = input.paddingRight = 16 * this.scale;
-			input.textEditorProperties.fontFamily = "_sans";
-			input.textEditorProperties.fontSize = this.inputFontSize;
-            input.textEditorProperties.color = 0x1E4147;
-			//input.textEditorProperties.color = PRIMARY_TEXT_COLOR;
+			//input.paddingTop = 14 * this.scale;
+            input.paddingTop = 14 * this.scale;
+			input.paddingBottom = 0 * this.scale;
+			input.paddingLeft = input.paddingRight = 8 * this.scale;
+			input.textEditorProperties.fontFamily = "PF Ronda Seven";
+			input.textEditorProperties.fontSize = 30;
+            //input.textEditorProperties.color = 0x666666;
+			input.textEditorProperties.color = PRIMARY_TEXT_COLOR;
 
 			const backgroundSkin:Scale9Image = new Scale9Image(insetBackgroundSkinTextures, this.scale);
 			backgroundSkin.width = 264 * this.scale;

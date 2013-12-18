@@ -2,7 +2,12 @@ package splitr.model {
 
 import flash.events.Event;
 import flash.events.EventDispatcher;
-import flash.events.IEventDispatcher;
+import flash.filesystem.File;
+import flash.filesystem.FileMode;
+import flash.filesystem.FileStream;
+
+import splitr.vo.BillVO;
+import splitr.vo.PersonVO;
 
 public class AppModel extends EventDispatcher {
 
@@ -18,14 +23,16 @@ public class AppModel extends EventDispatcher {
 
     private var _createNewPage:Boolean = false;
 
-    private var _people:Array;
-    private var _bills:Array;
+    private var _bills:Vector.<BillVO>;
 
     private var _currentBill:uint;
     private var _currentPerson:uint;
 
     private var _previousPage:String;
     private var _currentPage:String;
+
+    private var _jsonFile:File;
+    private var _jsonStream:FileStream;
 
     private static var instance:AppModel;
 
@@ -36,35 +43,78 @@ public class AppModel extends EventDispatcher {
         return instance;
     }
 
-    /* ----- AppModel Constructor + Functions -------------------------------------------------------------------------- */
+    /* ----- AppModel Constructor -------------------------------------------------------------------------------------- */
 
     public function AppModel(e:Enforcer) {
         if (e == null) {
             throw new Error("AppModel is a singleton, use getInstance() instead");
         }
-        _bills = [];
-        _people = [];
+
+        _bills = new Vector.<BillVO>();
+
+        _jsonFile = File.applicationStorageDirectory.resolvePath("bills.json");
+        _jsonStream = new FileStream();
+    }
+
+    /* ----- Bills / Data ---------------------------------------------------------------------------------------------- */
+
+    public function load():void{
+        var bills:Vector.<BillVO> = new Vector.<BillVO>();
+
+        if(_jsonFile.exists == false){
+            trace("[AppModel]", "bills.json nonexistant");
+            save();
+        }
+
+        _jsonStream.open(_jsonFile, FileMode.READ);
+        var jsonString:String = _jsonStream.readMultiByte(_jsonStream.bytesAvailable, "utf-8");
+        _jsonStream.close();
+
+        var billsCollection:Object = JSON.parse(jsonString);
+        for each(var bill:Object in billsCollection){
+            var billVO:BillVO = new BillVO();
+            billVO.billId = bill.billId;
+            billVO.billType = bill.billType;
+            billVO.billTitle = bill.billTitle;
+            billVO.billTotal = bill.billTotal;
+            for each(var person:Object in billVO.billGroup){
+                var personVO:PersonVO = new PersonVO();
+                personVO.personName = person.personName;
+                personVO.personShare = person.personShare;
+                billVO.billGroup.push(personVO);
+            }
+            billVO.photoReference = bill.photoReference;
+            billVO.settledState = bill.settledState;
+            bills.push(billVO);
+        }
+
+        this.bills = bills;
+    }
+
+    public function setIds():void{
+        for(var i:uint = 0; i < _bills.length; i++){
+            _bills[i].billId = i;
+        }
+        save();
+    }
+
+    public function save():void {
+        trace("[AppModel]", "Saving json file.");
+        _jsonStream.open(_jsonFile, FileMode.WRITE);
+        _jsonStream.writeUTFBytes(JSON.stringify(_bills, null, 4));
+        _jsonStream.close();
     }
 
     /* ----- Getters / Setters ----------------------------------------------------------------------------------------- */
 
-    public function get people():Array {
-        return _people;
-    }
-
-    public function set people(value:Array):void {
-        if(value != _people){
-            _people = value;
-        }
-    }
-
-    public function get bills():Array {
+    public function get bills():Vector.<BillVO> {
         return _bills;
     }
 
-    public function set bills(value:Array):void {
+    public function set bills(value:Vector.<BillVO>):void {
         if(value != _bills){
             _bills = value;
+            dispatchEvent(new Event("BILLS_CHANGED"));
         }
     }
 
@@ -85,23 +135,6 @@ public class AppModel extends EventDispatcher {
     public function set currentPerson(value:uint):void {
         if(value != _currentPerson){
             _currentPerson = value;
-        }
-    }
-
-    public function pageSwitch():void{
-        switch(_currentPage){
-            case "Overview":
-                trace("Overview");
-                break;
-            case "CreateNew":
-                trace("CreateNew");
-                break;
-        }
-    }
-
-    public function setIds():void{
-        for(var i:uint = 0; i < _bills.length; i++){
-            _bills[i].billId = i;
         }
     }
 
