@@ -50,7 +50,7 @@ public class OverviewPage extends PanelScreen {
         if(_appModel.bills.length < 1){
             message = "No bills yet. Choose split method:";
         }else{
-            message = "Drag right to edit, left to delete.";
+            message = "Drag left to delete, left to settle.";
         }
 
         _txtOverview = new TextField(400, 50, "0", "PF Ronda Seven", 19, 0xCCCCCC);
@@ -168,7 +168,7 @@ public class OverviewPage extends PanelScreen {
             }
 
             overviewItem.addEventListener(TouchEvent.TOUCH, touchHandler);
-            overviewItem.addEventListener(OverviewItem.EDIT_BILL, editBillHandler);
+            overviewItem.addEventListener(OverviewItem.EDIT_SETTLED, editSettledHandler);
             overviewItem.addEventListener(OverviewItem.DELETE_BILL, deleteBillHandler);
             overviewItem.y = overviewItem.height * _bills.length - 50;
         }
@@ -183,21 +183,12 @@ public class OverviewPage extends PanelScreen {
         createList();
     }
 
-    private function editBillHandler(e:starling.events.Event):void {
+    private function editSettledHandler(e:starling.events.Event):void {
         var bill:OverviewItem = e.currentTarget as OverviewItem;
-        _appModel.currentBill = bill.billVO.billId;
+        trace("[Overview]", "Edit Bill:", bill);
 
-        switch (_appModel.bills[_appModel.currentBill].billType){
-            case "Equal":
-                _appModel.currentPage = "EqualSplit";
-                break;
-            case "Percentual":
-                _appModel.currentPage = "PercentualSplit";
-                break;
-            case "Absolute":
-                _appModel.currentPage = "AbsoluteSplit";
-                break;
-        }
+        _appModel.bills[bill.billVO.billId].settledState = !bill.billVO.settledState;
+        bill.billVO = _appModel.bills[bill.billVO.billId];
     }
 
     private function touchHandler(e:TouchEvent):void {
@@ -216,6 +207,21 @@ public class OverviewPage extends PanelScreen {
                     touchedObject.setElementsX(elementsX);
                     break;
                 case TouchPhase.ENDED:
+                    if(touch.globalX == _startDragX){
+                        _appModel.currentBill = touchedObject.billVO.billId;
+
+                        switch (_appModel.bills[_appModel.currentBill].billType){
+                            case "Equal":
+                                _appModel.currentPage = "EqualSplit";
+                                break;
+                            case "Percentual":
+                                _appModel.currentPage = "PercentualSplit";
+                                break;
+                            case "Absolute":
+                                _appModel.currentPage = "AbsoluteSplit";
+                                break;
+                        }
+                    }
                     touchedObject.release();
                     break;
             }

@@ -1071,7 +1071,7 @@ package feathers.themes
 			input.paddingBottom = 0 * this.scale;
 			input.paddingLeft = input.paddingRight = 8 * this.scale;
 			input.textEditorProperties.fontFamily = "PF Ronda Seven";
-			input.textEditorProperties.fontSize = 30;
+			input.textEditorProperties.fontSize = this.fontSize;
             //input.textEditorProperties.color = 0x666666;
 			input.textEditorProperties.color = PRIMARY_TEXT_COLOR;
 

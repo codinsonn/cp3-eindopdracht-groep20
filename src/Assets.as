@@ -1,17 +1,17 @@
 package {
-import feathers.controls.TextInput;
 
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.Shape;
+import flash.utils.ByteArray;
 import flash.utils.Dictionary;
 
 import starling.text.BitmapFont;
 import starling.text.TextField;
+import starling.textures.AtfData;
 
 import starling.textures.Texture;
 import starling.textures.TextureAtlas;
-import starling.utils.AssetManager;
 
 public class Assets {
 
@@ -27,7 +27,7 @@ public class Assets {
     private static var splitrTextureAtlas:TextureAtlas;
 
     // Spritesheet embedding
-    [Embed(source="/../assets/custom/SplitrSpritesheet.png")]
+    [Embed(source="/../assets/custom/SplitrSpritesheet.atf", mimeType="application/octet-stream")]
     public static const SplitrSpritesheet:Class;
 
     [Embed(source="/../assets/custom/SplitrSpritesheet.xml", mimeType="application/octet-stream")]
@@ -43,7 +43,7 @@ public class Assets {
     {
         // Create new TextureAtlas if it does not yet exist
         if(splitrTextureAtlas == null){
-            var texture:Texture = getTexture("SplitrSpritesheet");
+            var texture:Texture = Texture.fromAtfData(new SplitrSpritesheet() as ByteArray);
             var xml:XML = XML(new SplitrSpritesheetXML());
 
             splitrTextureAtlas = new TextureAtlas(texture, xml);

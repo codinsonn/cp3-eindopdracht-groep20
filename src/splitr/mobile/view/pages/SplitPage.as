@@ -45,7 +45,17 @@ public class SplitPage extends PanelScreen {
         _headerBackButton.addEventListener(Event.TRIGGERED, backButtonTriggeredHandler);
         headerProperties.leftItems = new <DisplayObject>[_headerBackButton];
 
-        _billIcon = new Image(Assets.getAtlas().getTexture("BillIcon"));
+        switch (_appModel.currentPage){
+            case "EqualSplit":
+                _billIcon = new Image(Assets.getAtlas().getTexture("EqualBillIcon"));
+                break;
+            case "PercentualSplit":
+                _billIcon = new Image(Assets.getAtlas().getTexture("PercentualBillIcon"));
+                break;
+            case "AbsoluteSplit":
+                _billIcon = new Image(Assets.getAtlas().getTexture("AbsoluteBillIcon"));
+                break;
+        }
         _billIcon.x = 40;
         _billIcon.y = 35;
         addChild(_billIcon);
