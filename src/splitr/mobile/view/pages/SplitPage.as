@@ -100,10 +100,9 @@ public class SplitPage extends PanelScreen {
         _photoRefButton.x = w - _photoRefButton.width - 40;
         _editTotal.x = w - _editTotal.width - 40;
 
-        _personList = new PersonList(480, 300);
+        _personList = new PersonList(480, 400);
         addChild(_personList);
-        _personList.y = 300;
-
+        _personList.y = 210;
 
         billTotalChangedHandler();
 

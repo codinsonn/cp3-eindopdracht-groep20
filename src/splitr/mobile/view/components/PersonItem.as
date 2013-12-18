@@ -39,6 +39,7 @@ public class PersonItem extends Sprite {
     private var _equalShare:TextField;
 
     private var _shareSlider:Slider;
+    private var _h:uint;
 
     public function PersonItem(_w:uint = 480, _PersonName:String = "Hans", _PersonShare:Number = 0.00) {
 
@@ -47,6 +48,7 @@ public class PersonItem extends Sprite {
 
         _width = _w;
         _leftX = 100;
+        _h = 50;
 
         // Draw item background
         _itemBg = new Image(Assets.createTextureFromRectShape(_width *.6, 50, 0xf3f3f3));
@@ -104,8 +106,9 @@ public class PersonItem extends Sprite {
         _shareSlider.minimum = 0;
         _shareSlider.maximum = 100;
         _shareSlider.value = 50;
+        _shareSlider.height = _h;
         _shareSlider.width = _panel.width;
-        _shareSlider.y = (_panel.y+_panel.height) + 10;
+        _shareSlider.y = (_panel.y+_panel.height);
         _shareSlider.x = _panel.x;
 
         addChild(_shareSlider);

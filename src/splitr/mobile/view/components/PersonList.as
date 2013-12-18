@@ -22,10 +22,15 @@ public class PersonList extends Sprite{
     private var _personItem:PersonItem;
     private var _plus:Button;
     private var i:uint;
+    private var _w:uint;
+    private var _h:uint;
 
     public function PersonList(w:uint,h:uint) {
 
         _appModel = AppModel.getInstance();
+
+        _w = w;
+        _h = h;
 
         _plus = new Button();
         _plus.width = 40;
@@ -33,11 +38,12 @@ public class PersonList extends Sprite{
         _plus.label  = "+";
         _plus.x = w/2 - _plus.width/2;
         _plus.addEventListener(Event.TRIGGERED, triggeredHandler);
+        _plus.addEventListener(Event.TRIGGERED, testHandler);
         addChild(_plus);
 
         _listContainer = new ScrollContainer();
-        _listContainer.width = w;
-        _listContainer.height = h;
+        _listContainer.width = _w;
+        _listContainer.height = _h;
         _listContainer.y = (_plus.y + _plus.height) + 20;
         addChild(_listContainer);
 
@@ -45,25 +51,44 @@ public class PersonList extends Sprite{
 
     }
 
+    private function testHandler(event:Event):void {
+        trace("TESTHANDLER");
+    }
+
     private function fillList():void{
+        i = 0;
         if(_listContainer){
+            trace("REMOVE");
             removeChild(_listContainer);
         }
-
+        trace("BUILD LIST");
         _listContainer = new ScrollContainer();
+        _listContainer.width = _w;
+        _listContainer.height = _h;
+        _listContainer.y = (_plus.y + _plus.height) + 20;
+
         addChild(_listContainer);
+        trace( _appModel.currentBill);
+
+        // trace( _appModel.bills[_appModel.currentBill].billGroup.length);
 
         for each(var person:PersonVO in _appModel.bills[_appModel.currentBill].billGroup){
-            i++;
+            trace("ADD EXISTING PERSON");
             var personItem:PersonItem = new PersonItem(480, person.personName, person.personShare);
             _listContainer.addChild(personItem);
-            personItem.y = personItem.height*i;
+            if(_appModel.currentPage == "PercentualSplit" && i != 0){
+                personItem.y = (personItem.height + 5)*i;
+            }else{
+                personItem.y = (personItem.height)*i;
+            }
+            i++;
         }
     }
 
     private function triggeredHandler(event:Event):void {
+        trace("ADD PERSON");
         var newPerson:PersonVO = new PersonVO();
-        i++;
+
         _appModel.bills[_appModel.currentBill].billGroup.push(newPerson);
         _appModel.save();
         fillList();

@@ -68,6 +68,7 @@ public class AppModel extends EventDispatcher {
 
         _jsonStream.open(_jsonFile, FileMode.READ);
         var jsonString:String = _jsonStream.readMultiByte(_jsonStream.bytesAvailable, "utf-8");
+        trace("[JSON]: ",jsonString);
         _jsonStream.close();
 
         var billsCollection:Object = JSON.parse(jsonString);
@@ -77,6 +78,7 @@ public class AppModel extends EventDispatcher {
             billVO.billType = bill.billType;
             billVO.billTitle = bill.billTitle;
             billVO.billTotal = bill.billTotal;
+            trace("[BILLGROUP]-------- ", billVO.billGroup);
             for each(var person:Object in billVO.billGroup){
                 var personVO:PersonVO = new PersonVO();
                 personVO.personName = person.personName;
@@ -99,9 +101,11 @@ public class AppModel extends EventDispatcher {
     }
 
     public function save():void {
-        trace("[AppModel]", "Saving json file.");
+        trace("[AppModel]", "Saving json file.", JSON.stringify(_bills, null, 4));
         _jsonStream.open(_jsonFile, FileMode.WRITE);
+
         _jsonStream.writeUTFBytes(JSON.stringify(_bills, null, 4));
+
         _jsonStream.close();
     }
 
