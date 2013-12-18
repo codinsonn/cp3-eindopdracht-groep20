@@ -31,6 +31,7 @@ public class PersonList extends Sprite{
         _plus.width = 40;
         _plus.height = 40;
         _plus.label  = "+";
+        _plus.x = w/2 - _plus.width/2;
         _plus.addEventListener(Event.TRIGGERED, triggeredHandler);
         addChild(_plus);
 
@@ -40,20 +41,39 @@ public class PersonList extends Sprite{
         _listContainer.y = (_plus.y + _plus.height) + 20;
         addChild(_listContainer);
 
+        fillList();
+
+    }
+
+    private function fillList():void{
+        if(_listContainer){
+            removeChild(_listContainer);
+        }
+
+        _listContainer = new ScrollContainer();
+        addChild(_listContainer);
+
         for each(var person:PersonVO in _appModel.bills[_appModel.currentBill].billGroup){
             i++;
             var personItem:PersonItem = new PersonItem(480, person.personName, person.personShare);
             _listContainer.addChild(personItem);
             personItem.y = personItem.height*i;
         }
-
     }
 
     private function triggeredHandler(event:Event):void {
+        var newPerson:PersonVO = new PersonVO();
         i++;
+        _appModel.bills[_appModel.currentBill].billGroup.push(newPerson);
+        _appModel.save();
+        fillList();
+
+        /*i++;
        _personItem = new PersonItem();
         _listContainer.addChild(_personItem);
         _personItem.y = _personItem.height*i;
+
+        _appModel.bills[_appModel.currentBill].billGroup.push(_personItem);*/
     }
 }
 }

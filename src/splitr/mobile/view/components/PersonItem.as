@@ -86,14 +86,15 @@ public class PersonItem extends Sprite {
                     buildEqual();
                 break;
             case "PercentualSplit":
-                    buildSlider();
+                    trace("PROCENTUEEL,SLIDER");
+
                     buildEqual();
+                    buildSlider();
                 break;
             case "AbsoluteSplit":
                     buildAbsolute();
                 break;
         }
-
     }
 
     private function buildSlider():void {
@@ -103,9 +104,8 @@ public class PersonItem extends Sprite {
         _shareSlider.minimum = 0;
         _shareSlider.maximum = 100;
         _shareSlider.value = 50;
-        _shareSlider.step = 1;
         _shareSlider.width = _panel.width;
-        _shareSlider.y = (_panel.height) + 10;
+        _shareSlider.y = (_panel.y+_panel.height) + 10;
         _shareSlider.x = _panel.x;
 
         addChild(_shareSlider);
