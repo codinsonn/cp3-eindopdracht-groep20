@@ -4,6 +4,7 @@ import feathers.controls.PanelScreen;
 
 import splitr.mobile.view.components.AmountEditor;
 import splitr.mobile.view.components.NumStepper;
+import splitr.mobile.view.components.PersonList;
 import splitr.mobile.view.components.TextfieldToggler;
 import splitr.model.AppModel;
 import splitr.vo.BillVO;
@@ -28,6 +29,8 @@ public class SplitPage extends PanelScreen {
     private var _photoRefButton:Button;
     private var _lblEditTotal:TextField;
     private var _editTotal:AmountEditor;
+
+    private var _personList:PersonList;
 
     public function SplitPage(w:uint = 480) {
 
@@ -96,6 +99,11 @@ public class SplitPage extends PanelScreen {
         _txtBillTitle.x = _txtBillTotal.x = _billIcon.x + _billIcon.width + 10;
         _photoRefButton.x = w - _photoRefButton.width - 40;
         _editTotal.x = w - _editTotal.width - 40;
+
+        _personList = new PersonList(480, 300);
+        addChild(_personList);
+        _personList.y = 300;
+
 
         billTotalChangedHandler();
 

@@ -21,6 +21,7 @@ public class TextfieldToggler extends Sprite {
 
     private var _textHAlignCenter:Boolean = false;
     private var _textVAlignCenter:Boolean = false;
+    private var _textHAlignRight:Boolean = false;
 
     private var _label:TextField;
     private var _input:TextInput;
@@ -88,6 +89,16 @@ public class TextfieldToggler extends Sprite {
         }
     }
 
+    public function set textHAlignRight(value:Boolean):void {
+
+        if(value != _textHAlignRight){
+            _textHAlignRight = value;
+            if(_textHAlignRight == true){
+                _label.hAlign = HAlign.RIGHT;
+            }
+        }
+    }
+
     public function set showBorder(value:Boolean):void {
         _label.border = value;
     }
@@ -140,5 +151,7 @@ public class TextfieldToggler extends Sprite {
             }
         }
     }
+
+
 }
 }
