@@ -178,8 +178,8 @@ public class OverviewPage extends PanelScreen {
                         overviewItem.billVO = _appModel.bills[i];
                         _billList.addChild(overviewItem);
                         _bills.push(overviewItem);
-                        _settledLabel.alpha = 1;
-                        _unsettledLabel.alpha = .25;
+                        _settledLabel.alpha = .25;
+                        _unsettledLabel.alpha = 1;
                     }
                     break;
                 case "Unsettled":
@@ -187,8 +187,8 @@ public class OverviewPage extends PanelScreen {
                         overviewItem.billVO = _appModel.bills[i];
                         _billList.addChild(overviewItem);
                         _bills.push(overviewItem);
-                        _settledLabel.alpha = .25;
-                        _unsettledLabel.alpha = 1;
+                        _settledLabel.alpha = 1;
+                        _unsettledLabel.alpha = .25;
                     }
                     break;
                 case "All":

@@ -81,14 +81,19 @@ public class SplitPage extends PanelScreen {
         _photoRefButton.addEventListener(Event.TRIGGERED, photoRefButtonTriggered);
         addChild(_photoRefButton);
 
-        _lblEditTotal = new TextField(180, 30, "0", "OpenSansBold", 24, 0x46D7C6);
-        _lblEditTotal.fontName = "OpenSansBold";
-        _lblEditTotal.text = "Edit total:";
-        _lblEditTotal.hAlign = HAlign.LEFT;
-        _lblEditTotal.vAlign = VAlign.CENTER;
-        _lblEditTotal.x = 40;
-        _lblEditTotal.y = 140;
-        addChild(_lblEditTotal);
+        var subtractLabel:TextField = new TextField(150, 50, "0", "OpenSansBold", 15, 0x46D7C6);
+        subtractLabel.text = "SUBTRACT";
+        subtractLabel.hAlign = HAlign.RIGHT;
+        subtractLabel.x = w/2 - subtractLabel.width - 120;
+        subtractLabel.y = 135;
+        addChild(subtractLabel);
+
+        var addLabel:TextField = new TextField(150, 50, "0", "OpenSansBold", 15, 0x46D7C6);
+        addLabel.text = "ADD TOTAL";
+        addLabel.hAlign = HAlign.LEFT;
+        addLabel.x = w/2 + 120;
+        addLabel.y = 135;
+        addChild(addLabel);
 
         _editTotal = new AmountEditor();
         _editTotal.y = 135;
@@ -98,7 +103,7 @@ public class SplitPage extends PanelScreen {
 
         _txtBillTitle.x = _txtBillTotal.x = _billIcon.x + _billIcon.width + 10;
         _photoRefButton.x = w - _photoRefButton.width - 40;
-        _editTotal.x = w - _editTotal.width - 40;
+        _editTotal.x = w/2 - _editTotal.width/2;
 
         _personList = new PersonList(480, 400);
         addChild(_personList);
