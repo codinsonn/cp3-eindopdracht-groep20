@@ -9,6 +9,8 @@ import flash.events.Event;
 import splitr.mobile.view.components.OverviewItem;
 import splitr.model.AppModel;
 
+import starling.display.Image;
+
 import starling.events.Event;
 import starling.events.Touch;
 import starling.events.TouchEvent;
@@ -74,23 +76,32 @@ public class OverviewPage extends PanelScreen {
         createList();
 
         _newEqualSplitButton = new Button();
-        _newEqualSplitButton.label = "+ Equal";
+        _newEqualSplitButton.label = "Equal";
         _newEqualSplitButton.width = _width/3;
         _newEqualSplitButton.x = 0;
+        _newEqualSplitButton.defaultIcon = new Image(Assets.getAtlas().getTexture("EqualBillIcon"));
+        _newEqualSplitButton.defaultIcon.scaleX = 0.4;
+        _newEqualSplitButton.defaultIcon.scaleY = 0.4;
         _newEqualSplitButton.addEventListener(starling.events.Event.TRIGGERED, newEqualHandler);
         addChild(_newEqualSplitButton);
 
         _newPercentualSplitButton = new Button();
-        _newPercentualSplitButton.label = "+ Percentual";
+        _newPercentualSplitButton.label = "Percentual";
         _newPercentualSplitButton.width = _width/3;
         _newPercentualSplitButton.x = _width * 1/3;
+        _newPercentualSplitButton.defaultIcon = new Image(Assets.getAtlas().getTexture("PercentualBillIcon"));
+        _newPercentualSplitButton.defaultIcon.scaleX = 0.4;
+        _newPercentualSplitButton.defaultIcon.scaleY = 0.4;
         _newPercentualSplitButton.addEventListener(starling.events.Event.TRIGGERED, newPercentualHandler);
         addChild(_newPercentualSplitButton);
 
         _newAbsoluteSplitButton = new Button();
-        _newAbsoluteSplitButton.label = "+ Absolute";
+        _newAbsoluteSplitButton.label = "Absolute";
         _newAbsoluteSplitButton.width = _width/3;
         _newAbsoluteSplitButton.x = _width * 2/3;
+        _newAbsoluteSplitButton.defaultIcon = new Image(Assets.getAtlas().getTexture("AbsoluteBillIcon"));
+        _newAbsoluteSplitButton.defaultIcon.scaleX = 0.4;
+        _newAbsoluteSplitButton.defaultIcon.scaleY = 0.4;
         _newAbsoluteSplitButton.addEventListener(starling.events.Event.TRIGGERED, newAbsoluteHandler);
         addChild(_newAbsoluteSplitButton);
 
@@ -125,8 +136,6 @@ public class OverviewPage extends PanelScreen {
     }
 
     private function createList(billsToShow:String = "All"):void {
-        trace("[Overview]", "Bills:", _appModel.bills);
-
         if(_billList){
             removeChild(_billList);
         }
@@ -185,10 +194,9 @@ public class OverviewPage extends PanelScreen {
 
     private function editSettledHandler(e:starling.events.Event):void {
         var bill:OverviewItem = e.currentTarget as OverviewItem;
-        trace("[Overview]", "Edit Bill:", bill);
-
         _appModel.bills[bill.billVO.billId].settledState = !bill.billVO.settledState;
         bill.billVO = _appModel.bills[bill.billVO.billId];
+        _appModel.save();
     }
 
     private function touchHandler(e:TouchEvent):void {

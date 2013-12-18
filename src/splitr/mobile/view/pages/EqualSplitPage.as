@@ -13,7 +13,7 @@ public class EqualSplitPage extends SplitPage {
 
         this.headerProperties.title = "SPLIT EQUAL";
 
-
+        
 
     }
 
