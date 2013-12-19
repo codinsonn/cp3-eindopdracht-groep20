@@ -18,6 +18,7 @@ public class TextfieldToggler extends Sprite {
     private var _text:String;
     private var _placeholder:String;
     private var _active:Boolean = false;
+    private var _isNumberInput:Boolean = false;
 
     private var _textHAlignCenter:Boolean = false;
     private var _textVAlignCenter:Boolean = false;
@@ -45,7 +46,6 @@ public class TextfieldToggler extends Sprite {
         _input.visible = false;
         _input.width = w;
         _input.x = _input.y = 0;
-
     }
 
     private function labelTouchedHandler(e:TouchEvent):void {
@@ -57,13 +57,9 @@ public class TextfieldToggler extends Sprite {
                     _hasMoved = true;
                     break;
                 case TouchPhase.ENDED:
-
                     activateOrIgnore();
-                    //this.active = true;
                     break;
             }
-
-
         }
     }
 
@@ -108,7 +104,6 @@ public class TextfieldToggler extends Sprite {
     }
 
     public function set textHAlignRight(value:Boolean):void {
-
         if(value != _textHAlignRight){
             _textHAlignRight = value;
             if(_textHAlignRight == true){
@@ -142,28 +137,20 @@ public class TextfieldToggler extends Sprite {
     }
 
     public function set active(value:Boolean):void {
-
         if(_active != value){
             _active = value;
-            trace("IS ACTIVE FROM SETTER: ",_active);
             setActivePolicy();
-
         }
     }
 
     private function setActivePolicy():void {
-
-        trace("SETPOLICY");
-
         if(_active == true){
-
             addChild(_input);
             _label.removeEventListener(TouchEvent.TOUCH, labelTouchedHandler);
             _input.visible = true;
             _input.setFocus();
             _input.addEventListener(FeathersEventType.ENTER, enterKeyDownHandler);
             _input.addEventListener(FeathersEventType.FOCUS_OUT, focusOutHandler);
-
         }else{
             removeChild(_input);
             _input.clearFocus();
@@ -174,7 +161,12 @@ public class TextfieldToggler extends Sprite {
             if(_input.text != ""){
                 _text = _input.text;
             }else{
-                _text = _placeholder;
+                if(_isNumberInput == true){
+                    _text = Number(_placeholder.substr(2)).toFixed(2);
+                }else{
+                    _text = _placeholder;
+                }
+
             }
             _label.text = _text;
             dispatchEvent(new Event(Event.CHANGE));
@@ -183,5 +175,10 @@ public class TextfieldToggler extends Sprite {
     }
 
 
+    public function set isNumberInput(value:Boolean):void {
+        if(_isNumberInput != value){
+            _isNumberInput = value;
+        }
+    }
 }
 }

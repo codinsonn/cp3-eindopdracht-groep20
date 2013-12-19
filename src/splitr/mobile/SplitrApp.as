@@ -7,20 +7,16 @@ import feathers.themes.MinimalMobileTheme;
 
 import flash.events.Event;
 
-import splitr.mobile.view.pages.AbsoluteSplitPage;
-import splitr.mobile.view.pages.EqualSplitPage;
 import splitr.mobile.view.pages.OverviewPage;
-import splitr.mobile.view.pages.PercentualSplitPage;
 import splitr.mobile.view.pages.PhotoRefPage;
+import splitr.mobile.view.pages.SplitPage;
 
 import splitr.model.AppModel;
 
 public class SplitrApp extends ScreenNavigator {
 
     private static const OVERVIEWPAGE:String = "overviewPage";
-    private static const EQUALSPLITPAGE:String = "equalSplitPage";
-    private static const PERCENTUALSPLITPAGE:String = "percentualSplitPage";
-    private static const ABSOLUTESPLITPAGE:String = "absoluteSplitPage";
+    private static const SPLITPAGE:String = "splitPage";
     private static const PHOTOREFPAGE:String = "photoRefPage";
 
     private var _appModel:AppModel;
@@ -40,24 +36,14 @@ public class SplitrApp extends ScreenNavigator {
 
         }));
 
-        // Add the equal split panelscreen/page to our ScreenNavigator
-        addScreen(EQUALSPLITPAGE, new ScreenNavigatorItem(EqualSplitPage, {
-            complete: OVERVIEWPAGE
-        }));
-
-        // Add the percentual split panelscreen/page to our ScreenNavigator
-        addScreen(PERCENTUALSPLITPAGE, new ScreenNavigatorItem(PercentualSplitPage, {
-            complete: OVERVIEWPAGE
-        }));
-
-        // Add the absolute split panelscreen/page to our ScreenNavigator
-        addScreen(ABSOLUTESPLITPAGE, new ScreenNavigatorItem(AbsoluteSplitPage, {
+        // Add the split panelscreen/page to our ScreenNavigator
+        addScreen(SPLITPAGE, new ScreenNavigatorItem(SplitPage, {
             complete: OVERVIEWPAGE
         }));
 
         // Add the photo reference panelscreen/page to our ScreenNavigator
         addScreen(PHOTOREFPAGE, new ScreenNavigatorItem(PhotoRefPage, {
-            // Not sure what to put here
+            complete: SPLITPAGE
         }));
 
         // Transition settings
@@ -74,20 +60,15 @@ public class SplitrApp extends ScreenNavigator {
 
         switch (_appModel.currentPage){
             case "EqualSplit":
-                this.showScreen(EQUALSPLITPAGE);
-                break;
             case "PercentualSplit":
-                this.showScreen(PERCENTUALSPLITPAGE);
-                break;
             case "AbsoluteSplit":
-                this.showScreen(ABSOLUTESPLITPAGE);
+                this.showScreen(SPLITPAGE);
                 break;
             case "PhotoReference":
                 this.showScreen(PHOTOREFPAGE);
                 break;
             case "Overview":
             default:
-                trace("[Overview]", "Panelscreen");
                 this.showScreen(OVERVIEWPAGE);
                 break;
         }

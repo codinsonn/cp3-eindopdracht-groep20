@@ -5,13 +5,11 @@ import feathers.controls.PanelScreen;
 import flash.events.Event;
 
 import splitr.mobile.view.components.AmountEditor;
-import splitr.mobile.view.components.NumStepper;
 import splitr.mobile.view.components.PersonList;
 import splitr.mobile.view.components.TextfieldToggler;
 import splitr.model.AppModel;
 import splitr.model.services.CalculatorService;
 import splitr.vo.BillVO;
-import splitr.vo.PersonVO;
 
 import starling.display.Button;
 import starling.display.DisplayObject;
@@ -56,12 +54,18 @@ public class SplitPage extends PanelScreen {
 
         switch (_appModel.currentPage){
             case "EqualSplit":
+                _appModel.bills[_appModel.currentBill].billType = "Equal";
+                this.headerProperties.title = "SPLIT EQUAL";
                 _billIcon = new Image(Assets.getAtlas().getTexture("EqualBillIcon"));
                 break;
             case "PercentualSplit":
+                _appModel.bills[_appModel.currentBill].billType = "Percentual";
+                this.headerProperties.title = "SPLIT PERCENTUAL";
                 _billIcon = new Image(Assets.getAtlas().getTexture("PercentualBillIcon"));
                 break;
             case "AbsoluteSplit":
+                _appModel.bills[_appModel.currentBill].billType = "Absolute";
+                this.headerProperties.title = "SPLIT ABSOLUTE";
                 _billIcon = new Image(Assets.getAtlas().getTexture("AbsoluteBillIcon"));
                 break;
         }
@@ -88,39 +92,32 @@ public class SplitPage extends PanelScreen {
         addChild(_photoRefButton);
 
         if(_appModel.currentPage != "AbsoluteSplit"){
-
-            var subtractLabel:TextField = new TextField(150, 50, "0", "OpenSansBold", 15, 0x46D7C6);
-            subtractLabel.text = "SUBTRACT";
-            subtractLabel.hAlign = HAlign.RIGHT;
-            subtractLabel.x = w/2 - subtractLabel.width - 120;
-            subtractLabel.y = 135;
-            addChild(subtractLabel);
-
-            var addLabel:TextField = new TextField(150, 50, "0", "OpenSansBold", 15, 0x46D7C6);
-            addLabel.text = "ADD TOTAL";
-            addLabel.hAlign = HAlign.LEFT;
-            addLabel.x = w/2 + 120;
-            addLabel.y = 135;
-            addChild(addLabel);
+            var lblEditTotal:TextField = new TextField(180, 50, "0", "OpenSansBold", 20, 0x46D7C6);
+            lblEditTotal.text = "ADD TO TOTAL";
+            lblEditTotal.hAlign = HAlign.LEFT;
+            lblEditTotal.x = 40;
+            lblEditTotal.y = 135;
+            addChild(lblEditTotal);
 
             _editTotal = new AmountEditor();
             _editTotal.y = 135;
             _editTotal.addEventListener(AmountEditor.ADD_AMOUNT, addToTotalHandler);
             _editTotal.addEventListener(AmountEditor.SUBTRACT_AMOUNT, subtractFromTotalHandler);
             addChild(_editTotal);
-            _editTotal.x = w/2 - _editTotal.width/2;
+            _editTotal.x = w - _editTotal.width - 40;
+
+            _personList = new PersonList(480, 400);
+            _personList.y = 210;
+        }else{
+            _personList = new PersonList(480, 480);
+            _personList.y = 130;
         }
+        addChild(_personList);
+
         _txtBillTitle.x = _txtBillTotal.x = _billIcon.x + _billIcon.width + 10;
         _photoRefButton.x = w - _photoRefButton.width - 40;
 
-
-        _personList = new PersonList(480, 400);
-        addChild(_personList);
-        _personList.y = 210;
-
         billTotalChangedHandler();
-
-
     }
 
     private function newTotalHandler(event:flash.events.Event):void {

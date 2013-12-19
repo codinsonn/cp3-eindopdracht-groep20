@@ -66,8 +66,6 @@ public class PersonItem extends Sprite {
         _personNameField.y = _panel.height/2 - _personNameField.height/2;
         _personNameField.x = _itemBg.x + 10;
 
-        //SLIDER, STATIC, NOG IETRS
-
         textOrInput();
 
         _delete.x = 5;
@@ -148,7 +146,8 @@ public class PersonItem extends Sprite {
     }
 
     private function shareChangedHandler(event:Event):void {
-        _share = Number((_editableShare.text).substr(2));
+        _share = Number(Number((_editableShare.text).substr(2)).toFixed(2));
+        trace("[SHARE]", "-------", _share, "-------");
         dispatchEvent(new Event(Event.CHANGE) );
     }
 

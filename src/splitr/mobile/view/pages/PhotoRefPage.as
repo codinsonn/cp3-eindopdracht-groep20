@@ -109,6 +109,7 @@ public class PhotoRefPage extends PanelScreen {
         _takeNewPhoto = new feathers.controls.Button();
         _takeNewPhoto.defaultIcon = new Image(Assets.getAtlas().getTexture("DeleteIcon"));
         _takeNewPhoto.label = "Take other photo.";
+        _takeNewPhoto.width = 200;
         _takeNewPhoto.x = 240 - _takeNewPhoto.width/2;
         _takeNewPhoto.y = 20;
         _takeNewPhoto.addEventListener(starling.events.Event.TRIGGERED, takeNewPhotoHandler);
