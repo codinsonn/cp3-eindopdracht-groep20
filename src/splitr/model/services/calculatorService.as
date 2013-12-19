@@ -1,11 +1,5 @@
-/**
- * Created with IntelliJ IDEA.
- * User: Panzerfaust
- * Date: 19/12/13
- * Time: 13:44
- * To change this template use File | Settings | File Templates.
- */
 package splitr.model.services {
+
 import flash.events.Event;
 import flash.events.EventDispatcher;
 

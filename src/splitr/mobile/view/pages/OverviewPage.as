@@ -97,9 +97,7 @@ public class OverviewPage extends PanelScreen {
         _newEqualSplitButton.label = "Equal";
         _newEqualSplitButton.width = _width/3;
         _newEqualSplitButton.x = 0;
-        _newEqualSplitButton.defaultIcon = new Image(Assets.getAtlas().getTexture("EqualBillIcon"));
-        _newEqualSplitButton.defaultIcon.scaleX = 0.4;
-        _newEqualSplitButton.defaultIcon.scaleY = 0.4;
+        _newEqualSplitButton.defaultIcon = new Image(Assets.getAtlas().getTexture("NewEqualBillIcon"));
         _newEqualSplitButton.addEventListener(starling.events.Event.TRIGGERED, newEqualHandler);
         addChild(_newEqualSplitButton);
 
@@ -107,9 +105,7 @@ public class OverviewPage extends PanelScreen {
         _newPercentualSplitButton.label = "Percentual";
         _newPercentualSplitButton.width = _width/3;
         _newPercentualSplitButton.x = _width * 1/3;
-        _newPercentualSplitButton.defaultIcon = new Image(Assets.getAtlas().getTexture("PercentualBillIcon"));
-        _newPercentualSplitButton.defaultIcon.scaleX = 0.4;
-        _newPercentualSplitButton.defaultIcon.scaleY = 0.4;
+        _newPercentualSplitButton.defaultIcon = new Image(Assets.getAtlas().getTexture("NewPercentualBillIcon"));
         _newPercentualSplitButton.addEventListener(starling.events.Event.TRIGGERED, newPercentualHandler);
         addChild(_newPercentualSplitButton);
 
@@ -117,9 +113,7 @@ public class OverviewPage extends PanelScreen {
         _newAbsoluteSplitButton.label = "Absolute";
         _newAbsoluteSplitButton.width = _width/3;
         _newAbsoluteSplitButton.x = _width * 2/3;
-        _newAbsoluteSplitButton.defaultIcon = new Image(Assets.getAtlas().getTexture("AbsoluteBillIcon"));
-        _newAbsoluteSplitButton.defaultIcon.scaleX = 0.4;
-        _newAbsoluteSplitButton.defaultIcon.scaleY = 0.4;
+        _newAbsoluteSplitButton.defaultIcon = new Image(Assets.getAtlas().getTexture("NewAbsoluteBillIcon"));
         _newAbsoluteSplitButton.addEventListener(starling.events.Event.TRIGGERED, newAbsoluteHandler);
         addChild(_newAbsoluteSplitButton);
 
@@ -178,8 +172,8 @@ public class OverviewPage extends PanelScreen {
                         overviewItem.billVO = _appModel.bills[i];
                         _billList.addChild(overviewItem);
                         _bills.push(overviewItem);
-                        _settledLabel.alpha = .25;
-                        _unsettledLabel.alpha = 1;
+                        _settledLabel.alpha = 1;
+                        _unsettledLabel.alpha = .25;
                     }
                     break;
                 case "Unsettled":
@@ -187,8 +181,8 @@ public class OverviewPage extends PanelScreen {
                         overviewItem.billVO = _appModel.bills[i];
                         _billList.addChild(overviewItem);
                         _bills.push(overviewItem);
-                        _settledLabel.alpha = 1;
-                        _unsettledLabel.alpha = .25;
+                        _settledLabel.alpha = .25;
+                        _unsettledLabel.alpha = 1;
                     }
                     break;
                 case "All":
