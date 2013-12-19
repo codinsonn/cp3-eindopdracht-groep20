@@ -105,8 +105,17 @@ public class PersonList extends Sprite{
             personItem.addEventListener(TouchEvent.TOUCH, touchHandler);
             //NAAR CALC STUREN DIE LATE DISPATCH
             personItem.addEventListener(PersonItem.DELETE_PERSON, removePersonHandler);
+            personItem.addEventListener(PersonItem.NAME_CHANGED, nameChangedHandler);
             i++;
         }
+    }
+
+    private function nameChangedHandler(e:starling.events.Event):void {
+        trace("nameChangedHandler");
+        var person:PersonItem = e.currentTarget as PersonItem;
+        _appModel.bills[_appModel.currentBill].billGroup[person.id].personName = person.personNameField.text;
+        _appModel.save();
+        _appModel.load();
     }
 
     private function valueChangeHandler(e:starling.events.Event):void {
@@ -117,7 +126,6 @@ public class PersonList extends Sprite{
 
     private function removePersonHandler(e:starling.events.Event):void {
         var person:PersonItem = e.currentTarget as PersonItem;
-            var person:PersonItem = e.currentTarget as PersonItem;
             calcService.recalculateByPage(0, person.id);
             _appModel.bills[_appModel.currentBill].billGroup.splice(person.id, 1);
             _appModel.setIds();

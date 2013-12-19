@@ -24,6 +24,7 @@ public class PersonItem extends Sprite {
     private var _appModel:AppModel;
 
     public static const DELETE_PERSON:String = "DELETE_PERSON";
+    public static const NAME_CHANGED:String = "NAME_CHANGED";
 
     private var _panel:Image;
     private var _delete:Image;
@@ -65,6 +66,7 @@ public class PersonItem extends Sprite {
         _personNameField = new TextfieldToggler(150, 40, 20, "PF Ronda Seven", _PersonName , 0xF3F3F3, "My Awesome Person");
         _personNameField.y = _panel.height/2 - _personNameField.height/2;
         _personNameField.x = _itemBg.x + 10;
+        _personNameField.addEventListener(Event.CHANGE, nameChangedHandler);
 
         textOrInput();
 
@@ -72,6 +74,10 @@ public class PersonItem extends Sprite {
         _delete.y = (_panel.y + _panel.height/2) - _delete.height/2;
         _delete.alpha = 0;
         addChild(_delete);
+    }
+
+    private function nameChangedHandler(event:Event):void {
+        dispatchEvent(new Event("NAME_CHANGED"));
     }
     private function textOrInput():void {
         addChild(_personNameField);
@@ -148,7 +154,6 @@ public class PersonItem extends Sprite {
 
     private function shareChangedHandler(event:Event):void {
         _share = Number(_editableShare.text);
-        trace("[SHARE]", "-------", _share, "-------");
         dispatchEvent(new Event(Event.CHANGE) );
     }
 
@@ -221,6 +226,10 @@ public class PersonItem extends Sprite {
 
     public function get share():Number {
         return _share;
+    }
+
+    public function get personNameField():TextfieldToggler {
+        return _personNameField;
     }
 }
 }
