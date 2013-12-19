@@ -121,7 +121,6 @@ public class SplitPage extends PanelScreen {
     }
 
     private function newTotalHandler(event:flash.events.Event):void {
-        trace("newTotalHandler");
         billTotalChangedHandler();
     }
 

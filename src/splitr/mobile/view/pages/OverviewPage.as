@@ -211,7 +211,13 @@ public class OverviewPage extends PanelScreen {
         var bill:OverviewItem = e.currentTarget as OverviewItem;
         _appModel.bills[bill.billVO.billId].settledState = !bill.billVO.settledState;
         bill.billVO = _appModel.bills[bill.billVO.billId];
+
+        for(var i:uint = 0; i < _appModel.bills[bill.billVO.billId].billGroup.length; i++){
+            _appModel.bills[_appModel.currentBill].billGroup[i].settledState == _appModel.bills[bill.billVO.billId].settledState
+        }
+
         _appModel.save();
+        _appModel.load();
     }
 
     private function touchHandler(e:TouchEvent):void {

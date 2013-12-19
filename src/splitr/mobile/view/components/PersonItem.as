@@ -126,8 +126,8 @@ public class PersonItem extends Sprite {
                 break;
             case "PercentualSplit":
                     _shareAmount = Number(((_personNameShare/100)*_appModel.bills[_appModel.currentBill].billTotal).toFixed(2));
-                    buildEqual();
                     buildSlider();
+                    buildEqual();
                 break;
             case "AbsoluteSplit":
                     _shareAmount = _personNameShare;
@@ -137,7 +137,6 @@ public class PersonItem extends Sprite {
     }
 
     private function buildSlider():void {
-        trace("SLIDER");
         _shareSlider = new Slider();
         _shareSlider.liveDragging = true;
         _shareSlider.minimum = 0;
@@ -157,7 +156,7 @@ public class PersonItem extends Sprite {
         if(touch != null) {
             switch(touch.phase){
                 case TouchPhase.MOVED:
-                       _sliderTriggered = true;
+                    _sliderTriggered = true;
                     break;
                 case TouchPhase.ENDED:
                     _sliderTriggered = false;
@@ -170,13 +169,18 @@ public class PersonItem extends Sprite {
         _equalShare = new TextField(180, 30, "0", "OpenSansBold", 18, 0xF3F3F3);
         _equalShare.y = _panel.height/2 - _equalShare.height/2;
         _equalShare.x = (_panel.width + _panel.x) - (_equalShare.width + 10);
-        _equalShare.text = "€ " + _shareAmount.toString();
+        var shareString:String;
+        if(_appModel.currentPage = "PercentualSplit"){
+            shareString = "(" + _shareSlider.value + "%) € " + _shareAmount.toString();
+        }else{
+            shareString = "€ " + _shareAmount.toString();
+        }
+        _equalShare.text = shareString;
         _equalShare.hAlign = HAlign.RIGHT;
         addChild(_equalShare);
     }
 
     private function buildAbsolute():void {
-        trace("ABSOLUTE");
         _editableShare = new TextfieldToggler(150, 40, 20, "OpenSansBold", "0" , 0xF3F3F3, "My Awesome Person");
         _editableShare.y = _panel.height/2 - _editableShare.height/2;
         _editableShare.x = (_panel.width + _panel.x) - (_editableShare.width + 10);
@@ -196,7 +200,6 @@ public class PersonItem extends Sprite {
     public function setElementsX(objectPosition:Number):void {
 
     if(_sliderTriggered == false){
-
             _personNameField.x = ( _itemBg.x + 10) + objectPosition;
             _panel.x = (_personNameField.x-10) - 4;
 
@@ -220,10 +223,8 @@ public class PersonItem extends Sprite {
 
     public function release():void {
         if(_personNameField.x < 50){
-            trace("DELETE PERSON");
             dispatchEventWith("DELETE_PERSON", false);
         }else if(_personNameField.x > 50 + _leftX){
-            trace("EDIT PERSON");
             dispatchEventWith("SETTLE_PERSON", false);
         }
         resetElementsX();

@@ -103,7 +103,6 @@ public class PersonList extends Sprite{
                 personItem.y = (personItem.height)*i;
             }
             personItem.addEventListener(TouchEvent.TOUCH, touchHandler);
-            //NAAR CALC STUREN DIE LATE DISPATCH
             personItem.addEventListener(PersonItem.DELETE_PERSON, removePersonHandler);
             personItem.addEventListener(PersonItem.SETTLE_PERSON, settlePersonHandler);
             personItem.addEventListener(PersonItem.NAME_CHANGED, nameChangedHandler);
@@ -113,11 +112,21 @@ public class PersonList extends Sprite{
 
     private function settlePersonHandler(e:starling.events.Event):void {
         var person:PersonItem = e.currentTarget as PersonItem;
-        trace("SETTLEPERSON-------", _appModel.bills[_appModel.currentBill].billGroup[person.id].settledState);
         _appModel.bills[_appModel.currentBill].billGroup[person.id].settledState = !_appModel.bills[_appModel.currentBill].billGroup[person.id].settledState;
+        checkSettledStates();
         _appModel.save();
         _appModel.load();
         fillList();
+    }
+
+    private function checkSettledStates():void{
+        var settledState:Boolean = true;
+        for(var i:uint = 0; i < _appModel.bills[_appModel.currentBill].billGroup.length; i++){
+            if(_appModel.bills[_appModel.currentBill].billGroup[i].settledState == false){
+                settledState = false;
+            }
+        }
+        _appModel.bills[_appModel.currentBill].settledState = settledState;
     }
 
     private function nameChangedHandler(e:starling.events.Event):void {
