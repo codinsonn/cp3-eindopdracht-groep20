@@ -35,6 +35,7 @@ public class SplitPage extends PanelScreen {
     public function SplitPage(w:uint = 480) {
 
         _appModel = AppModel.getInstance();
+        this._horizontalScrollPolicy = SCROLL_POLICY_OFF;
 
         if(_appModel.createNewPage == true){
             var _billId:uint = _appModel.bills.length;

@@ -14,6 +14,9 @@ import splitr.vo.PersonVO;
 
 import starling.display.Sprite;
 import starling.events.Event;
+import starling.events.Touch;
+import starling.events.TouchEvent;
+import starling.events.TouchPhase;
 
 public class PersonList extends Sprite{
 
@@ -24,6 +27,9 @@ public class PersonList extends Sprite{
     private var i:uint;
     private var _w:uint;
     private var _h:uint;
+
+    private var _startDragX:Number;
+    private var _startPanelX:Number;
 
     public function PersonList(w:uint,h:uint) {
 
@@ -81,6 +87,7 @@ public class PersonList extends Sprite{
             }else{
                 personItem.y = (personItem.height)*i;
             }
+            personItem.addEventListener(TouchEvent.TOUCH, touchHandler);
             i++;
         }
     }
@@ -99,6 +106,29 @@ public class PersonList extends Sprite{
         _personItem.y = _personItem.height*i;
 
         _appModel.bills[_appModel.currentBill].billGroup.push(_personItem);*/
+    }
+
+    private function touchHandler(e:TouchEvent):void {
+        var touchedObject:PersonItem = e.currentTarget as PersonItem;
+        var elementsX:Number = new Number();
+        var touch:Touch = e.getTouch(touchedObject);
+        if(touch != null) {
+            switch(touch.phase) {
+                case TouchPhase.BEGAN:
+                        trace("STARTDRAG");
+                    _startDragX = touch.globalX;
+                    _startPanelX = touchedObject.x;
+                    break;
+                case TouchPhase.MOVED:
+                    var diffX:Number = touch.globalX - _startDragX;
+                    elementsX = (_startPanelX + diffX)/4;
+                    touchedObject.setElementsX(elementsX);
+                    break;
+                case TouchPhase.ENDED:
+                    touchedObject.release();
+                    break;
+            }
+        }
     }
 }
 }

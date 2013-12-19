@@ -26,7 +26,6 @@ public class PersonItem extends Sprite {
 
     private var _panel:Image;
     private var _delete:Image;
-    private var _edit:Image;
     private var _itemBg:Image;
 
     private var _personNameField:TextfieldToggler;
@@ -56,7 +55,6 @@ public class PersonItem extends Sprite {
         addChild(_itemBg);
 
         _delete = new Image(Assets.getAtlas().getTexture("DeleteIcon"));
-        _edit = new Image(Assets.getAtlas().getTexture("SettleIcon"));
 
         createPanel();
 
@@ -73,14 +71,11 @@ public class PersonItem extends Sprite {
         _delete.alpha = 0;
         addChild(_delete);
 
-        _edit.x = _width - _edit.width - 5;
-        _edit.y = (_panel.y + _panel.height/2) -    _edit.height/2;
-        _edit.alpha = 0;
-        addChild(_edit);
 
     }
 
     private function textOrInput():void {
+        trace("TEXTORINPIUT");
         addChild(_personNameField);
         switch (_appModel.currentPage){
             case "EqualSplit":
@@ -125,11 +120,12 @@ public class PersonItem extends Sprite {
 
     private function buildAbsolute():void {
         trace("ABSOLUTE");
-        _editableShare = new TextfieldToggler(150, 40, 20, "PF Ronda Seven", "0" , 0xF3F3F3, "My Awesome Person");
+        _editableShare = new TextfieldToggler(150, 40, 20, "OpenSansBold", "0" , 0xF3F3F3, "My Awesome Person");
         _editableShare.y = _panel.height/2 - _editableShare.height/2;
         _editableShare.x = (_panel.width + _panel.x) - (_editableShare.width + 10);
         _editableShare.text = "€ " + _personNameShare.toString();
         _editableShare.textHAlignRight = true;
+        _editableShare.inputRestrict = "0-9\.";
         addChild(_editableShare);
     }
 
@@ -146,43 +142,41 @@ public class PersonItem extends Sprite {
     }
 
     public function setElementsX(objectPosition:Number):void {
-        _personNameField.x = _leftX + objectPosition;
-        _panel.x = _personNameField.x - 4;
-        _personNameField.x = _personNameField.width + _leftX + objectPosition -5;
+
+        _personNameField.x = ( _itemBg.x + 10) + objectPosition;
+        _panel.x = (_personNameField.x-10) - 4;
+        trace(_personNameField.x);
+        if(_equalShare){
+        _equalShare.x =(_panel.x + _panel.width) - (_equalShare.width +10) +5;
+        }else if(_editableShare){
+            _editableShare.x = (_panel.width + _panel.x) - (_editableShare.width + 10);
+        }
         if(_personNameField.x > _leftX){
-            _edit.alpha = objectPosition/70;
+
         }else if(_personNameField.x < _leftX){
             _delete.alpha = (objectPosition*-1)/70;;
         }
     }
 
     public function release():void {
-        if(_personNameField.x > (_leftX + 50)){
-            dispatchEventWith("EDIT_PERSON", false);
-            textOrInput();
-        }else if(_personNameField.x < (_leftX - 50)){
+        if(_personNameField.x < 50){
+            trace("DELETE PERSON");
             dispatchEventWith("DELETE_PERSON", false);
         }
         resetElementsX();
     }
 
     private function resetElementsX():void {
-        _personNameField.x = _leftX;
-        _panel.x = _leftX - 4;
-        _personNameField.x = _personNameField.x + _personNameField.width - 5;
-        _delete.alpha = 0;
-        _edit.alpha = 0;
-    }
-
-    public function get billVO():BillVO {
-        return _billVO;
-    }
-
-    public function set billVO(value:BillVO):void {
-        if(_billVO != value){
-            _billVO = value;
-            createPanel();
+        _personNameField.x = _itemBg.x + 10;
+        _panel.x = _width/2 - _panel.width/2;
+        if(_equalShare){
+            removeChild(_equalShare);
+            addChild(_equalShare);
+            _equalShare.x = (_panel.width + _panel.x) - (_equalShare.width + 10);
+        } else if(_editableShare){
+            _editableShare.x = (_panel.width + _panel.x) - (_editableShare.width + 10);
         }
+        _delete.alpha = 0;
     }
 }
 }

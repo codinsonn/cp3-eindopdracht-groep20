@@ -56,6 +56,8 @@ public class TextfieldToggler extends Sprite {
                     this.active = true;
                     break;
             }
+
+
         }
     }
 
