@@ -77,7 +77,6 @@ public class PersonItem extends Sprite {
     }
 
     private function textOrInput():void {
-        trace("TEXTORINPIUT");
         addChild(_personNameField);
         switch (_appModel.currentPage){
             case "EqualSplit":
@@ -130,7 +129,6 @@ public class PersonItem extends Sprite {
     }
 
     private function buildEqual():void {
-        trace("EQUAL");
         _equalShare = new TextField(180, 30, "0", "OpenSansBold", 18, 0xF3F3F3);
         _equalShare.y = _panel.height/2 - _equalShare.height/2;
         _equalShare.x = (_panel.width + _panel.x) - (_equalShare.width + 10);
