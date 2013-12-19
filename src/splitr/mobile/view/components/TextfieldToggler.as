@@ -178,6 +178,8 @@ public class TextfieldToggler extends Sprite {
     public function set isNumberInput(value:Boolean):void {
         if(_isNumberInput != value){
             _isNumberInput = value;
+            _text = _placeholder = Number(_placeholder.substr(2)).toFixed(2);
+            _input.text = _text;
         }
     }
 }

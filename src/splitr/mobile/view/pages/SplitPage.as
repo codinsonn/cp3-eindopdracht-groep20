@@ -75,7 +75,7 @@ public class SplitPage extends PanelScreen {
 
         _txtBillTitle = new TextfieldToggler(200, 50, 20, "PF Ronda Seven", _appModel.bills[_appModel.currentBill].billTitle, 0x3FC6F5, "My Awesome Bill");
         _txtBillTitle.y = 30;
-        _txtBillTitle.maxChars = 20;
+        _txtBillTitle.maxChars = 15;
         _txtBillTitle.addEventListener(starling.events.Event.CHANGE, billTitleChangedHandler);
         addChild(_txtBillTitle);
 

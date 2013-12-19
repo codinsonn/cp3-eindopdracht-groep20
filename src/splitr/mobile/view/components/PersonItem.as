@@ -141,12 +141,13 @@ public class PersonItem extends Sprite {
         _editableShare.text = "€ " + _shareAmount.toString();
         _editableShare.textHAlignRight = true;
         _editableShare.inputRestrict = "0-9\.";
+        _editableShare.isNumberInput = true;
         _editableShare.addEventListener(Event.CHANGE, shareChangedHandler);
         addChild(_editableShare);
     }
 
     private function shareChangedHandler(event:Event):void {
-        _share = Number(Number((_editableShare.text).substr(2)).toFixed(2));
+        _share = Number(_editableShare.text);
         trace("[SHARE]", "-------", _share, "-------");
         dispatchEvent(new Event(Event.CHANGE) );
     }
