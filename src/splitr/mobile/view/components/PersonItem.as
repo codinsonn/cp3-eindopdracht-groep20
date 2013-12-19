@@ -125,7 +125,7 @@ public class PersonItem extends Sprite {
                     buildEqual();
                 break;
             case "PercentualSplit":
-                    _shareAmount = (_personNameShare/100)*_appModel.bills[_appModel.currentBill].billTotal;
+                    _shareAmount = Number(((_personNameShare/100)*_appModel.bills[_appModel.currentBill].billTotal).toFixed(2));
                     buildEqual();
                     buildSlider();
                 break;
@@ -137,7 +137,6 @@ public class PersonItem extends Sprite {
     }
 
     private function buildSlider():void {
-
         trace("SLIDER");
         _shareSlider = new Slider();
         _shareSlider.liveDragging = true;

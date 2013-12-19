@@ -62,13 +62,11 @@ public class AppModel extends EventDispatcher {
         var bills:Vector.<BillVO> = new Vector.<BillVO>();
 
         if(_jsonFile.exists == false){
-
             save();
         }
 
         _jsonStream.open(_jsonFile, FileMode.READ);
         var jsonString:String = _jsonStream.readMultiByte(_jsonStream.bytesAvailable, "utf-8");
-
         _jsonStream.close();
 
         var billsCollection:Object = JSON.parse(jsonString);
@@ -101,12 +99,17 @@ public class AppModel extends EventDispatcher {
     }
 
     public function save():void {
-
         _jsonStream.open(_jsonFile, FileMode.WRITE);
-
         _jsonStream.writeUTFBytes(JSON.stringify(_bills, null, 4));
-
         _jsonStream.close();
+    }
+
+    public function deleteBillById(id:uint):void{
+        var photoRefFile:File = File.applicationStorageDirectory.resolvePath("imgRef/"+_bills[id].photoReference);
+        if(photoRefFile.exists){
+            photoRefFile.deleteFile();
+        }
+        this.bills.splice(id, 1);
     }
 
     /* ----- Getters / Setters ----------------------------------------------------------------------------------------- */
