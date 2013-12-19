@@ -145,7 +145,7 @@ public class PersonItem extends Sprite {
 
         _personNameField.x = ( _itemBg.x + 10) + objectPosition;
         _panel.x = (_personNameField.x-10) - 4;
-        trace(_personNameField.x);
+
         if(_equalShare){
         _equalShare.x =(_panel.x + _panel.width) - (_equalShare.width +10) +5;
         }else if(_editableShare){

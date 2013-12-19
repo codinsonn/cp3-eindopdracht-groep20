@@ -115,7 +115,6 @@ public class PersonList extends Sprite{
         if(touch != null) {
             switch(touch.phase) {
                 case TouchPhase.BEGAN:
-                        trace("STARTDRAG");
                     _startDragX = touch.globalX;
                     _startPanelX = touchedObject.x;
                     break;

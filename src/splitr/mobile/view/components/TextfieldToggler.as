@@ -26,6 +26,8 @@ public class TextfieldToggler extends Sprite {
     private var _label:TextField;
     private var _input:TextInput;
 
+    private var _hasMoved:Boolean = false;
+
     public function TextfieldToggler(w:uint = 180, h:uint = 50, fontSize:uint = 18, fontName:String = "OpenSansBold", placeholder:String = "Touch to edit", fontColor:uint = 0x00000, typicalText:String = "My awesome input"){
         this._placeholder = placeholder;
 
@@ -43,7 +45,6 @@ public class TextfieldToggler extends Sprite {
         _input.visible = false;
         _input.width = w;
         _input.x = _input.y = 0;
-        addChild(_input);
 
     }
 
@@ -52,12 +53,27 @@ public class TextfieldToggler extends Sprite {
         var touch:Touch = e.getTouch(touchedObject);
         if(touch != null) {
             switch(touch.phase){
+                case TouchPhase.MOVED:
+                    _hasMoved = true;
+                    break;
                 case TouchPhase.ENDED:
-                    this.active = true;
+
+                    activateOrIgnore();
+                    //this.active = true;
                     break;
             }
 
 
+        }
+    }
+
+    private function activateOrIgnore():void {
+        if(_hasMoved == true){
+            _hasMoved = false;
+        }else{
+            this._active = true;
+            trace("IS ACTIVE FROM CHECKER: ",_active);
+            setActivePolicy();
         }
     }
 
@@ -126,31 +142,43 @@ public class TextfieldToggler extends Sprite {
     }
 
     public function set active(value:Boolean):void {
+
         if(_active != value){
             _active = value;
+            trace("IS ACTIVE FROM SETTER: ",_active);
+            setActivePolicy();
 
-            if(_active == true){
-                _label.removeEventListener(TouchEvent.TOUCH, labelTouchedHandler);
-                _input.visible = true;
-                _input.addEventListener(FeathersEventType.ENTER, enterKeyDownHandler);
-                _input.addEventListener(FeathersEventType.FOCUS_OUT, focusOutHandler);
-                _input.setFocus();
+        }
+    }
+
+    private function setActivePolicy():void {
+
+        trace("SETPOLICY");
+
+        if(_active == true){
+
+            addChild(_input);
+            _label.removeEventListener(TouchEvent.TOUCH, labelTouchedHandler);
+            _input.visible = true;
+            _input.setFocus();
+            _input.addEventListener(FeathersEventType.ENTER, enterKeyDownHandler);
+            _input.addEventListener(FeathersEventType.FOCUS_OUT, focusOutHandler);
+
+        }else{
+            removeChild(_input);
+            _input.clearFocus();
+            _input.visible = false;
+            _input.removeEventListener(FeathersEventType.ENTER, enterKeyDownHandler);
+            _input.removeEventListener(FeathersEventType.FOCUS_OUT, focusOutHandler);
+
+            if(_input.text != ""){
+                _text = _input.text;
             }else{
-                _input.visible = false;
-                _input.removeEventListener(FeathersEventType.ENTER, enterKeyDownHandler);
-                _input.removeEventListener(FeathersEventType.FOCUS_OUT, focusOutHandler);
-
-                if(_input.text != ""){
-                    _text = _input.text;
-                }else{
-                    _text = _placeholder;
-                }
-                _label.text = _text;
-                dispatchEvent(new Event(Event.CHANGE));
-
-                _input.visible = false;
-                _label.addEventListener(TouchEvent.TOUCH, labelTouchedHandler);
+                _text = _placeholder;
             }
+            _label.text = _text;
+            dispatchEvent(new Event(Event.CHANGE));
+            _label.addEventListener(TouchEvent.TOUCH, labelTouchedHandler);
         }
     }
 
