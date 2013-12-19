@@ -22,7 +22,6 @@ public class CalculatorService extends EventDispatcher{
         if (e == null) {
             throw new Error("CalculatorService is a singleton, use getInstance() instead");
         }
-        trace("CALCSERVICE");
         _appModel = AppModel.getInstance();
     }
 
@@ -48,7 +47,6 @@ public class CalculatorService extends EventDispatcher{
             _shareList.push(share);
             i++;
         }
-
     }
 
     private function percentualSplit():void {

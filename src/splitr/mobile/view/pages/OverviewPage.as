@@ -54,7 +54,7 @@ public class OverviewPage extends PanelScreen {
         if(_appModel.bills.length < 1){
             message = "No bills yet. Choose split method:";
         }else{
-            message = "Drag left to delete, left to settle.";
+            message = "Drag left to delete, right to settle.";
         }
 
         _settledLabel = new TextField(150, 50, "0", "OpenSansBold", 15, 0xAAC789);

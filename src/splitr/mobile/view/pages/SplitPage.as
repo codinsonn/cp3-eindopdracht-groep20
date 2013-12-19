@@ -128,6 +128,8 @@ public class SplitPage extends PanelScreen {
 
     private function billTitleChangedHandler(e:starling.events.Event):void {
         _appModel.bills[_appModel.currentBill].billTitle = _txtBillTitle.text;
+        _appModel.save();
+        _appModel.load();
     }
 
     private function backButtonTriggeredHandler(e:starling.events.Event):void {
@@ -158,6 +160,8 @@ public class SplitPage extends PanelScreen {
         if(_editTotal){
             _editTotal.amount = 0.00;
         }
+        _appModel.save();
+        _appModel.load();
     }
 
     private function photoRefButtonTriggered(e:starling.events.Event):void {

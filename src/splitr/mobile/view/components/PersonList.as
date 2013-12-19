@@ -54,7 +54,7 @@ public class PersonList extends Sprite{
         _plus.label  = "+";
         _plus.x = w/2 - _plus.width/2;
         _plus.defaultIcon = new Image(Assets.getAtlas().getTexture("PersonIcon"));
-        _plus.label = "add new person";
+        _plus.label = "add person";
         _plus.addEventListener(starling.events.Event.TRIGGERED, triggeredHandler);
         addChild(_plus);
 
