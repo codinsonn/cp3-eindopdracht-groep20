@@ -156,7 +156,7 @@ public class SplitPage extends PanelScreen {
         calcService.refreshList();
         _txtBillTotal.text = _appModel.bills[_appModel.currentBill].billTotal.toString() + " EUR";
         if(_editTotal){
-        _editTotal.amount = 0.00;
+            _editTotal.amount = 0.00;
         }
     }
 

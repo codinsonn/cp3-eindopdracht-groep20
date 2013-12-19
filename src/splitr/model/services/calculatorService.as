@@ -42,8 +42,8 @@ public class CalculatorService extends EventDispatcher{
 
     private function equalSplit():void {
         _shareList = new Array();
-        var share:uint = (_appModel.bills[_appModel.currentBill].billTotal / _appModel.bills[_appModel.currentBill].billGroup.length);
-        var i:Number = 0;
+        var share:Number = (_appModel.bills[_appModel.currentBill].billTotal / _appModel.bills[_appModel.currentBill].billGroup.length);
+        var i:uint = 0;
         while (i < _appModel.bills[_appModel.currentBill].billGroup.length){
             _shareList.push(share);
             i++;
@@ -53,7 +53,7 @@ public class CalculatorService extends EventDispatcher{
 
     private function percentualSplit():void {
         _shareList = new Array();
-        var i:Number = 0;
+        var i:uint = 0;
         while (i < _appModel.bills[_appModel.currentBill].billGroup.length){
             var share:uint = _appModel.bills[_appModel.currentBill].billGroup[i].personShare;
             _shareList.push(share);
@@ -63,7 +63,7 @@ public class CalculatorService extends EventDispatcher{
 
     private function absoluteSplit():void {
         _shareList = new Array();
-        var i:Number = 0;
+        var i:uint = 0;
         while (i < _appModel.bills[_appModel.currentBill].billGroup.length){
             _shareList.push(_appModel.bills[_appModel.currentBill].billGroup[i].personShare);
             i++;

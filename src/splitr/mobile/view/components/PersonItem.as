@@ -33,7 +33,7 @@ public class PersonItem extends Sprite {
     private var _itemBg:Image;
 
     private var _personNameField:TextfieldToggler;
-    private var _personNameShare:uint;
+    private var _personNameShare:Number;
 
     private var _leftX:uint;
     private var _width:uint;
@@ -44,7 +44,7 @@ public class PersonItem extends Sprite {
     private var _shareSlider:Slider;
     private var _h:uint;
     private var _id:uint;
-    private var _shareAmount:uint;
+    private var _shareAmount:Number;
     private var _sliderTriggered:Boolean = false;
     private var _settledChanged:Boolean = true;
 
@@ -126,7 +126,6 @@ public class PersonItem extends Sprite {
                 break;
             case "PercentualSplit":
                     _shareAmount = (_personNameShare/100)*_appModel.bills[_appModel.currentBill].billTotal;
-                    trace("_shareAmount = ",_shareAmount);
                     buildEqual();
                     buildSlider();
                 break;
