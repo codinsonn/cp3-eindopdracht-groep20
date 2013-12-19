@@ -91,9 +91,9 @@ public class PersonList extends Sprite{
             if(_appModel.currentPage == "EqualSplit"){
                 _appModel.bills[_appModel.currentBill].billGroup[i].personId = i;
 
-                var personItem:PersonItem = new PersonItem(480, person.personName, calcService.shareList[i], i);
+                var personItem:PersonItem = new PersonItem(480, person.personName, calcService.shareList[i], i, _appModel.bills[_appModel.currentBill].billGroup[i].settledState);
             }else{
-                var personItem:PersonItem = new PersonItem(480, person.personName, calcService.shareList[i], i);
+                var personItem:PersonItem = new PersonItem(480, person.personName, calcService.shareList[i], i,  _appModel.bills[_appModel.currentBill].billGroup[i].settledState);
                 personItem.addEventListener(starling.events.Event.CHANGE, valueChangeHandler);
             }
             _listContainer.addChild(personItem);
@@ -105,9 +105,19 @@ public class PersonList extends Sprite{
             personItem.addEventListener(TouchEvent.TOUCH, touchHandler);
             //NAAR CALC STUREN DIE LATE DISPATCH
             personItem.addEventListener(PersonItem.DELETE_PERSON, removePersonHandler);
+            personItem.addEventListener(PersonItem.SETTLE_PERSON, settlePersonHandler);
             personItem.addEventListener(PersonItem.NAME_CHANGED, nameChangedHandler);
             i++;
         }
+    }
+
+    private function settlePersonHandler(e:starling.events.Event):void {
+        var person:PersonItem = e.currentTarget as PersonItem;
+        trace("SETTLEPERSON-------", _appModel.bills[_appModel.currentBill].billGroup[person.id].settledState);
+        _appModel.bills[_appModel.currentBill].billGroup[person.id].settledState = !_appModel.bills[_appModel.currentBill].billGroup[person.id].settledState;
+        _appModel.save();
+        _appModel.load();
+        fillList();
     }
 
     private function nameChangedHandler(e:starling.events.Event):void {

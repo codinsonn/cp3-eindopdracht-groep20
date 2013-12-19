@@ -82,6 +82,7 @@ public class AppModel extends EventDispatcher {
                 var personVO:PersonVO = new PersonVO();
                 personVO.personName = person.personName;
                 personVO.personShare = person.personShare;
+                personVO.settledState = person.settledState;
                 billVO.billGroup.push(personVO);
             }
             billVO.photoReference = bill.photoReference;

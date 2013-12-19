@@ -24,10 +24,12 @@ public class PersonItem extends Sprite {
     private var _appModel:AppModel;
 
     public static const DELETE_PERSON:String = "DELETE_PERSON";
+    public static const SETTLE_PERSON:String = "SETTLE_PERSON";
     public static const NAME_CHANGED:String = "NAME_CHANGED";
 
     private var _panel:Image;
     private var _delete:Image;
+    private var _settleIcon:Image;
     private var _itemBg:Image;
 
     private var _personNameField:TextfieldToggler;
@@ -44,11 +46,14 @@ public class PersonItem extends Sprite {
     private var _id:uint;
     private var _shareAmount:uint;
     private var _sliderTriggered:Boolean = false;
+    private var _settledChanged:Boolean = true;
 
-    public function PersonItem(_w:uint = 480, _PersonName:String = "Hans", _PersonShare:Number = 0.00, id:uint = 0) {
+    private var _settled:Boolean;
+
+    public function PersonItem(_w:uint = 480, _PersonName:String = "Hans", _PersonShare:Number = 0.00, id:uint = 0,settled:Boolean = false) {
         _personNameShare = _PersonShare;
         this._appModel = AppModel.getInstance();
-
+        _settled = settled;
         _width = _w;
         _leftX = 100;
         _h = 50;
@@ -60,8 +65,9 @@ public class PersonItem extends Sprite {
         addChild(_itemBg);
 
         _delete = new Image(Assets.getAtlas().getTexture("DeleteIcon"));
-
-        createPanel();
+        _settleIcon = new Image(Assets.getAtlas().getTexture("SettleIcon"));
+        _settledChanged = true;
+        view();
 
         _personNameField = new TextfieldToggler(150, 40, 20, "PF Ronda Seven", _PersonName , 0xF3F3F3, "My Awesome Person");
         _personNameField.y = _panel.height/2 - _personNameField.height/2;
@@ -74,8 +80,40 @@ public class PersonItem extends Sprite {
         _delete.y = (_panel.y + _panel.height/2) - _delete.height/2;
         _delete.alpha = 0;
         addChild(_delete);
-    }
 
+
+    }
+    private function view():void {
+        if(_settledChanged == true){
+            if(_panel){
+                removeChildAt(1);
+            }
+
+            if(_settleIcon){
+                removeChild(_settleIcon);
+            }
+
+            var color:uint;
+            if(_settled == false){
+                color = 0xF34A53;
+                _settleIcon = new Image(Assets.getAtlas().getTexture("SettleIcon"));
+            }else{
+                color = 0xAAC789;
+                _settleIcon = new Image(Assets.getAtlas().getTexture("UnsettleIcon"));
+            }
+
+            _panel = new Image(Assets.createTextureFromRectShape(_width * .6, 50, color));
+            _panel.x = _width/2 - _panel.width/2;
+            addChildAt(_panel, 1);
+
+            _settleIcon.x = _width - _settleIcon.width - 5;
+            _settleIcon.y = (_panel.y + _panel.height/2) - _delete.height/2;
+            _settleIcon.alpha = 0;
+            addChild(_settleIcon);
+
+            _settledChanged = false;
+        }
+    }
     private function nameChangedHandler(event:Event):void {
         dispatchEvent(new Event("NAME_CHANGED"));
     }
@@ -157,18 +195,6 @@ public class PersonItem extends Sprite {
         dispatchEvent(new Event(Event.CHANGE) );
     }
 
-    private function createPanel():void {
-        if(_panel){
-            removeChild(_panel);
-        }
-
-        var color:uint;
-            color = 0xF34A53;
-        _panel = new Image(Assets.createTextureFromRectShape(_width * .6, 50, color));
-        _panel.x = _width/2 - _panel.width/2;
-        addChildAt(_panel, 1);
-    }
-
     public function setElementsX(objectPosition:Number):void {
 
     if(_sliderTriggered == false){
@@ -187,9 +213,9 @@ public class PersonItem extends Sprite {
             }
 
             if(_personNameField.x > _leftX){
-
+                _settleIcon.alpha = (objectPosition*1)/70;
             }else if(_personNameField.x < _leftX){
-                _delete.alpha = (objectPosition*-1)/70;;
+                _delete.alpha = (objectPosition*-1)/70;
             }
         }
     }
@@ -198,6 +224,9 @@ public class PersonItem extends Sprite {
         if(_personNameField.x < 50){
             trace("DELETE PERSON");
             dispatchEventWith("DELETE_PERSON", false);
+        }else if(_personNameField.x > 50 + _leftX){
+            trace("EDIT PERSON");
+            dispatchEventWith("SETTLE_PERSON", false);
         }
         resetElementsX();
     }
@@ -218,6 +247,7 @@ public class PersonItem extends Sprite {
         }
 
         _delete.alpha = 0;
+        _settleIcon.alpha = 0;
     }
 
     public function get id():uint {
