@@ -15,7 +15,7 @@ import splitr.mobile.view.pages.PhotoRefPage;
 
 import splitr.model.AppModel;
 
-public class Splitr extends ScreenNavigator {
+public class SplitrApp extends ScreenNavigator {
 
     private static const OVERVIEWPAGE:String = "overviewPage";
     private static const EQUALSPLITPAGE:String = "equalSplitPage";
@@ -26,7 +26,7 @@ public class Splitr extends ScreenNavigator {
     private var _appModel:AppModel;
     private var screenTransitionManager:ScreenSlidingStackTransitionManager;
 
-    public function Splitr()
+    public function SplitrApp()
     {
         // Initialize the theme
         new MinimalMobileTheme();

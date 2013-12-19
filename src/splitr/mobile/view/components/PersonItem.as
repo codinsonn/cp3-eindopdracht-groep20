@@ -7,22 +7,22 @@ import splitr.model.AppModel;
 
 import splitr.vo.BillVO;
 
-import starling.events.EventDispatcher;
+import starling.display.DisplayObject;
+
+import starling.events.Touch;
+import starling.events.TouchEvent;
+import starling.events.TouchPhase;
 
 import starling.text.TextField;
 import starling.display.Image;
 import starling.display.Sprite;
 import starling.utils.HAlign;
-import starling.utils.VAlign;
 
 public class PersonItem extends Sprite {
 
     private var _appModel:AppModel;
 
-    public static const EDIT_PERSON:String = "EDIT_PERSON";
     public static const DELETE_PERSON:String = "DELETE_PERSON";
-
-    private var _billVO:BillVO;
 
     private var _panel:Image;
     private var _delete:Image;
@@ -39,8 +39,11 @@ public class PersonItem extends Sprite {
 
     private var _shareSlider:Slider;
     private var _h:uint;
+    private var _id:uint;
 
-    public function PersonItem(_w:uint = 480, _PersonName:String = "Hans", _PersonShare:Number = 0.00) {
+    private var _sliderTriggered:Boolean = false;
+
+    public function PersonItem(_w:uint = 480, _PersonName:String = "Hans", _PersonShare:Number = 0.00, id:uint = 0) {
 
         this._appModel = AppModel.getInstance();
         _personNameShare = _PersonShare;
@@ -48,6 +51,7 @@ public class PersonItem extends Sprite {
         _width = _w;
         _leftX = 100;
         _h = 50;
+        _id = id;
 
         // Draw item background
         _itemBg = new Image(Assets.createTextureFromRectShape(_width *.6, 50, 0xf3f3f3));
@@ -70,8 +74,6 @@ public class PersonItem extends Sprite {
         _delete.y = (_panel.y + _panel.height/2) - _delete.height/2;
         _delete.alpha = 0;
         addChild(_delete);
-
-
     }
 
     private function textOrInput():void {
@@ -97,6 +99,7 @@ public class PersonItem extends Sprite {
 
         trace("SLIDER");
         _shareSlider = new Slider();
+        _shareSlider.liveDragging = true;
         _shareSlider.minimum = 0;
         _shareSlider.maximum = 100;
         _shareSlider.value = 50;
@@ -104,8 +107,26 @@ public class PersonItem extends Sprite {
         _shareSlider.width = _panel.width;
         _shareSlider.y = (_panel.y+_panel.height);
         _shareSlider.x = _panel.x;
-
+        _shareSlider.addEventListener(TouchEvent.TOUCH, sliderTriggeredHanler);
         addChild(_shareSlider);
+    }
+
+    private function sliderTriggeredHanler(e:TouchEvent):void {
+        var touchedObject:DisplayObject = e.currentTarget as DisplayObject;
+        var touch:Touch = e.getTouch(touchedObject);
+        if(touch != null) {
+            switch(touch.phase){
+                case TouchPhase.BEGAN:
+
+                    break;
+                case TouchPhase.MOVED:
+                       _sliderTriggered = true;
+                    break;
+                case TouchPhase.ENDED:
+                    _sliderTriggered = false;
+                    break;
+            }
+        }
     }
 
     private function buildEqual():void {
@@ -143,18 +164,26 @@ public class PersonItem extends Sprite {
 
     public function setElementsX(objectPosition:Number):void {
 
-        _personNameField.x = ( _itemBg.x + 10) + objectPosition;
-        _panel.x = (_personNameField.x-10) - 4;
+    if(_sliderTriggered == false){
 
-        if(_equalShare){
-        _equalShare.x =(_panel.x + _panel.width) - (_equalShare.width +10) +5;
-        }else if(_editableShare){
-            _editableShare.x = (_panel.width + _panel.x) - (_editableShare.width + 10);
-        }
-        if(_personNameField.x > _leftX){
+            _personNameField.x = ( _itemBg.x + 10) + objectPosition;
+            _panel.x = (_personNameField.x-10) - 4;
 
-        }else if(_personNameField.x < _leftX){
-            _delete.alpha = (objectPosition*-1)/70;;
+            if(_equalShare){
+            _equalShare.x =(_panel.x + _panel.width) - (_equalShare.width +10);
+            }else if(_editableShare){
+                _editableShare.x = (_panel.width + _panel.x) - (_editableShare.width + 10);
+            }
+
+            if(_shareSlider){
+                _shareSlider.x = _panel.x;
+            }
+
+            if(_personNameField.x > _leftX){
+
+            }else if(_personNameField.x < _leftX){
+                _delete.alpha = (objectPosition*-1)/70;;
+            }
         }
     }
 
@@ -176,7 +205,16 @@ public class PersonItem extends Sprite {
         } else if(_editableShare){
             _editableShare.x = (_panel.width + _panel.x) - (_editableShare.width + 10);
         }
+
+        if(_shareSlider){
+            _shareSlider.x = _panel.x;
+        }
+
         _delete.alpha = 0;
+    }
+
+    public function get id():uint {
+        return _id;
     }
 }
 }

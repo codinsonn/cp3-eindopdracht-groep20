@@ -209,7 +209,6 @@ public class OverviewPage extends PanelScreen {
     private function deleteBillHandler(e:starling.events.Event):void {
         var bill:OverviewItem = e.currentTarget as OverviewItem;
         _appModel.bills.splice(bill.billVO.billId, 1);
-
         _appModel.setIds();
         createList();
     }

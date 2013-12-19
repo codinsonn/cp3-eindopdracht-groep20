@@ -7,22 +7,22 @@ import flash.display.StageScaleMode;
 import flash.events.Event;
 import flash.geom.Rectangle;
 
-import splitr.mobile.Splitr;
+import splitr.mobile.SplitrApp;
 
 import starling.core.Starling;
 import starling.events.Event;
 
 [SWF(frameRate=60)]
-public class main extends Sprite {
+public class SplitrMobile extends Sprite {
 
     private var _starling:Starling;
 
-    public function main()
+    public function SplitrMobile()
     {
         stage.align = StageAlign.TOP_LEFT;
         stage.scaleMode = StageScaleMode.NO_SCALE;
 
-        _starling = new Starling(Splitr, stage);
+        _starling = new Starling(SplitrApp, stage);
         _starling.antiAliasing = 1;
         _starling.start();
 

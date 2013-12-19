@@ -12,6 +12,8 @@ import feathers.controls.ScrollContainer;
 import splitr.model.AppModel;
 import splitr.vo.PersonVO;
 
+import starling.display.Image;
+
 import starling.display.Sprite;
 import starling.events.Event;
 import starling.events.Touch;
@@ -39,10 +41,12 @@ public class PersonList extends Sprite{
         _h = h;
 
         _plus = new Button();
-        _plus.width = 40;
-        _plus.height = 40;
+        _plus.width = 200;
+        _plus.height = 50;
         _plus.label  = "+";
         _plus.x = w/2 - _plus.width/2;
+        _plus.defaultIcon = new Image(Assets.getAtlas().getTexture("PersonIcon"));
+        _plus.label = "add new person";
         _plus.addEventListener(Event.TRIGGERED, triggeredHandler);
         _plus.addEventListener(Event.TRIGGERED, testHandler);
         addChild(_plus);
@@ -80,7 +84,14 @@ public class PersonList extends Sprite{
 
         for each(var person:PersonVO in _appModel.bills[_appModel.currentBill].billGroup){
             trace("ADD EXISTING PERSON");
-            var personItem:PersonItem = new PersonItem(480, person.personName, person.personShare);
+            if(_appModel.currentPage == "EqualSplit"){
+                _appModel.bills[_appModel.currentBill].billGroup[i].personId = i;
+
+                var share:uint = (_appModel.bills[_appModel.currentBill].billTotal/_appModel.bills[_appModel.currentBill].billGroup.length);
+                var personItem:PersonItem = new PersonItem(480, person.personName, share, i);
+            }else{
+                var personItem:PersonItem = new PersonItem(480, person.personName, person.personShare, i);
+            }
             _listContainer.addChild(personItem);
             if(_appModel.currentPage == "PercentualSplit" && i != 0){
                 personItem.y = (personItem.height + 5)*i;
@@ -88,8 +99,18 @@ public class PersonList extends Sprite{
                 personItem.y = (personItem.height)*i;
             }
             personItem.addEventListener(TouchEvent.TOUCH, touchHandler);
+            personItem.addEventListener(PersonItem.DELETE_PERSON, removePersonHandler);
             i++;
         }
+    }
+
+    private function removePersonHandler(e:starling.events.Event):void {
+        trace("---DELEET--");
+        var person:PersonItem = e.currentTarget as PersonItem;
+            var person:PersonItem = e.currentTarget as PersonItem;
+            _appModel.bills[_appModel.currentBill].billGroup.splice(person.id, 1);
+            _appModel.setIds();
+            fillList();
     }
 
     private function triggeredHandler(event:Event):void {
@@ -100,12 +121,6 @@ public class PersonList extends Sprite{
         _appModel.save();
         fillList();
 
-        /*i++;
-       _personItem = new PersonItem();
-        _listContainer.addChild(_personItem);
-        _personItem.y = _personItem.height*i;
-
-        _appModel.bills[_appModel.currentBill].billGroup.push(_personItem);*/
     }
 
     private function touchHandler(e:TouchEvent):void {
