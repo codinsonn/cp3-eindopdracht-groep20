@@ -6,20 +6,33 @@
  * To change this template use File | Settings | File Templates.
  */
 package splitr.model.services {
+import flash.events.Event;
 import flash.events.EventDispatcher;
 
 import splitr.model.AppModel;
 
-public class calculatorService extends EventDispatcher{
+public class CalculatorService extends EventDispatcher{
+    public static const NEW_TOTAL:String = "NEW_TOTAL";
+    public static const REFRESH_LIST:String = "REFRESH_LIST";
     private var _appModel:AppModel;
     private var _shareList:Array;
-    public function calculatorService() {
-        trace("CALCSERVICE");
-        _appModel = AppModel.getInstance();
-        methodByPage();
+    private static var instance:CalculatorService;
+    public static function getInstance():CalculatorService {
+        if (instance == null) {
+            instance = new CalculatorService(new Enforcer());
+        }
+        return instance;
     }
 
-    private function methodByPage():void {
+    public function CalculatorService(e:Enforcer) {
+        if (e == null) {
+            throw new Error("CalculatorService is a singleton, use getInstance() instead");
+        }
+        trace("CALCSERVICE");
+        _appModel = AppModel.getInstance();
+    }
+
+    public function methodByPage():void {
         switch(_appModel.currentPage) {
             case "EqualSplit":
                     equalSplit();
@@ -41,20 +54,20 @@ public class calculatorService extends EventDispatcher{
             _shareList.push(share);
             i++;
         }
+
     }
 
     private function percentualSplit():void {
         _shareList = new Array();
         var i:Number = 0;
         while (i < _appModel.bills[_appModel.currentBill].billGroup.length){
-            var share:uint =
-            _shareList.push(_appModel.bills[_appModel.currentBill].billGroup[i].personShare);
+            var share:uint = _appModel.bills[_appModel.currentBill].billGroup[i].personShare;
+            _shareList.push(share);
             i++;
         }
     }
 
     private function absoluteSplit():void {
-        trace("HIER IN?");
         _shareList = new Array();
         var i:Number = 0;
         while (i < _appModel.bills[_appModel.currentBill].billGroup.length){
@@ -66,5 +79,41 @@ public class calculatorService extends EventDispatcher{
     public function get shareList():Array {
         return _shareList;
     }
+
+    //RECALC
+
+    public function recalculateByPage(newNum:Number, id):void {
+        switch(_appModel.currentPage) {
+            case "EqualSplit":
+                //equalRecal();
+                break;
+            case "PercentualSplit":
+                //precentualRecal();
+                break;
+            case "AbsoluteSplit":
+                absoluteRecal(newNum, id);
+                break;
+        }
+    }
+
+    private function absoluteRecal(newNum:Number, id):void {
+        _appModel.bills[_appModel.currentBill].billTotal =  _appModel.bills[_appModel.currentBill].billTotal  - _appModel.bills[_appModel.currentBill].billGroup[id].personShare;
+        _appModel.bills[_appModel.currentBill].billTotal += newNum;
+        _appModel.bills[_appModel.currentBill].billGroup[id].personShare = newNum;
+        _appModel.save();
+
+        newAbsolutTotal();
+
+        }
+
+    public function newAbsolutTotal():void {
+        dispatchEvent(new Event("NEW_TOTAL"));
+    }
+
+    public function refreshList():void {
+        dispatchEvent(new Event("REFRESH_LIST"));
+    }
+
+    }
 }
-}
+internal class Enforcer{}

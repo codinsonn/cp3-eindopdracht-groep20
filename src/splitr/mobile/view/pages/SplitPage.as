@@ -2,11 +2,14 @@ package splitr.mobile.view.pages {
 
 import feathers.controls.PanelScreen;
 
+import flash.events.Event;
+
 import splitr.mobile.view.components.AmountEditor;
 import splitr.mobile.view.components.NumStepper;
 import splitr.mobile.view.components.PersonList;
 import splitr.mobile.view.components.TextfieldToggler;
 import splitr.model.AppModel;
+import splitr.model.services.CalculatorService;
 import splitr.vo.BillVO;
 import splitr.vo.PersonVO;
 
@@ -27,15 +30,17 @@ public class SplitPage extends PanelScreen {
     private var _txtBillTitle:TextfieldToggler;
     private var _txtBillTotal:TextField;
     private var _photoRefButton:Button;
-    private var _lblEditTotal:TextField;
     private var _editTotal:AmountEditor;
+    private var calcService:CalculatorService;
 
     private var _personList:PersonList;
 
     public function SplitPage(w:uint = 480) {
 
         _appModel = AppModel.getInstance();
+        calcService = CalculatorService.getInstance();
         this._horizontalScrollPolicy = SCROLL_POLICY_OFF;
+        calcService.addEventListener(CalculatorService.NEW_TOTAL, newTotalHandler);
 
         if(_appModel.createNewPage == true){
             var _billId:uint = _appModel.bills.length;
@@ -46,7 +51,7 @@ public class SplitPage extends PanelScreen {
         }
 
         _headerBackButton = new Button(Assets.getAtlas().getTexture("HeaderPrevButton"));
-        _headerBackButton.addEventListener(Event.TRIGGERED, backButtonTriggeredHandler);
+        _headerBackButton.addEventListener(starling.events.Event.TRIGGERED, backButtonTriggeredHandler);
         headerProperties.leftItems = new <DisplayObject>[_headerBackButton];
 
         switch (_appModel.currentPage){
@@ -67,7 +72,7 @@ public class SplitPage extends PanelScreen {
         _txtBillTitle = new TextfieldToggler(200, 50, 20, "PF Ronda Seven", _appModel.bills[_appModel.currentBill].billTitle, 0x3FC6F5, "My Awesome Bill");
         _txtBillTitle.y = 30;
         _txtBillTitle.maxChars = 20;
-        _txtBillTitle.addEventListener(Event.CHANGE, billTitleChangedHandler);
+        _txtBillTitle.addEventListener(starling.events.Event.CHANGE, billTitleChangedHandler);
         addChild(_txtBillTitle);
 
         _txtBillTotal = new TextField(180, 28, "0", "PF Ronda Seven", 17, 0x3FC6F5);
@@ -79,7 +84,7 @@ public class SplitPage extends PanelScreen {
 
         _photoRefButton = new Button(Assets.getAtlas().getTexture("PhotoRefButton"));
         _photoRefButton.y = 50;
-        _photoRefButton.addEventListener(Event.TRIGGERED, photoRefButtonTriggered);
+        _photoRefButton.addEventListener(starling.events.Event.TRIGGERED, photoRefButtonTriggered);
         addChild(_photoRefButton);
 
         if(_appModel.currentPage != "AbsoluteSplit"){
@@ -115,18 +120,25 @@ public class SplitPage extends PanelScreen {
 
         billTotalChangedHandler();
 
+
     }
 
-    private function billTitleChangedHandler(e:Event):void {
+    private function newTotalHandler(event:flash.events.Event):void {
+        trace("newTotalHandler");
+        billTotalChangedHandler();
+    }
+
+
+    private function billTitleChangedHandler(e:starling.events.Event):void {
         _appModel.bills[_appModel.currentBill].billTitle = _txtBillTitle.text;
     }
 
-    private function backButtonTriggeredHandler(e:Event):void {
+    private function backButtonTriggeredHandler(e:starling.events.Event):void {
         _appModel.save();
         _appModel.currentPage = "Overview";
     }
 
-    private function subtractFromTotalHandler(e:Event):void {
+    private function subtractFromTotalHandler(e:starling.events.Event):void {
         if(_appModel.bills[_appModel.currentBill].billTotal - _editTotal.amount >= 0.00){
             _appModel.bills[_appModel.currentBill].billTotal -= _editTotal.amount;
         }else{
@@ -136,20 +148,22 @@ public class SplitPage extends PanelScreen {
         billTotalChangedHandler();
     }
 
-    private function addToTotalHandler(e:Event):void {
+    private function addToTotalHandler(e:starling.events.Event):void {
         _appModel.bills[_appModel.currentBill].billTotal += _editTotal.amount;
 
         billTotalChangedHandler();
     }
 
-    private function billTotalChangedHandler(e:Event = null):void{
+    private function billTotalChangedHandler(e:starling.events.Event = null):void{
+        calcService.methodByPage();
+        calcService.refreshList();
         _txtBillTotal.text = _appModel.bills[_appModel.currentBill].billTotal.toString() + " EUR";
         if(_editTotal){
         _editTotal.amount = 0.00;
         }
     }
 
-    private function photoRefButtonTriggered(e:Event):void {
+    private function photoRefButtonTriggered(e:starling.events.Event):void {
         _appModel.currentPage = "PhotoReference";
     }
 

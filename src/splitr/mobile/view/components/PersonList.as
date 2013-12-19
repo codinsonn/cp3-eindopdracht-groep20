@@ -9,8 +9,10 @@ package splitr.mobile.view.components {
 import feathers.controls.Button;
 import feathers.controls.ScrollContainer;
 
+import flash.events.Event;
+
 import splitr.model.AppModel;
-import splitr.model.services.calculatorService;
+import splitr.model.services.CalculatorService;
 import splitr.vo.PersonVO;
 
 import starling.display.Image;
@@ -25,12 +27,14 @@ public class PersonList extends Sprite{
 
     private var _listContainer:ScrollContainer;
     private var _appModel:AppModel;
-    private var _personItem:PersonItem;
+
     private var _plus:Button;
     private var i:uint;
     private var _w:uint;
     private var _h:uint;
-    private var calcService:calculatorService;
+    private var calcService:CalculatorService;
+
+    private var personsList:Array;
 
     private var _startDragX:Number;
     private var _startPanelX:Number;
@@ -38,7 +42,9 @@ public class PersonList extends Sprite{
     public function PersonList(w:uint,h:uint) {
 
         _appModel = AppModel.getInstance();
-
+        calcService = CalculatorService.getInstance();
+        calcService.addEventListener(CalculatorService.REFRESH_LIST, refreshHandler);
+        personsList = new Array();
         _w = w;
         _h = h;
 
@@ -49,8 +55,7 @@ public class PersonList extends Sprite{
         _plus.x = w/2 - _plus.width/2;
         _plus.defaultIcon = new Image(Assets.getAtlas().getTexture("PersonIcon"));
         _plus.label = "add new person";
-        _plus.addEventListener(Event.TRIGGERED, triggeredHandler);
-        _plus.addEventListener(Event.TRIGGERED, testHandler);
+        _plus.addEventListener(starling.events.Event.TRIGGERED, triggeredHandler);
         addChild(_plus);
 
         _listContainer = new ScrollContainer();
@@ -63,13 +68,15 @@ public class PersonList extends Sprite{
 
     }
 
-    private function testHandler(event:Event):void {
-        trace("TESTHANDLER");
+    private function refreshHandler(event:flash.events.Event):void {
+        fillList();
     }
 
     private function fillList():void{
-        calcService = new calculatorService();
         i = 0;
+
+        calcService.methodByPage();
+
         if(_listContainer){
             removeChild(_listContainer);
         }
@@ -87,6 +94,7 @@ public class PersonList extends Sprite{
                 var personItem:PersonItem = new PersonItem(480, person.personName, calcService.shareList[i], i);
             }else{
                 var personItem:PersonItem = new PersonItem(480, person.personName, calcService.shareList[i], i);
+                personItem.addEventListener(starling.events.Event.CHANGE, valueChangeHandler);
             }
             _listContainer.addChild(personItem);
             if(_appModel.currentPage == "PercentualSplit" && i != 0){
@@ -95,20 +103,28 @@ public class PersonList extends Sprite{
                 personItem.y = (personItem.height)*i;
             }
             personItem.addEventListener(TouchEvent.TOUCH, touchHandler);
+            //NAAR CALC STUREN DIE LATE DISPATCH
             personItem.addEventListener(PersonItem.DELETE_PERSON, removePersonHandler);
             i++;
         }
     }
 
+    private function valueChangeHandler(e:starling.events.Event):void {
+        var personItem:PersonItem = e.currentTarget as PersonItem;
+        calcService.recalculateByPage(personItem.share, personItem.id);
+        fillList();
+    }
+
     private function removePersonHandler(e:starling.events.Event):void {
         var person:PersonItem = e.currentTarget as PersonItem;
             var person:PersonItem = e.currentTarget as PersonItem;
+            calcService.recalculateByPage(0, person.id);
             _appModel.bills[_appModel.currentBill].billGroup.splice(person.id, 1);
             _appModel.setIds();
             fillList();
     }
 
-    private function triggeredHandler(event:Event):void {
+    private function triggeredHandler(e:starling.events.Event):void {
         var newPerson:PersonVO = new PersonVO();
 
         _appModel.bills[_appModel.currentBill].billGroup.push(newPerson);

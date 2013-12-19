@@ -8,6 +8,7 @@ import splitr.model.AppModel;
 import splitr.vo.BillVO;
 
 import starling.display.DisplayObject;
+import starling.events.Event;
 
 import starling.events.Touch;
 import starling.events.TouchEvent;
@@ -36,17 +37,16 @@ public class PersonItem extends Sprite {
 
     private var _editableShare:TextfieldToggler;
     private var _equalShare:TextField;
-
+    private var _share:Number;
     private var _shareSlider:Slider;
     private var _h:uint;
     private var _id:uint;
-
+    private var _shareAmount:uint;
     private var _sliderTriggered:Boolean = false;
 
     public function PersonItem(_w:uint = 480, _PersonName:String = "Hans", _PersonShare:Number = 0.00, id:uint = 0) {
-
-        this._appModel = AppModel.getInstance();
         _personNameShare = _PersonShare;
+        this._appModel = AppModel.getInstance();
 
         _width = _w;
         _leftX = 100;
@@ -75,20 +75,21 @@ public class PersonItem extends Sprite {
         _delete.alpha = 0;
         addChild(_delete);
     }
-
     private function textOrInput():void {
         addChild(_personNameField);
         switch (_appModel.currentPage){
             case "EqualSplit":
+                    _shareAmount = _personNameShare;
                     buildEqual();
                 break;
             case "PercentualSplit":
-                    trace("PROCENTUEEL,SLIDER");
-
+                    _shareAmount = (_personNameShare/100)*_appModel.bills[_appModel.currentBill].billTotal;
+                    trace("_shareAmount = ",_shareAmount);
                     buildEqual();
                     buildSlider();
                 break;
             case "AbsoluteSplit":
+                    _shareAmount = _personNameShare;
                     buildAbsolute();
                 break;
         }
@@ -101,7 +102,7 @@ public class PersonItem extends Sprite {
         _shareSlider.liveDragging = true;
         _shareSlider.minimum = 0;
         _shareSlider.maximum = 100;
-        _shareSlider.value = 50;
+        _shareSlider.value = _personNameShare;
         _shareSlider.height = _h;
         _shareSlider.width = _panel.width;
         _shareSlider.y = (_panel.y+_panel.height);
@@ -115,9 +116,6 @@ public class PersonItem extends Sprite {
         var touch:Touch = e.getTouch(touchedObject);
         if(touch != null) {
             switch(touch.phase){
-                case TouchPhase.BEGAN:
-
-                    break;
                 case TouchPhase.MOVED:
                        _sliderTriggered = true;
                     break;
@@ -132,7 +130,7 @@ public class PersonItem extends Sprite {
         _equalShare = new TextField(180, 30, "0", "OpenSansBold", 18, 0xF3F3F3);
         _equalShare.y = _panel.height/2 - _equalShare.height/2;
         _equalShare.x = (_panel.width + _panel.x) - (_equalShare.width + 10);
-        _equalShare.text = "€ " + _personNameShare.toString();
+        _equalShare.text = "€ " + _shareAmount.toString();
         _equalShare.hAlign = HAlign.RIGHT;
         addChild(_equalShare);
     }
@@ -142,10 +140,16 @@ public class PersonItem extends Sprite {
         _editableShare = new TextfieldToggler(150, 40, 20, "OpenSansBold", "0" , 0xF3F3F3, "My Awesome Person");
         _editableShare.y = _panel.height/2 - _editableShare.height/2;
         _editableShare.x = (_panel.width + _panel.x) - (_editableShare.width + 10);
-        _editableShare.text = "€ " + _personNameShare.toString();
+        _editableShare.text = "€ " + _shareAmount.toString();
         _editableShare.textHAlignRight = true;
         _editableShare.inputRestrict = "0-9\.";
+        _editableShare.addEventListener(Event.CHANGE, shareChangedHandler);
         addChild(_editableShare);
+    }
+
+    private function shareChangedHandler(event:Event):void {
+        _share = Number((_editableShare.text).substr(2));
+        dispatchEvent(new Event(Event.CHANGE) );
     }
 
     private function createPanel():void {
@@ -213,6 +217,10 @@ public class PersonItem extends Sprite {
 
     public function get id():uint {
         return _id;
+    }
+
+    public function get share():Number {
+        return _share;
     }
 }
 }
