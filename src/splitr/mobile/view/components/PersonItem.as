@@ -93,6 +93,7 @@ public class PersonItem extends Sprite {
 
     private function sliderRecalcHandler(e:flash.events.Event):void {
         trace("[sliderRecalcHandler]", "SliderShare:", _appModel.bills[_appModel.currentBill].billGroup[_id].personShare);
+        buildSlider();
         _shareSlider.value = _appModel.bills[_appModel.currentBill].billGroup[_id].personShare;
     }
 
@@ -176,8 +177,8 @@ public class PersonItem extends Sprite {
                     break;
                 case TouchPhase.ENDED:
                     _calcService.recalculateByPage(slider.value, _id);
-                    drawShares();
                     _appModel.save();
+                    drawShares();
                     _sliderTriggered = false;
                     break;
             }
@@ -188,9 +189,9 @@ public class PersonItem extends Sprite {
         _equalShare = new TextField(180, 30, "0", "OpenSansBold", 18, 0xF3F3F3);
         _equalShare.y = _panel.height/2 - _equalShare.height/2;
         _equalShare.x = (_panel.width + _panel.x) - (_equalShare.width + 10);
-        drawShares();
         _equalShare.hAlign = HAlign.RIGHT;
         addChild(_equalShare);
+        drawShares();
     }
 
     public function drawShares():void{
@@ -200,7 +201,13 @@ public class PersonItem extends Sprite {
         }else{
             shareString = "€ " + _shareAmount.toFixed(2).toString();
         }
-        _equalShare.text = shareString;
+
+        if(_appModel.currentPage == "AbsoluteSplit"){
+            _editableShare.text = shareString;
+        }else{
+            _equalShare.text = shareString;
+        }
+
     }
 
     private function buildAbsolute():void {
@@ -217,8 +224,8 @@ public class PersonItem extends Sprite {
 
     private function shareChangedHandler(e:starling.events.Event):void {
         _share = Number(_editableShare.text);
+        dispatchEvent(new starling.events.Event(starling.events.Event.CHANGE));
         drawShares();
-        dispatchEvent(new starling.events.Event(starling.events.Event.CHANGE) );
     }
 
     public function setElementsX(objectPosition:Number):void {

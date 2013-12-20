@@ -98,7 +98,6 @@ public class CalculatorService extends EventDispatcher{
 
     private function percentualRecal(newNum:Number, id:uint):void {
         newNum = Number(newNum.toFixed(2).toString());
-        trace("[Calc]", "Value changed:", newNum, "PersonId:", id);
 
         _appModel.bills[_appModel.currentBill].billGroup[id].personShare = newNum;
 
@@ -115,13 +114,11 @@ public class CalculatorService extends EventDispatcher{
 
     private function checkRestValue(id:uint):void{
         _sliderRestValue = 100 - _appModel.bills[_appModel.currentBill].billGroup[id].personShare;
-        trace("[Calc]", "RestValue before ReSplitting:", _sliderRestValue);
         for(var i:uint = 0; i < _appModel.bills[_appModel.currentBill].billGroup.length; i++){
             if(i != id){
                 _sliderRestValue -= _appModel.bills[_appModel.currentBill].billGroup[i].personShare;
             }
         }
-        trace("[Calc]", "RestValue after ReSplitting:", _sliderRestValue);
     }
 
     private function absoluteRecal(newNum:Number, id):void {
