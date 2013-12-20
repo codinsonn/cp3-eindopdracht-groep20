@@ -44,6 +44,7 @@ public class PersonList extends Sprite{
         _appModel = AppModel.getInstance();
         calcService = CalculatorService.getInstance();
         calcService.addEventListener(CalculatorService.REFRESH_LIST, refreshHandler);
+        calcService.addEventListener(CalculatorService.SLIDERS_RECALCULATED, sliderRecalcHandler);
         personsList = new Array();
         _w = w;
         _h = h;
@@ -55,7 +56,7 @@ public class PersonList extends Sprite{
         _plus.x = w/2 - _plus.width/2;
         _plus.defaultIcon = new Image(Assets.getAtlas().getTexture("PersonIcon"));
         _plus.label = "add person";
-        _plus.addEventListener(starling.events.Event.TRIGGERED, triggeredHandler);
+        _plus.addEventListener(starling.events.Event.TRIGGERED, addNewPersonHandler);
         addChild(_plus);
 
         _listContainer = new ScrollContainer();
@@ -66,6 +67,12 @@ public class PersonList extends Sprite{
 
         fillList();
 
+    }
+
+    private function sliderRecalcHandler(e:flash.events.Event):void {
+        for(var i:uint = 0; i < personsList.length; i++){
+            personsList[i].drawShares();
+        }
     }
 
     private function refreshHandler(event:flash.events.Event):void {
@@ -87,6 +94,7 @@ public class PersonList extends Sprite{
 
         addChild(_listContainer);
 
+        personsList = new Array();
         for each(var person:PersonVO in _appModel.bills[_appModel.currentBill].billGroup){
             if(_appModel.currentPage == "EqualSplit"){
                 _appModel.bills[_appModel.currentBill].billGroup[i].personId = i;
@@ -106,6 +114,7 @@ public class PersonList extends Sprite{
             personItem.addEventListener(PersonItem.DELETE_PERSON, removePersonHandler);
             personItem.addEventListener(PersonItem.SETTLE_PERSON, settlePersonHandler);
             personItem.addEventListener(PersonItem.NAME_CHANGED, nameChangedHandler);
+            personsList.push(personItem);
             i++;
         }
     }
@@ -145,14 +154,19 @@ public class PersonList extends Sprite{
 
     private function removePersonHandler(e:starling.events.Event):void {
         var person:PersonItem = e.currentTarget as PersonItem;
-            calcService.recalculateByPage(0, person.id);
+            if(_appModel.currentPage != "PercentualSplit"){
+                calcService.recalculateByPage(0, person.id);
+            }
             _appModel.bills[_appModel.currentBill].billGroup.splice(person.id, 1);
             _appModel.setIds();
+            if(_appModel.currentPage == "PercentualSplit"){
+                calcService.recalculateByPage(0, person.id);
+            }
             checkSettledStates();
             fillList();
     }
 
-    private function triggeredHandler(e:starling.events.Event):void {
+    private function addNewPersonHandler(e:starling.events.Event):void {
         var newPerson:PersonVO = new PersonVO();
 
         _appModel.bills[_appModel.currentBill].billGroup.push(newPerson);

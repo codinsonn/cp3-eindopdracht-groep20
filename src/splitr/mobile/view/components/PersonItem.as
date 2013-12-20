@@ -3,6 +3,8 @@ package splitr.mobile.view.components {
 import feathers.controls.Slider;
 import feathers.controls.TextInput;
 
+import flash.events.Event;
+
 import splitr.model.AppModel;
 import splitr.model.services.CalculatorService;
 
@@ -55,6 +57,7 @@ public class PersonItem extends Sprite {
 
     public function PersonItem(_w:uint = 480, _PersonName:String = "Hans", _PersonShare:Number = 0.00, id:uint = 0,settled:Boolean = false) {
         _calcService = CalculatorService.getInstance();
+        _calcService.addEventListener(CalculatorService.SLIDERS_RECALCULATED, sliderRecalcHandler);
 
         _personNameShare = _PersonShare;
         this._appModel = AppModel.getInstance();
@@ -78,7 +81,7 @@ public class PersonItem extends Sprite {
         _personNameField.y = _panel.height/2 - _personNameField.height/2;
         _personNameField.x = _itemBg.x + 10;
         _personNameField.maxChars = 15;
-        _personNameField.addEventListener(Event.CHANGE, nameChangedHandler);
+        _personNameField.addEventListener(starling.events.Event.CHANGE, nameChangedHandler);
 
         textOrInput();
 
@@ -86,9 +89,12 @@ public class PersonItem extends Sprite {
         _delete.y = (_panel.y + _panel.height/2) - _delete.height/2;
         _delete.alpha = 0;
         addChild(_delete);
-
-
     }
+
+    private function sliderRecalcHandler(e:flash.events.Event):void {
+        _shareSlider.value = _appModel.bills[_appModel.currentBill].billGroup[_id].personShare;
+    }
+
     private function view():void {
         if(_settledChanged == true){
             if(_panel){
@@ -120,9 +126,10 @@ public class PersonItem extends Sprite {
             _settledChanged = false;
         }
     }
-    private function nameChangedHandler(event:Event):void {
-        dispatchEvent(new Event("NAME_CHANGED"));
+    private function nameChangedHandler(e:starling.events.Event):void {
+        dispatchEvent(new starling.events.Event("NAME_CHANGED"));
     }
+
     private function textOrInput():void {
         addChild(_personNameField);
         switch (_appModel.currentPage){
@@ -131,7 +138,7 @@ public class PersonItem extends Sprite {
                     buildEqual();
                 break;
             case "PercentualSplit":
-                    _shareAmount = Number(((_personNameShare/100)*_appModel.bills[_appModel.currentBill].billTotal).toFixed(2));
+                    _shareAmount = Number(_appModel.bills[_appModel.currentBill].billGroup[_id].personShare.toFixed(2).toString());
                     buildSlider();
                     buildEqual();
                 break;
@@ -163,28 +170,36 @@ public class PersonItem extends Sprite {
             switch(touch.phase){
                 case TouchPhase.MOVED:
                     _sliderTriggered = true;
+                    _calcService.recalculateByPage(slider.value, _id);
+                    drawShares();
                     break;
                 case TouchPhase.ENDED:
+                    _calcService.recalculateByPage(slider.value, _id);
+                    drawShares();
+                    _appModel.save();
                     _sliderTriggered = false;
                     break;
             }
         }
-        _calcService.recalculateByPage(slider.value, _id);
     }
 
     private function buildEqual():void {
         _equalShare = new TextField(180, 30, "0", "OpenSansBold", 18, 0xF3F3F3);
         _equalShare.y = _panel.height/2 - _equalShare.height/2;
         _equalShare.x = (_panel.width + _panel.x) - (_equalShare.width + 10);
-        var shareString:String;
-        if(_appModel.currentPage == "PercentualSplit"){
-            shareString = "(" + _shareSlider.value + "%) € " + _shareAmount.toString();
-        }else{
-            shareString = "€ " + _shareAmount.toFixed(2);
-        }
-        _equalShare.text = shareString;
+        drawShares();
         _equalShare.hAlign = HAlign.RIGHT;
         addChild(_equalShare);
+    }
+
+    public function drawShares():void{
+        var shareString:String;
+        if(_appModel.currentPage == "PercentualSplit"){
+            shareString = "(" + _shareSlider.value.toFixed(2).toString() + "%) € " + _shareAmount.toFixed(2).toString();
+        }else{
+            shareString = "€ " + _shareAmount.toFixed(2).toString();
+        }
+        _equalShare.text = shareString;
     }
 
     private function buildAbsolute():void {
@@ -195,13 +210,13 @@ public class PersonItem extends Sprite {
         _editableShare.textHAlignRight = true;
         _editableShare.inputRestrict = "0-9\.";
         _editableShare.isNumberInput = true;
-        _editableShare.addEventListener(Event.CHANGE, shareChangedHandler);
+        _editableShare.addEventListener(starling.events.Event.CHANGE, shareChangedHandler);
         addChild(_editableShare);
     }
 
-    private function shareChangedHandler(event:Event):void {
+    private function shareChangedHandler(e:flash.events.Event):void {
         _share = Number(_editableShare.text);
-        dispatchEvent(new Event(Event.CHANGE) );
+        dispatchEvent(new starling.events.Event(starling.events.Event.CHANGE) );
     }
 
     public function setElementsX(objectPosition:Number):void {

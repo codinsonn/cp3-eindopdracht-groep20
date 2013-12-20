@@ -6,6 +6,7 @@ import feathers.events.FeathersEventType;
 import starling.display.DisplayObject;
 import starling.display.Sprite;
 import starling.events.Event;
+import starling.events.Event;
 import starling.events.Touch;
 import starling.events.TouchEvent;
 import starling.events.TouchPhase;
@@ -162,7 +163,7 @@ public class TextfieldToggler extends Sprite {
                 _text = _input.text;
             }else{
                 if(_isNumberInput == true){
-                    _text = Number(_placeholder.substr(2)).toFixed(2);
+                    _text = Number(_placeholder.substr(2)).toFixed(2).toString();
                 }else{
                     _text = _placeholder;
                 }
@@ -174,11 +175,10 @@ public class TextfieldToggler extends Sprite {
         }
     }
 
-
     public function set isNumberInput(value:Boolean):void {
         if(_isNumberInput != value){
             _isNumberInput = value;
-            _text = _placeholder = Number(_placeholder.substr(2)).toFixed(2);
+            _text = _placeholder = Number(_placeholder.substr(2)).toFixed(2).toString();
             _input.text = _text;
         }
     }

@@ -147,7 +147,7 @@ public class SplitPage extends PanelScreen {
     }
 
     private function addToTotalHandler(e:starling.events.Event):void {
-        _appModel.bills[_appModel.currentBill].billTotal += _editTotal.amount;
+        _appModel.bills[_appModel.currentBill].billTotal += Number(_editTotal.amount.toFixed(2).toString());
 
         billTotalChangedHandler();
     }

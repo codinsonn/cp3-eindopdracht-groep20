@@ -53,7 +53,7 @@ public class AmountEditor extends Sprite {
     }
 
     private function amountChangedHandler(e:Event):void {
-        this.amount = Number(Number(_txtAmount.text).toFixed(2));
+        this.amount = Number(Number(_txtAmount.text).toFixed(2).toString());
         _txtAmount.text = _amount.toString();
     }
 

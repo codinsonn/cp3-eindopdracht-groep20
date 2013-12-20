@@ -8,6 +8,7 @@ import splitr.model.AppModel;
 public class CalculatorService extends EventDispatcher{
     public static const NEW_TOTAL:String = "NEW_TOTAL";
     public static const REFRESH_LIST:String = "REFRESH_LIST";
+    public static const SLIDERS_RECALCULATED:String = "SLIDERS_RECALCULATED";
 
     private var _appModel:AppModel;
     private var _shareList:Array;
@@ -46,7 +47,7 @@ public class CalculatorService extends EventDispatcher{
 
     private function equalSplit():void {
         _shareList = new Array();
-        var share:Number = Number(Number(_appModel.bills[_appModel.currentBill].billTotal / _appModel.bills[_appModel.currentBill].billGroup.length).toFixed(2));
+        var share:Number = Number((_appModel.bills[_appModel.currentBill].billTotal / _appModel.bills[_appModel.currentBill].billGroup.length).toFixed(2).toString());
         var i:uint = 0;
         _sliderRestValue = 100;
         while (i < _appModel.bills[_appModel.currentBill].billGroup.length){
@@ -60,12 +61,8 @@ public class CalculatorService extends EventDispatcher{
     private function percentualSplit():void {
         _shareList = new Array();
         var i:uint = 0;
-        _sliderRestValue = 100;
-        var share:Number = _appModel.bills[_appModel.currentBill].billGroup[i].personShare;
         while (i < _appModel.bills[_appModel.currentBill].billGroup.length){
-            _shareList.push(share);
-            _sliderRestValue -= share;
-            trace("[Calc]", "SliderRestValue Perc:", _sliderRestValue);
+            _shareList[i] = _appModel.bills[_appModel.currentBill].billGroup[i].personShare;
             i++;
         }
     }
@@ -91,7 +88,7 @@ public class CalculatorService extends EventDispatcher{
                 //equalRecal();
                 break;
             case "PercentualSplit":
-                precentualRecal(newNum, id);
+                percentualRecal(newNum, id);
                 break;
             case "AbsoluteSplit":
                 absoluteRecal(newNum, id);
@@ -99,7 +96,7 @@ public class CalculatorService extends EventDispatcher{
         }
     }
 
-    private function precentualRecal(newNum:Number, id:uint):void {
+    private function percentualRecal(newNum:Number, id:uint):void {
         newNum = Number(newNum.toFixed(2).toString());
         trace("[Calc]", "Value changed:", newNum, "PersonId:", id);
 
@@ -108,10 +105,12 @@ public class CalculatorService extends EventDispatcher{
         checkRestValue(id);
 
         for(var i:uint = 0; i < _appModel.bills[_appModel.currentBill].billGroup.length; i++){
-            if(i != id){
-                _appModel.bills[_appModel.currentBill].billGroup[i].personShare += _sliderRestValue / (_appModel.bills[_appModel.currentBill].billGroup.length - 1);
+            if(i != id && _appModel.bills[_appModel.currentBill].billGroup[i].personShare >= 0.00){
+                _appModel.bills[_appModel.currentBill].billGroup[i].personShare = _appModel.bills[_appModel.currentBill].billGroup[i].personShare + (_sliderRestValue / (_appModel.bills[_appModel.currentBill].billGroup.length - 1));
             }
         }
+
+        dispatchEvent(new Event("SLIDERS_RECALCULATED"));
     }
 
     private function checkRestValue(id:uint):void{
