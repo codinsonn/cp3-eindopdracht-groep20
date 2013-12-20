@@ -170,7 +170,8 @@ public class PersonList extends Sprite{
         var newPerson:PersonVO = new PersonVO();
         _appModel.bills[_appModel.currentBill].billGroup.push(newPerson);
 
-        if(_appModel.currentPage == "PercentualSplit" && _appModel.bills[_appModel.currentBill].billGroup.length == 0){
+        trace("[PersonList]", _appModel.bills[_appModel.currentBill].billGroup.length);
+        if(_appModel.currentPage == "PercentualSplit" && _appModel.bills[_appModel.currentBill].billGroup.length == 1){
             var newPerson:PersonVO = new PersonVO();
             _appModel.bills[_appModel.currentBill].billGroup.push(newPerson);
         }
