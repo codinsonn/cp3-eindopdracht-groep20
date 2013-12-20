@@ -168,8 +168,13 @@ public class PersonList extends Sprite{
 
     private function addNewPersonHandler(e:starling.events.Event):void {
         var newPerson:PersonVO = new PersonVO();
-
         _appModel.bills[_appModel.currentBill].billGroup.push(newPerson);
+
+        if(_appModel.currentPage == "PercentualSplit" && _appModel.bills[_appModel.currentBill].billGroup.length == 0){
+            var newPerson:PersonVO = new PersonVO();
+            _appModel.bills[_appModel.currentBill].billGroup.push(newPerson);
+        }
+
         _appModel.save();
         checkSettledStates();
         fillList();

@@ -92,6 +92,7 @@ public class PersonItem extends Sprite {
     }
 
     private function sliderRecalcHandler(e:flash.events.Event):void {
+        trace("[sliderRecalcHandler]", "SliderShare:", _appModel.bills[_appModel.currentBill].billGroup[_id].personShare);
         _shareSlider.value = _appModel.bills[_appModel.currentBill].billGroup[_id].personShare;
     }
 
@@ -195,7 +196,7 @@ public class PersonItem extends Sprite {
     public function drawShares():void{
         var shareString:String;
         if(_appModel.currentPage == "PercentualSplit"){
-            shareString = "(" + _shareSlider.value.toFixed(2).toString() + "%) € " + _shareAmount.toFixed(2).toString();
+            shareString = "(" + _shareSlider.value.toFixed(2).toString() + "%) € " + Number(Number(_shareSlider.value)/100 * _appModel.bills[_appModel.currentBill].billTotal).toFixed(2).toString();
         }else{
             shareString = "€ " + _shareAmount.toFixed(2).toString();
         }
@@ -214,8 +215,9 @@ public class PersonItem extends Sprite {
         addChild(_editableShare);
     }
 
-    private function shareChangedHandler(e:flash.events.Event):void {
+    private function shareChangedHandler(e:starling.events.Event):void {
         _share = Number(_editableShare.text);
+        drawShares();
         dispatchEvent(new starling.events.Event(starling.events.Event.CHANGE) );
     }
 
