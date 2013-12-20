@@ -148,6 +148,7 @@ public class PersonList extends Sprite{
             calcService.recalculateByPage(0, person.id);
             _appModel.bills[_appModel.currentBill].billGroup.splice(person.id, 1);
             _appModel.setIds();
+            checkSettledStates();
             fillList();
     }
 
@@ -156,6 +157,7 @@ public class PersonList extends Sprite{
 
         _appModel.bills[_appModel.currentBill].billGroup.push(newPerson);
         _appModel.save();
+        checkSettledStates();
         fillList();
     }
 

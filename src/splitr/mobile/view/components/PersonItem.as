@@ -69,9 +69,10 @@ public class PersonItem extends Sprite {
         _settledChanged = true;
         view();
 
-        _personNameField = new TextfieldToggler(150, 40, 20, "PF Ronda Seven", _PersonName , 0xF3F3F3, "My Awesome Person");
+        _personNameField = new TextfieldToggler(150, 40, 18, "PF Ronda Seven", _PersonName , 0xF3F3F3, "My Awesome Person");
         _personNameField.y = _panel.height/2 - _personNameField.height/2;
         _personNameField.x = _itemBg.x + 10;
+        _personNameField.maxChars = 15;
         _personNameField.addEventListener(Event.CHANGE, nameChangedHandler);
 
         textOrInput();
@@ -170,10 +171,10 @@ public class PersonItem extends Sprite {
         _equalShare.y = _panel.height/2 - _equalShare.height/2;
         _equalShare.x = (_panel.width + _panel.x) - (_equalShare.width + 10);
         var shareString:String;
-        if(_appModel.currentPage = "PercentualSplit"){
+        if(_appModel.currentPage == "PercentualSplit"){
             shareString = "(" + _shareSlider.value + "%) € " + _shareAmount.toString();
         }else{
-            shareString = "€ " + _shareAmount.toString();
+            shareString = "€ " + _shareAmount.toFixed(2);
         }
         _equalShare.text = shareString;
         _equalShare.hAlign = HAlign.RIGHT;

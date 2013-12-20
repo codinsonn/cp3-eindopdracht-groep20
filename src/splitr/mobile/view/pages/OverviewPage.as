@@ -212,8 +212,10 @@ public class OverviewPage extends PanelScreen {
         _appModel.bills[bill.billVO.billId].settledState = !bill.billVO.settledState;
         bill.billVO = _appModel.bills[bill.billVO.billId];
 
+        trace("[Overview]", "Number of people in Billgroup", _appModel.bills[bill.billVO.billId].billGroup.length);
         for(var i:uint = 0; i < _appModel.bills[bill.billVO.billId].billGroup.length; i++){
-            _appModel.bills[_appModel.currentBill].billGroup[i].settledState == _appModel.bills[bill.billVO.billId].settledState
+            trace("[Overview]", "BillVO SettledState:", !bill.billVO.settledState);
+            _appModel.bills[_appModel.currentBill].billGroup[i].settledState = bill.billVO.settledState;
         }
 
         _appModel.save();
