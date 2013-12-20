@@ -4,6 +4,7 @@ import feathers.controls.Slider;
 import feathers.controls.TextInput;
 
 import splitr.model.AppModel;
+import splitr.model.services.CalculatorService;
 
 import splitr.vo.BillVO;
 
@@ -42,6 +43,8 @@ public class PersonItem extends Sprite {
     private var _equalShare:TextField;
     private var _share:Number;
     private var _shareSlider:Slider;
+    private var _calcService:CalculatorService;
+    private var _sliderMaxVal:uint;
     private var _h:uint;
     private var _id:uint;
     private var _shareAmount:Number;
@@ -51,6 +54,8 @@ public class PersonItem extends Sprite {
     private var _settled:Boolean;
 
     public function PersonItem(_w:uint = 480, _PersonName:String = "Hans", _PersonShare:Number = 0.00, id:uint = 0,settled:Boolean = false) {
+        _calcService = CalculatorService.getInstance();
+
         _personNameShare = _PersonShare;
         this._appModel = AppModel.getInstance();
         _settled = settled;
@@ -152,8 +157,8 @@ public class PersonItem extends Sprite {
     }
 
     private function sliderTriggeredHanler(e:TouchEvent):void {
-        var touchedObject:DisplayObject = e.currentTarget as DisplayObject;
-        var touch:Touch = e.getTouch(touchedObject);
+        var slider:Slider = e.currentTarget as Slider;
+        var touch:Touch = e.getTouch(slider);
         if(touch != null) {
             switch(touch.phase){
                 case TouchPhase.MOVED:
@@ -164,6 +169,7 @@ public class PersonItem extends Sprite {
                     break;
             }
         }
+        _calcService.recalculateByPage(slider.value, _id);
     }
 
     private function buildEqual():void {
@@ -200,7 +206,7 @@ public class PersonItem extends Sprite {
 
     public function setElementsX(objectPosition:Number):void {
 
-    if(_sliderTriggered == false){
+        if(_sliderTriggered == false){
             _personNameField.x = ( _itemBg.x + 10) + objectPosition;
             _panel.x = (_personNameField.x-10) - 4;
 
@@ -260,6 +266,10 @@ public class PersonItem extends Sprite {
 
     public function get personNameField():TextfieldToggler {
         return _personNameField;
+    }
+
+    public function set sliderMaxVal(value:uint):void {
+        _sliderMaxVal = value;
     }
 }
 }
